@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "mode": "live Subquadratic + local proposals",
+  "created_at": "2026-11-07T21:11:14.296468+00:00",
+  "commit": "0f6bfd53f6e86ec4f344cd42d8b40756b1775b6c",
+  "python_version": "3.13.7 (main, Aug 14 2025, 11:12:11) [Clang 17.0.0 (clang-1700.0.13.3)]",
+  "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "runtime": "macOS Seatbelt",
+  "contract_sha256": "382951b9677102a1e01887957480f2e9bc77b329bcdda89e0838e371e1f4bd50",
+  "oracle_sha256": "5896299208f47ea186e365edbb0f6cab9c16d7fbc8e5f9d923c816c279571a19",
+  "engine_sources": {
+    "__init__.py": "22187f3582b75d41e011844e1df37f202db456507f0a9fcab92b30c9cbb20441",
+    "__main__.py": "9c7c331028f54ff84a932c0ccdb35c8bfbe62226c411145cc6e2718824108491",
+    "benchmark.py": "03274b1e8216bdce152309784b9a6502ece9a654fec9477d1d601734058f701e",
+    "cli.py": "77cc2f5900c6e844f9a3c10edcd6694d2bd2fdeae612b5f75e6731d4af72660d",
+    "doctor.py": "03adbb4b9ee9f89c7af3e0c8b57ab98777d0edd95591aa622572a30a477605c2",
+    "engine.py": "1f084a287b664ec2935bcb12201eaac17e27003c419547c0c9a6814a277b722a",
+    "oracle.py": "5896299208f47ea186e365edbb0f6cab9c16d7fbc8e5f9d923c816c279571a19",
+    "providers.py": "c9654ef3075a7cfef9e5f5a24123a819d60737612024e758398381857d5b3fbc",
+    "runner.py": "5b88b7552506569d4bc8c5437aba42a2cbe9fcfbe713f45c55688f6d1aedebaa",
+    "scenarios.py": "5693e96de19dfc83ec660d3f5ae1a004c2313645b372a05329f74c3638d2d223",
+    "server.py": "da602b90160757868e7fb68207c3882037ae6c7c3f62056cd4f093949e698268",
+    "worker.py": "c01676adcbd4057f8a8ffdfcf599575a5bcf6c57a92377249d1780e18b98c1f4"
+  },
+  "corpus_sha256": "c7da1c6ad6032512dcbea69929c955a318226e7fcee177346e7e27fb75d0e496",
+  "audit_input_sha256": "9cb1170df73d51205cc1b77ffa6be332ccf2cdbe4b4fd5ad9e3c5b6f93569781",
+  "split_counts": {
+    "discovery": 5,
+    "validation": 8,
+    "audit": 8,
+    "control": 4
+  }
+}

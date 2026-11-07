@@ -1,0 +1,94 @@
+{
+  "version": 4,
+  "suite": [
+    {
+      "name": "new reservation",
+      "family": "inventory",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "release reservation",
+      "family": "inventory",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "release",
+          "tenant": "atlas",
+          "key": "order-1"
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "insufficient inventory",
+      "family": "inventory",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 6
+        },
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-2",
+          "sku": "widget",
+          "qty": 5
+        }
+      ]
+    },
+    {
+      "name": "independent products",
+      "family": "inventory",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "other",
+          "sku": "sensor",
+          "qty": 2
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "sensor"
+        }
+      ]
+    }
+  ],
+  "suite_sha256": "08f2e094428a331be9647246c7baff5c9896d95877bc7c1e7ff584d41cdebddd",
+  "rationale": "Regression challenge: reduce execution cost by returning to the smoke suite",
+  "origin": "system-injected rollback demonstration"
+}
