@@ -35,9 +35,19 @@ The first completed **live OpenAI + Subquadratic campaign** produced the followi
 | Measure | Original evaluation | Promoted evaluation |
 | --- | ---: | ---: |
 | Input scenarios per implementation | 4 | **29** |
-| Final-audit seeded defects caught | 1 / 8 | **6 / 8** |
+| Faulty final-audit implementations caught | 1 / 8 | **6 / 8** |
 | Correct controls rejected | 0 / 4 | **0 / 4** |
-| Validation defects caught | 1 / 8 | **7 / 8** |
+| Faulty validation implementations caught | 1 / 8 | **7 / 8** |
+
+**29 input scenarios, 8 faulty implementations.** A scenario is a sequence of API requests. Each implementation runs the scenario suite; the detection denominator counts faulty implementations. The final audit uses a separate set of 8 faulty implementations and 4 correct controls.
+
+| Evaluation version | Input scenarios | Faulty validation implementations caught | Correct controls rejected | Decision |
+| --- | ---: | ---: | ---: | --- |
+| v0 | 4 | 1 / 8 | 0 / 4 | Baseline |
+| v1 | 10 | 4 / 8 | 0 / 4 | Promoted |
+| v2 | 17 | 5 / 8 | 0 / 4 | Promoted |
+| v3 | 23 | 6 / 8 | 0 / 4 | Promoted |
+| v4 | 29 | 7 / 8 | 0 / 4 | Promoted |
 
 OpenAI generated a faulty inventory optimization that passed all four original scenarios. Reserving stock for one tenant silently reduced another tenant’s balance; two requests prove it. The run also reproduced five labeled seeded defects. Four real model proposals were promoted: **1 → 4 → 5 → 6 → 7 / 8** validation detections. The graph shows discrete measurements, not a continuous learning rate. There was no rejected proposal and no injected rollback in this run.
 
