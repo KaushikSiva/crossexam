@@ -1,0 +1,64 @@
+{
+  "name": "retry consumes no inventory",
+  "family": "idempotency",
+  "passed": false,
+  "actions": [
+    {
+      "op": "reserve",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 2
+    },
+    {
+      "op": "reserve",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 2
+    },
+    {
+      "op": "stock",
+      "tenant": "atlas",
+      "sku": "widget"
+    }
+  ],
+  "expected": [
+    {
+      "status": "reserved",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 2
+    },
+    {
+      "status": "reserved",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 2
+    },
+    {
+      "available": 8
+    }
+  ],
+  "actual": [
+    {
+      "status": "reserved",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 2
+    },
+    {
+      "status": "reserved",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 2
+    },
+    {
+      "available": 6
+    }
+  ]
+}
