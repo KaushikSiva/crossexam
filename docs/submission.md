@@ -38,7 +38,7 @@ Watch page: https://kaushiksiva.github.io/crossexam/demo.html
 
 Direct MP4: https://kaushiksiva.github.io/crossexam/assets/crossexam-demo.mp4
 
-Verified video duration: 59.7 seconds. 1600×900 H.264 video, AAC narration, subtitles. The narration uses ElevenLabs V4 with the premade Brian voice.
+Verified video duration: 51.8 seconds. 1600×900 H.264 video, AAC narration, subtitles. The narration uses ElevenLabs V4 with the premade Brian voice.
 
 ## Which partner products did you use?
 

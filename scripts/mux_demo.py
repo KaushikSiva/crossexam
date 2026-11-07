@@ -15,13 +15,15 @@ markers=[i//12 for i in range(0,len(pixels),12) if pixels[i]<60 and pixels[i+1]>
 if len(markers)<3:raise SystemExit('Synchronization marker missing; refusing to guess audio alignment.')
 prefix=float(Fraction(markers[-1]+1)/rate)
 output=Path('docs/assets/crossexam-demo.mp4')
+voice_seconds=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1','recordings/narration.wav'],text=True))
+film_seconds=round(min(59.7,max(50,voice_seconds+2)),1)
 style='FontName=Arial,FontSize=19,PrimaryColour=&H00FFFFFF,OutlineColour=&H00111111,BorderStyle=3,Outline=1,Shadow=0,MarginV=22'
 subprocess.run(['ffmpeg','-y','-loglevel','warning','-ss',str(prefix),'-i',str(raw),'-i','recordings/narration.wav',
                 '-map','0:v:0','-map','1:a:0','-vf',f"tpad=stop_mode=clone:stop_duration=3,subtitles=recordings/demo.srt:force_style='{style}'",
                 '-c:v','libx264','-preset','fast','-crf','20','-pix_fmt','yuv420p','-r','30',
-                '-c:a','aac','-b:a','160k','-af','apad','-movflags','+faststart','-t','59.7',str(output)],check=True)
+                '-c:a','aac','-b:a','160k','-af','apad','-movflags','+faststart','-t',str(film_seconds),str(output)],check=True)
 info=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_streams','-show_format','-of','json',str(output)],text=True))
-assert 59<=float(info['format']['duration'])<=60
+assert 50<=float(info['format']['duration'])<=60
 assert any(s['codec_type']=='audio' for s in info['streams'])
 assert any(s['codec_type']=='video' and s['width']==1600 and s['height']==900 for s in info['streams'])
 metadata={'file':output.name,'sha256':hashlib.sha256(output.read_bytes()).hexdigest(),

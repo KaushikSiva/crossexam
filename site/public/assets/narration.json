@@ -1,0 +1,12 @@
+{
+  "mode": "live Subquadratic + local proposals",
+  "segments": [
+    "Your AI says the code is ready. Every test passes. Would you merge it? CrossExam puts the tests on trial.",
+    "This cache change passes all four tests. But two customers reuse a request ID, and one gets the other's reservation. CrossExam proves it with just two requests.",
+    "Then it strengthens the tests. New versions must catch more bugs while correct code keeps passing. This weaker version? Rejected.",
+    "Finally, a separate audit: 1 out of 8 bugs caught becomes 7. No correct controls rejected. It's a small synthetic benchmark, and we show the miss, too.",
+    "Subquadratic helps decide where to look. This run uses seeded bugs and test proposals. OpenUI lets you inspect every result.",
+    "CrossExam. Don't just trust the score. Make it prove something."
+  ],
+  "words": 124
+}

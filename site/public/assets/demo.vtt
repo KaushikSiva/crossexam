@@ -1,81 +1,81 @@
 WEBVTT
 
 1
-00:00:00.000 --> 00:00:01.073
-Meet CrossExam.
+00:00:00.000 --> 00:00:02.160
+Your AI says the code is ready.
 
 2
-00:00:01.430 --> 00:00:07.044
-It finds broken software that your tests accept, then proves whether stronger evaluations actually help.
+00:00:02.320 --> 00:00:03.600
+Every test passes.
 
 3
-00:00:07.295 --> 00:00:09.154
-Here, all four tests pass.
+00:00:03.680 --> 00:00:04.800
+Would you merge it?
 
 4
-00:00:09.369 --> 00:00:12.122
-But an optimization drops the tenant from the cache key.
+00:00:05.000 --> 00:00:07.360
+CrossExam puts the tests on trial.
 
 5
-00:00:12.373 --> 00:00:17.164
-Two customers reuse the same request ID, and the second gets the first customer's reservation.
+00:00:07.480 --> 00:00:10.160
+This cache change passes all four tests.
 
 6
-00:00:17.593 --> 00:00:20.239
-CrossExam reduces the failure to two requests.
+00:00:10.280 --> 00:00:15.120
+But two customers reuse a request ID, and one gets the other's reservation.
 
 7
-00:00:20.454 --> 00:00:22.814
-The eval improves through versioned proposals.
+00:00:15.280 --> 00:00:18.080
+CrossExam proves it with just two requests.
 
 8
-00:00:23.029 --> 00:00:28.106
-Each suite is frozen, then challenged on separate validation defects and correct implementations.
+00:00:18.280 --> 00:00:20.240
+Then it strengthens the tests.
 
 9
-00:00:28.321 --> 00:00:30.109
-Only measured gains earn promotion.
+00:00:20.320 --> 00:00:24.320
+New versions must catch more bugs while correct code keeps passing.
 
 10
-00:00:30.466 --> 00:00:32.540
-A deliberately weakened suite is rejected.
+00:00:24.440 --> 00:00:25.600
+This weaker version?
 
 11
-00:00:32.970 --> 00:00:34.579
-Now the final audit opens.
+00:00:25.920 --> 00:00:26.800
+Rejected.
 
 12
-00:00:34.757 --> 00:00:39.835
-Detection rises from 1 of 8 defects to 7 of 8, with 0 correct controls rejected.
+00:00:27.040 --> 00:00:31.280
+Finally, a separate audit: 1 out of 8 bugs caught becomes 7.
 
 13
-00:00:40.264 --> 00:00:43.053
-Every result, including remaining misses, is published.
+00:00:31.360 --> 00:00:33.360
+No correct controls rejected.
 
 14
-00:00:43.483 --> 00:00:46.772
-Subquadratic prioritizes risks from repository context.
+00:00:33.440 --> 00:00:36.880
+It's a small synthetic benchmark, and we show the miss, too.
 
 15
-00:00:47.201 --> 00:00:49.562
-This run uses local attack and test fixtures.
+00:00:36.960 --> 00:00:39.520
+Subquadratic helps decide where to look.
 
 16
-00:00:49.919 --> 00:00:52.387
-OpenUI makes every result inspectable.
+00:00:39.640 --> 00:00:42.640
+This run uses seeded bugs and test proposals.
 
 17
-00:00:52.637 --> 00:00:53.352
-CrossExam.
+00:00:42.720 --> 00:00:45.520
+OpenUI lets you inspect every result.
 
 18
-00:00:53.710 --> 00:00:54.818
-Your tests passed.
+00:00:45.680 --> 00:00:46.720
+CrossExam.
 
 19
-00:00:54.997 --> 00:00:56.070
-Your software failed.
+00:00:46.760 --> 00:00:48.320
+Don't just trust the score.
 
 20
-00:00:56.499 --> 00:00:57.572
-Here is the evidence.
+00:00:48.400 --> 00:00:49.840
+Make it prove something.
