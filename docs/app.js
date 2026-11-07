@@ -2,7 +2,7 @@ const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const label = value => value.replaceAll('_', ' ');
-const pct = score => score.total ? Math.round(100 * score.detected / score.total) : 0;
+const pct = score => score.total ? Math.round(1000 * score.detected / score.total) / 10 : 0;
 let report = null, local = false, busy = false, replaying = false, selected = 0, currentView = 'overview', providers = {};
 const titles = {overview:['The perfect-score problem.','Find the broken implementations your existing tests accept.'],learning:['The eval gets better.','Every proposed improvement must earn promotion on separate validation work.'],audit:['The unseen test.','Learning is finished. Now measure what transfers to different implementations.'],evidence:['Show your work.','Source hashes, provider usage, frozen suites, and an execution journal.']};
 
@@ -13,11 +13,12 @@ function showView(view) {
   $$('.nav').forEach(el => el.classList.toggle('active', el.dataset.view === view));
   $('#view-title').textContent = titles[view][0];
   $('#view-description').textContent = titles[view][1];
-  if (location.hash !== '#'+view) history.replaceState(null, '', '#'+view);
+  if (location.hash !== '#view='+view) history.replaceState(null, '', '#view='+view);
+  window.scrollTo({top:0,behavior:'instant'});
   if (view === 'learning' && report) renderLearning();
 }
 $$('[data-view]').forEach(el => el.addEventListener('click', () => showView(el.dataset.view)));
-window.addEventListener('hashchange', () => showView(location.hash.slice(1)));
+window.addEventListener('hashchange', () => showView(location.hash.slice(1).replace('view=','')));
 
 function toast(message) {
   $('#toast').textContent = message; $('#toast').classList.add('show');
@@ -57,7 +58,7 @@ function selectCase(index) {
     const returned = tenant ? `tenant: <strong class="${wrong?'bad-value':''}">${esc(tenant)}</strong>` : Object.entries(actual||{}).map(([k,v])=>`${esc(k)}: <strong class="${wrong?'bad-value':''}">${esc(v)}</strong>`).join('<br>');
     return `<div class="trace-step ${wrong?'wrong':''}"><div class="trace-label">REQUEST ${String(i+1).padStart(2,'0')} ${wrong?'<span>CONTRACT VIOLATION</span>':'<span style="color:var(--green)">OBSERVED</span>'}</div><div class="trace-action">${esc(a.op).toUpperCase()}<br>tenant: <strong>${esc(a.tenant)}</strong><br>${a.key!==undefined?`key: <strong>${esc(a.key)}</strong><br>`:''}${a.qty!==undefined?`qty: ${esc(a.qty)} · ${esc(a.sku)}`:a.sku?`sku: ${esc(a.sku)}`:''}</div><div class="trace-return">↳ ${returned}${wrong?`<div class="expected">Expected: ${esc(JSON.stringify(expected))}</div>`:'<div class="expected">Matches the independent contract model.</div>'}</div></div>`;
   }).join('');
-  const diff=c.diff.split('\n').filter(line=>!line.startsWith('@@')&&!line.startsWith('---')&&!line.startsWith('+++')).slice(0,12).map(line=>`<span class="${line.startsWith('+')?'added':line.startsWith('-')?'removed':'header'}">${esc(line)}</span>`).join('\n');
+  const diff=c.diff.split('\n').filter(line=>line.trim()&&!line.startsWith('@@')&&!line.startsWith('---')&&!line.startsWith('+++')).slice(0,8).map(line=>`<span class="${line.startsWith('+')?'added':line.startsWith('-')?'removed':'header'}">${esc(line)}</span>`).join('\n');
   $('#case-detail').innerHTML=`<div class="case-title"><h3>${esc(c.title)}</h3><div class="mono">${esc(c.origin).toUpperCase()}</div></div><div class="verdict-strip"><span>✓ EXISTING TESTS ${c.baseline_checks}/${c.baseline_checks}</span><span class="bad">× CONTRACT VIOLATED</span></div><div class="trace">${traces}</div><div class="code-label"><span>THE CHANGE THAT SLIPPED THROUGH</span><span>${w.actions.length} ACTION REPRODUCER</span></div><pre class="diff">${diff}</pre><div class="source-note">1-minimal failing action sequence. Expected results are computed outside the candidate sandbox.</div>`;
 }
 function renderCases(){
@@ -148,4 +149,4 @@ $('#replay').onclick=async()=>{
   replaying=false;$('#replay').disabled=false;$('#run').disabled=false;
 };
 window.CrossExam={showView,selectCase,getReport:()=>report};
-showView(location.hash.slice(1)||'overview');poll();setInterval(()=>{if(local)poll()},1200);
+showView(location.hash.slice(1).replace('view=','')||'overview');poll();setInterval(()=>{if(local)poll()},1200);

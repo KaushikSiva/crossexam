@@ -1,0 +1,591 @@
+{
+  "version": 3,
+  "suite": [
+    {
+      "name": "new reservation",
+      "family": "inventory",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "release reservation",
+      "family": "inventory",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "release",
+          "tenant": "atlas",
+          "key": "order-1"
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "insufficient inventory",
+      "family": "inventory",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 6
+        },
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-2",
+          "sku": "widget",
+          "qty": 5
+        }
+      ]
+    },
+    {
+      "name": "independent products",
+      "family": "inventory",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "other",
+          "sku": "sensor",
+          "qty": 2
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "sensor"
+        }
+      ]
+    },
+    {
+      "name": "same key, different customers",
+      "family": "tenant_isolation",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "reserve",
+          "tenant": "beacon",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "stock",
+          "tenant": "beacon",
+          "sku": "widget"
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "tenant spelling is significant",
+      "family": "tenant_isolation",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "Atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "stock",
+          "tenant": "Atlas",
+          "sku": "widget"
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "tuple namespaces cannot collide",
+      "family": "tenant_isolation",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "a:b",
+          "key": "c",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "reserve",
+          "tenant": "a",
+          "key": "b:c",
+          "sku": "widget",
+          "qty": 2
+        }
+      ]
+    },
+    {
+      "name": "tenant prefixes stay separate",
+      "family": "tenant_isolation",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas-east",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "reserve",
+          "tenant": "atlas-west",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas-west",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "foreign release is invisible",
+      "family": "tenant_isolation",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "release",
+          "tenant": "beacon",
+          "key": "order-1"
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        },
+        {
+          "op": "stock",
+          "tenant": "beacon",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "retry consumes no inventory",
+      "family": "idempotency",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "released keys retain their response",
+      "family": "idempotency",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "release",
+          "tenant": "atlas",
+          "key": "order-1"
+        },
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "quantity cannot change under a key",
+      "family": "payload_binding",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 3
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "product cannot change under a key",
+      "family": "payload_binding",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "sensor",
+          "qty": 2
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "sensor"
+        }
+      ]
+    },
+    {
+      "name": "failed keys may recover",
+      "family": "idempotency",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 8
+        },
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "retry",
+          "sku": "widget",
+          "qty": 4
+        },
+        {
+          "op": "release",
+          "tenant": "atlas",
+          "key": "order-1"
+        },
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "retry",
+          "sku": "widget",
+          "qty": 4
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "release is idempotent",
+      "family": "inventory",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "release",
+          "tenant": "atlas",
+          "key": "order-1"
+        },
+        {
+          "op": "release",
+          "tenant": "atlas",
+          "key": "order-1"
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "last unit can be reserved",
+      "family": "inventory",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 10
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "each tenant owns its stock",
+      "family": "inventory",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 8
+        },
+        {
+          "op": "reserve",
+          "tenant": "beacon",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 8
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        },
+        {
+          "op": "stock",
+          "tenant": "beacon",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "release restores the original product",
+      "family": "inventory",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "sensor",
+          "qty": 2
+        },
+        {
+          "op": "release",
+          "tenant": "atlas",
+          "key": "order-1"
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "sensor"
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "negative quantity is invalid",
+      "family": "validation",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": -2
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "zero is invalid",
+      "family": "validation",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 0
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "booleans are not quantities",
+      "family": "validation",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": true
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "float quantities are invalid",
+      "family": "validation",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2.0
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "empty tenant is invalid",
+      "family": "validation",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        }
+      ]
+    },
+    {
+      "name": "empty key is invalid",
+      "family": "validation",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "",
+          "sku": "widget",
+          "qty": 2
+        }
+      ]
+    },
+    {
+      "name": "invalid retry cannot bypass validation",
+      "family": "validation",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": true
+        }
+      ]
+    }
+  ],
+  "suite_sha256": "1e9af70ce1e43bdfa9e37d43497821e9d8a1843b5b999ed560e9e4ee15a037bf",
+  "rationale": "Exercise inventory, validation",
+  "origin": "hand-authored local proposal"
+}

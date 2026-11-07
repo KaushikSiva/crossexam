@@ -9,6 +9,9 @@ node_modules/
 .DS_Store
 runs/
 recordings/raw/
+recordings/segment-*.txt
+recordings/timing.json
+recordings/demo.srt
 *.aiff
 *.wav
 *.log
