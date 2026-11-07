@@ -21,14 +21,14 @@ def serve(port=8847):
     if candidates:
         state["report"] = json.loads(candidates[0].read_text())
 
-    def run_job(live):
+    def run_job(mode):
         try:
             inspect_sandbox()
             output = ROOT / "runs" / datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
             def emit(event):
                 with lock:
                     state["events"].append(event)
-            report = Campaign(output, live, emit).run()
+            report = Campaign(output, live=mode == "live", emit=emit, subq_only=mode == "subq").run()
             with lock:
                 state["report"] = report
         except Exception as exc:
@@ -84,8 +84,8 @@ def serve(port=8847):
                 if not 0 < length <= 1024:
                     raise ValueError("Invalid payload length")
                 payload = json.loads(self.rfile.read(length))
-                if payload.get("mode") not in ("local", "live"):
-                    raise ValueError("Mode must be local or live")
+                if not isinstance(payload, dict) or payload.get("mode") not in ("local", "subq", "live"):
+                    raise ValueError("Mode must be local, subq, or live")
             except (ValueError, TypeError):
                 self.send(400, {"error": "Invalid run request"})
                 return
@@ -94,12 +94,15 @@ def serve(port=8847):
             if live and not all(readiness().values()):
                 self.send(409, {"error": "Configure both credited partner keys in .env"})
                 return
+            if payload["mode"] == "subq" and not readiness()["subquadratic"]:
+                self.send(409, {"error": "Configure a credited SUBQ_API_KEY in .env"})
+                return
             with lock:
                 if state["busy"]:
                     self.send(409, {"error": "A campaign is already running"})
                     return
                 state.update(busy=True, events=[], error=None)
-            threading.Thread(target=run_job, args=(live,), daemon=True).start()
+            threading.Thread(target=run_job, args=(payload["mode"],), daemon=True).start()
             self.send(202, {"started": True, "mode": payload["mode"]})
 
     print(f"CrossExam workspace: http://127.0.0.1:{port}", flush=True)

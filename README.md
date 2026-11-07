@@ -2,9 +2,9 @@
 
 <p align="center">
   <a href="https://github.com/KaushikSiva/crossexam/actions/workflows/verify.yml"><img src="https://github.com/KaushikSiva/crossexam/actions/workflows/verify.yml/badge.svg" alt="Executable verification"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-d9fa77?labelColor=171d19" alt="MIT license"></a>
-  <img src="https://img.shields.io/badge/Python-3.11%2B-d9fa77?labelColor=171d19" alt="Python 3.11 or later">
-  <a href="https://github.com/thesysdev/openui"><img src="https://img.shields.io/badge/evidence_UI-OpenUI-d9fa77?labelColor=171d19" alt="Built with OpenUI"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-eeeeee?labelColor=111111" alt="MIT license"></a>
+  <img src="https://img.shields.io/badge/Python-3.11%2B-eeeeee?labelColor=111111" alt="Python 3.11 or later">
+  <a href="https://github.com/thesysdev/openui"><img src="https://img.shields.io/badge/evidence_UI-OpenUI-eeeeee?labelColor=111111" alt="Built with OpenUI"></a>
 </p>
 
 <p align="center"><strong>Find broken software your tests accept. Prove that stronger evaluations help.</strong></p>
@@ -111,7 +111,7 @@ Separate contexts do not eliminate shared-model blind spots. The specification, 
 
 ## A UI that shows the receipts
 
-React, Motion, and [OpenUI](https://github.com/thesysdev/openui) power the landing page. A component such as `MeasuredMetric("audit")` reads its numbers from the saved report. Current briefs use recorded programs and are labeled accordingly.
+React, Three.js, Motion, and [OpenUI](https://github.com/thesysdev/openui) power the landing page. A component such as `MeasuredMetric("audit")` reads its numbers from the saved report. Current briefs use recorded programs and are labeled accordingly.
 
 ![Animated landing page](docs/assets/landing-hero.png)
 
@@ -122,6 +122,8 @@ cd site
 npm ci
 npm run dev
 ```
+
+The monochrome hero uses real-time 3D geometry, studio lighting, and pointer-responsive depth. A vector fallback supports devices without WebGL.
 
 The published site is read-only. Code execution and paid API calls run in the local workspace.
 

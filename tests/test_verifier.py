@@ -119,5 +119,16 @@ class ExecutionTests(unittest.TestCase):
                 self.assertEqual(event['sha256'],digest({k:v for k,v in event.items() if k!='sha256'}))
                 previous=event['sha256']
 
+    def test_subq_only_calls_router_without_meta_generation(self):
+        routing={'order':['tenant_isolation','idempotency','validation','payload_binding','inventory'],
+                 'scores':{},'origin':'mocked router for test','note':'No network request in this test.'}
+        with tempfile.TemporaryDirectory() as tmp, patch.object(Partners,'route',return_value=routing) as route, patch.object(Partners,'attack') as attack, patch.object(Partners,'propose') as propose:
+            report=Campaign(Path(tmp)/'run',subq_only=True).run()
+            route.assert_called_once()
+            attack.assert_not_called()
+            propose.assert_not_called()
+            self.assertEqual(report['manifest']['mode'],'live Subquadratic + local proposals')
+            self.assertEqual(report['audit_after']['false_rejections'],0)
+
 
 if __name__=='__main__': unittest.main()

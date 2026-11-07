@@ -134,13 +134,14 @@ async function poll(){
 $('#run').onclick=()=>{
   $('#key-status').textContent=`META ${providers.meta?'CONFIGURED':'MISSING'} · SUBQUADRATIC ${providers.subquadratic?'CONFIGURED':'MISSING'}`;
   $('#start-live').disabled=!providers.meta||!providers.subquadratic;
+  $('#start-subq').disabled=!providers.subquadratic;
   $('#run-dialog').showModal();
 };
 async function start(mode){
   $('#run-dialog').close();$('#notice').hidden=true;
   try{const r=await fetch('api/run',{method:'POST',headers:{'Content-Type':'application/json','X-CrossExam':'local-workspace'},body:JSON.stringify({mode})});const result=await r.json();if(!r.ok)throw Error(result.error);busy=true;$('#progress').hidden=false;$('#progress-text').textContent='Probing sandbox isolation…';await poll();}catch(e){toast(e.message);}
 }
-$('#start-local').onclick=()=>start('local');$('#start-live').onclick=()=>start('live');
+$('#start-local').onclick=()=>start('local');$('#start-subq').onclick=()=>start('subq');$('#start-live').onclick=()=>start('live');
 $('#replay').onclick=async()=>{
   if(!report||replaying)return;
   replaying=true;$('#replay').disabled=true;$('#run').disabled=true;
