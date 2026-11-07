@@ -1,4 +1,4 @@
-"""Generate the requested David Castlemore / Eleven v4 narration.
+"""Generate the approved premade Brian / Eleven v4 narration.
 
 Reads ELEVENLABS_API_KEY only from the environment or gitignored .env.
 Caches the audio by script, voice and model hash to avoid duplicate charges.
@@ -21,7 +21,7 @@ if not key and Path('.env').exists():
     for line in Path('.env').read_text().splitlines():
         if line.startswith('ELEVENLABS_API_KEY='):key=line.split('=',1)[1].strip().strip('\"\'')
 if not key:raise SystemExit('Set ELEVENLABS_API_KEY in the gitignored .env file.')
-voice='XjLkpWUlnhS8i7gGz3lZ'
+voice='nPczCjzI2devNBz1zQrb'
 model='eleven_v4'
 segments=json.loads(Path('docs/assets/narration.json').read_text())['segments']
 script='\n\n'.join(segments)
@@ -65,5 +65,5 @@ for match in re.finditer(r'[^.!?\n]+[.!?]',characters):
 srt='\n'.join(captions)
 Path('recordings/demo.srt').write_text(srt)
 Path('docs/assets/demo.vtt').write_text('WEBVTT\n\n'+re.sub(r'(\d{2}:\d{2}:\d{2}),(\d{3})',r'\1.\2',srt))
-Path('docs/assets/narration-provenance.json').write_text(json.dumps({'provider':'ElevenLabs','model':model,'voice_name':'David Castlemore - Newsreader and Educator','voice_id':voice,'script_sha256':hashlib.sha256(script.encode()).hexdigest(),'raw_audio_sha256':hashlib.sha256(raw.read_bytes()).hexdigest(),'raw_seconds':duration,'playback_speed':speed,'final_seconds':total,'synthetic_narration':True},indent=2))
-print(f'David Castlemore / {model}: {total:.2f}s, {len(captions)} timed captions. Cached request {fingerprint[:12]}.')
+Path('docs/assets/narration-provenance.json').write_text(json.dumps({'provider':'ElevenLabs','model':model,'voice_name':'Brian - Deep, Resonant and Comforting','voice_id':voice,'script_sha256':hashlib.sha256(script.encode()).hexdigest(),'raw_audio_sha256':hashlib.sha256(raw.read_bytes()).hexdigest(),'raw_seconds':duration,'playback_speed':speed,'final_seconds':total,'synthetic_narration':True},indent=2))
+print(f'Brian / {model}: {total:.2f}s, {len(captions)} timed captions. Cached request {fingerprint[:12]}.')

@@ -1,0 +1,12 @@
+{
+  "file": "crossexam-demo.mp4",
+  "sha256": "67f218eba88afb9227307975ba0558776795d6abab5812a0cdb90a561861b09c",
+  "duration_seconds": 59.7,
+  "resolution": [
+    1600,
+    900
+  ],
+  "captions": "burned in and available as demo.vtt",
+  "narration": "See narration-provenance.json",
+  "capture": "Actual browser interactions; saved benchmark results, not a fresh model run during recording."
+}

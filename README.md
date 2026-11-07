@@ -140,14 +140,14 @@ npm run qa
 
 [GitHub Actions](https://github.com/KaushikSiva/crossexam/actions) tests behavior, sandbox enforcement, bounded output, promotion invariants, context separation, event hashes, and audit ordering. It also executes a complete campaign in Docker.
 
-Presentation scripts recreate figures, narration, browser recordings, and evidence exports. Audio uses a local synthetic voice and does not impersonate a person.
+Presentation scripts recreate figures, narration, browser recordings, and evidence exports. Generate the requested V4 track with `python3 scripts/elevenlabs_voice.py`; identical requests reuse the cached audio. The final narration uses ElevenLabs V4 with the premade Brian voice. Script and audio hashes are published in `docs/assets/narration-provenance.json`.
 
 ```text
 crossexam/  Sandbox, oracle, promotion engine, providers, CLI, local server
 fixtures/   Reservation service and explicit API contract
 tests/      Behavioral, containment, and evaluation-integrity checks
 web/        Local evidence workspace
-site/       React + Motion + OpenUI landing source
+site/       React + Three.js + Motion + OpenUI landing source
 docs/       Published site, figures, evidence archives, methodology
 scripts/    Export, plotting, QA, narration, and recording tools
 ```

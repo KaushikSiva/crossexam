@@ -1,0 +1,12 @@
+{
+  "provider": "ElevenLabs",
+  "model": "eleven_v4",
+  "voice_name": "Brian - Deep, Resonant and Comforting",
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "script_sha256": "fbb79ab0f4159002712eeee1b440d60221250d28ad5f3ad68e26b0453f274dd4",
+  "raw_audio_sha256": "b3df8f0cf319f24fec71b1fa1080bd5d1110defa302cfb68251a6c2e69475c85",
+  "raw_seconds": 64.32,
+  "playback_speed": 1.1186086956521737,
+  "final_seconds": 57.50000000000001,
+  "synthetic_narration": true
+}

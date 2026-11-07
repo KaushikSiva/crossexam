@@ -1,0 +1,26 @@
+"""Mux the real browser capture, narration and timed captions into a <60s film."""
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+
+raw=Path('recordings/raw/crossexam-capture.webm')
+timing=json.loads(Path('recordings/capture-timing.json').read_text())
+duration=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',str(raw)],text=True))
+prefix=max(0,duration-timing['contentDuration'])
+output=Path('docs/assets/crossexam-demo.mp4')
+style='FontName=Arial,FontSize=19,PrimaryColour=&H00FFFFFF,OutlineColour=&H00111111,BorderStyle=3,Outline=1,Shadow=0,MarginV=22'
+subprocess.run(['ffmpeg','-y','-loglevel','warning','-ss',str(prefix),'-i',str(raw),'-i','recordings/narration.wav',
+                '-map','0:v:0','-map','1:a:0','-vf',f"tpad=stop_mode=clone:stop_duration=3,subtitles=recordings/demo.srt:force_style='{style}'",
+                '-c:v','libx264','-preset','fast','-crf','20','-pix_fmt','yuv420p','-r','30',
+                '-c:a','aac','-b:a','160k','-af','apad','-movflags','+faststart','-t','59.7',str(output)],check=True)
+info=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_streams','-show_format','-of','json',str(output)],text=True))
+assert 59<=float(info['format']['duration'])<=60
+assert any(s['codec_type']=='audio' for s in info['streams'])
+assert any(s['codec_type']=='video' and s['width']==1600 and s['height']==900 for s in info['streams'])
+metadata={'file':output.name,'sha256':hashlib.sha256(output.read_bytes()).hexdigest(),
+          'duration_seconds':float(info['format']['duration']),'resolution':[1600,900],
+          'captions':'burned in and available as demo.vtt','narration':'See narration-provenance.json',
+          'capture':'Actual browser interactions; saved benchmark results, not a fresh model run during recording.'}
+Path('docs/assets/demo-provenance.json').write_text(json.dumps(metadata,indent=2))
+print(json.dumps(metadata,indent=2))

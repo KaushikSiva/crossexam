@@ -24,7 +24,7 @@ On our small synthetic benchmark, final-audit detection improves from 1/8 seeded
 
 Subquadratic is used live to prioritize contract risks from repository context. Its recorded routing call consumed 1,898 input tokens and changed the exploration order. The current measured run uses explicitly labeled local attack/test fixtures. A Meta Model API adapter for adversarial patch generation and independent test authoring is implemented; its live run is pending credited access and is not included in our measured results.
 
-The React/Motion landing page and OpenUI evidence explorer turn the report into an interactive explanation. OpenUI components read their metrics directly from recorded evidence. The Python engine has no third-party dependencies and is reproduced in Docker by GitHub Actions.
+The monochrome React/Three.js/Motion landing page and OpenUI evidence explorer turn the report into an interactive explanation. OpenUI components read their metrics directly from recorded evidence. The Python engine has no third-party dependencies and is reproduced in Docker by GitHub Actions.
 
 Primary track: Trust but Verify. Versioned evaluation improvements and rejection of regressions also address The System That Gets Better.
 
@@ -38,7 +38,7 @@ Watch page: https://kaushiksiva.github.io/crossexam/demo.html
 
 Direct MP4: https://kaushiksiva.github.io/crossexam/assets/crossexam-demo.mp4
 
-Verified video duration: 59.7 seconds. 1600×900 H.264 video, AAC narration, subtitles. The narration is synthetic.
+Verified video duration: 59.7 seconds. 1600×900 H.264 video, AAC narration, subtitles. The narration uses ElevenLabs V4 with the premade Brian voice.
 
 ## Which partner products did you use?
 
@@ -58,7 +58,7 @@ SubQ's typed decisions made risk routing simple. Clearer credit activation and b
 
 ## Judge's walkthrough
 
-1. Open the investigation: the original suite is green, but the two-request tenant leak is red.
+1. Open the investigation: the original suite passes, but the two-request tenant leak violates the contract.
 2. Show the validation curve and the rejected weaker proposal.
 3. Open the final audit: 1/8 to 7/8 detections, zero correct controls rejected, with the missed case visible.
 4. Show the real Subquadratic request/response and the information withheld from the test author.

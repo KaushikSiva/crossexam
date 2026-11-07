@@ -1,0 +1,18 @@
+{
+  "team_name": "CrossExam",
+  "team_members": [
+    {
+      "name": "Kaushik Sivakumar",
+      "handle": "kaushik07"
+    }
+  ],
+  "project_description": "CrossExam asks a question every coding-agent team should fear: can broken software still get a perfect score on our tests?\n\nIt challenges an evaluation with plausible faulty implementations, executes them in an OS sandbox, and checks their behavior against a separate contract model. A fault counts as a blind spot only when the original tests pass and an independent check reproduces the violation. CrossExam minimizes the failure into an executable counterexample.\n\nThe demo exposes a one-line cache optimization that passes every existing test but returns one customer's reservation to another. Two requests prove the bug.\n\nCrossExam then improves the evaluation itself. Each proposed suite is versioned and hashed before validation. Promotion requires additional defects caught, no lost coverage, and no incorrect rejection of correct implementations. A deliberately weakened proposal is rejected, preserving the stronger suite. A separate final audit opens only after learning ends.\n\nOn our small synthetic benchmark, final-audit detection improves from 1/8 seeded defects to 7/8, with 0/4 correct controls rejected. We publish the remaining miss, every suite version, source hashes, execution traces, and the methodology. These are results on particular seeded defects, not a claim about production accuracy.\n\nSubquadratic is used live to prioritize contract risks from repository context. Its recorded routing call consumed 1,898 input tokens and changed the exploration order. The current measured run uses explicitly labeled local attack/test fixtures. A Meta Model API adapter for adversarial patch generation and independent test authoring is implemented; its live run is pending credited access and is not included in our measured results.\n\nThe monochrome React/Three.js/Motion landing page and OpenUI evidence explorer turn the report into an interactive explanation. OpenUI components read their metrics directly from recorded evidence. The Python engine has no third-party dependencies and is reproduced in Docker by GitHub Actions.\n\nPrimary track: Trust but Verify. Versioned evaluation improvements and rejection of regressions also address The System That Gets Better.",
+  "public_github_repository": "https://github.com/KaushikSiva/crossexam",
+  "demo_video": "https://kaushiksiva.github.io/crossexam/demo.html",
+  "direct_video": "https://kaushiksiva.github.io/crossexam/assets/crossexam-demo.mp4",
+  "partner_products": [
+    "Subquadratic"
+  ],
+  "cerebral_valley_feedback": "Publish prize-stacking rules and a precise judging rubric alongside the participant guide.",
+  "partner_feedback": "SubQ's typed decisions made risk routing simple. Clearer credit activation and billing status would help teams unblock Meta testing."
+}
