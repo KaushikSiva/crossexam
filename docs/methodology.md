@@ -15,6 +15,10 @@ All seeded variants are hand-authored and public. They are withheld from model p
 
 Validation is reused across four live proposal rounds (three in fixture mode) and is therefore a development signal. The final audit is kept out of proposal generation. We publish both denominators and the missed cases, rather than presenting validation performance as final generalization.
 
+## Scenarios versus implementations
+
+The live run grows from 4 to 29 input scenarios. Each scenario is a sequence of API requests. The suite is executed against 8 faulty validation implementations and 4 correct controls; a separate final audit uses another 8 faulty implementations. Scores such as 7/8 count faulty implementations detected, not scenarios passed.
+
 ## Independence boundaries
 
 The attacker sees the contract, original implementation, and baseline scenarios. The test author receives a fresh context containing the contract, the current input scenarios, and observed counterexamples. In live mode it also receives prior aggregate validation counts, gate decisions, and its previously proposed inputs. It receives no implementation, attacker reasoning, reference-model code, validation variants, or audit variants.

@@ -34,6 +34,7 @@ The first completed **live OpenAI + Subquadratic campaign** produced the followi
 
 | Measure | Original evaluation | Promoted evaluation |
 | --- | ---: | ---: |
+| Input scenarios per implementation | 4 | **29** |
 | Final-audit seeded defects caught | 1 / 8 | **6 / 8** |
 | Correct controls rejected | 0 / 4 | **0 / 4** |
 | Validation defects caught | 1 / 8 | **7 / 8** |

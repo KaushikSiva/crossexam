@@ -175,7 +175,8 @@ function renderLearning(){
   $('#curve').innerHTML=curveSVG();
   const before=report.validation_before, after=report.validation_after;
   const rejected=report.versions.filter(v=>!v.accepted);
-  $('#promotion-panel').innerHTML=`<div class="eyebrow">VALIDATION</div><div class="big"><span data-count="${pct(after)}">${pct(after)}</span><small>%</small></div><p>${after.detected}/${after.total} defects caught<br>${after.false_rejections}/${after.controls} false rejects</p>${rejected.length?`<div class="rollback"><strong>↶ ${rejected.map(v=>'v'+v.version).join(', ')} rejected</strong><br>v${report.active_version} stays active.</div>`:''}`;
+  const activeSuite=report.versions.find(v=>v.version===report.active_version);
+  $('#promotion-panel').innerHTML=`<div class="eyebrow">VALIDATION</div><div class="big"><span data-count="${pct(after)}">${pct(after)}</span><small>%</small></div><p>${after.detected}/${after.total} faulty implementations caught<br>${activeSuite.suite.length} input scenarios<br>${after.false_rejections}/${after.controls} false rejects</p>${rejected.length?`<div class="rollback"><strong>↶ ${rejected.map(v=>'v'+v.version).join(', ')} rejected</strong><br>v${report.active_version} stays active.</div>`:''}`;
   const families=[...new Set(after.rows.filter(r=>!r.correct).map(r=>r.family))];
   $('#family-chart').innerHTML=families.map(f=>{
     const b=before.rows.filter(r=>r.family===f),a=after.rows.filter(r=>r.family===f),bn=b.filter(r=>r.detected).length,an=a.filter(r=>r.detected).length;
@@ -183,7 +184,7 @@ function renderLearning(){
   }).join('');
   const max=Math.max(...report.versions.map(v=>v.suite.length));
   $('#cost-chart').innerHTML=report.versions.map(v=>`<div class="bar-row"><span>v${v.version} · ${v.suite.length}</span><div class="bar-track"><div class="bar-new bar-fill ${v.accepted?'':'reject'}" style="width:${v.suite.length/max*100}%"></div></div><span class="bar-number">${v.validation.seconds.toFixed(2)}s</span></div>`).join('');
-  $('#version-table').innerHTML=`<div class="table-scroll"><table class="data-table"><thead><tr><th>Version</th><th>Proposal</th><th>Detection</th><th>False rejects</th><th>Decision</th><th>Suite</th></tr></thead><tbody>${report.versions.map(v=>`<tr><td class="mono">v${v.version}</td><td title="${esc(v.origin)}">${esc(v.rationale)}</td><td>${v.validation.detected}/${v.validation.total}</td><td>${v.validation.false_rejections}/${v.validation.controls}</td><td><span class="status ${v.accepted?'accepted':'rejected'}">${v.version===0?'BASELINE':v.accepted?'↑ PROMOTED':'↶ REJECTED'}</span></td><td class="mono" title="${esc(v.suite_sha256)}">${v.suite_sha256.slice(0,10)}</td></tr>`).join('')}</tbody></table></div>`;
+  $('#version-table').innerHTML=`<div class="table-scroll"><table class="data-table"><thead><tr><th>Version</th><th>Proposal</th><th>Scenarios</th><th>Faulty implementations caught</th><th>False rejects</th><th>Decision</th><th>Suite</th></tr></thead><tbody>${report.versions.map(v=>`<tr><td class="mono">v${v.version}</td><td title="${esc(v.origin)}">${esc(v.rationale)}</td><td>${v.suite.length}</td><td>${v.validation.detected}/${v.validation.total}</td><td>${v.validation.false_rejections}/${v.validation.controls}</td><td><span class="status ${v.accepted?'accepted':'rejected'}">${v.version===0?'BASELINE':v.accepted?'↑ PROMOTED':'↶ REJECTED'}</span></td><td class="mono" title="${esc(v.suite_sha256)}">${v.suite_sha256.slice(0,10)}</td></tr>`).join('')}</tbody></table></div>`;
 }
 function verdict(row){return row.correct?(row.detected?'FALSE REJECTION':'ACCEPTED'):(row.detected?'CAUGHT':'MISSED')}
 function good(row){return row.correct?!row.detected:row.detected}
