@@ -15,6 +15,14 @@ from .runner import check, minimize, runtime
 from .scenarios import baseline, strengthened, digest, validate_suite, audit_scenarios
 
 
+def promotion_decision(previous, proposed):
+    before = {r["id"] for r in previous["rows"] if r["detected"] and not r["correct"]}
+    after = {r["id"] for r in proposed["rows"] if r["detected"] and not r["correct"]}
+    accepted = proposed["false_rejections"] == 0 and before < after
+    return accepted, ("Promoted: new validation defects caught, no regressions or false rejections" if accepted
+                      else "Rejected: no strict validation gain or a correctness regression")
+
+
 class Campaign:
     def __init__(self, output, live=False, emit=None):
         self.output = Path(output)
@@ -77,6 +85,7 @@ class Campaign:
                     "created_at": datetime.now(timezone.utc).isoformat(), "commit": commit,
                     "runtime": self.backend, "contract_sha256": digest((FIXTURE / "contract.txt").read_text()),
                     "oracle_sha256": digest((ROOT / "crossexam" / "oracle.py").read_text()),
+                    "engine_sources": {p.name: digest(p.read_text()) for p in sorted((ROOT / "crossexam").glob("*.py"))},
                     "corpus_sha256": digest([asdict(v) for v in variants]),
                     "audit_input_sha256": digest(audit_scenarios()),
                     "split_counts": {s: sum(v.split == s for v in variants) for s in ("discovery", "validation", "audit", "control")}}
@@ -138,10 +147,7 @@ class Campaign:
             candidate = current + [c for c in added if digest(c["actions"]) not in seen]
             record = self.freeze(n, candidate, rationale, origin)
             score = self.measure(validation, candidate)
-            previous_caught = {r["id"] for r in current_score["rows"] if r["detected"] and not r["correct"]}
-            caught = {r["id"] for r in score["rows"] if r["detected"] and not r["correct"]}
-            accepted = not score["false_rejections"] and previous_caught < caught
-            decision = "Promoted: new validation defects caught, no regressions or false rejections" if accepted else "Rejected: no strict validation gain or a correctness regression"
+            accepted, decision = promotion_decision(current_score, score)
             if accepted:
                 current, current_score, active_version = candidate, score, n
             record.update(accepted=accepted, validation=score, active_version=active_version, decision=decision)
@@ -151,8 +157,9 @@ class Campaign:
 
         # Explicitly labeled regression challenge, not a fabricated model mistake.
         regression = self.freeze(4, base, "Regression challenge: reduce execution cost by returning to the smoke suite", "system-injected rollback demonstration")
-        regression.update(accepted=False, validation=base_score, active_version=active_version,
-                          decision="Rejected: removing checks provides no detection gain and may lose established coverage")
+        regression_accepted, regression_decision = promotion_decision(current_score, base_score)
+        regression.update(accepted=regression_accepted, validation=base_score, active_version=active_version,
+                          decision=regression_decision)
         self.versions.append(regression)
         self.event("rejection", regression["decision"], version=4, active_version=active_version,
                    detected=base_score["detected"], total=base_score["total"], false_rejections=base_score["false_rejections"])

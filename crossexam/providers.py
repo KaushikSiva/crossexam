@@ -21,7 +21,8 @@ def load_env(path):
             key, value = line.split("=", 1)
             key = key.removeprefix("export ").strip()
             if key in ("MODEL_API_KEY", "SUBQ_API_KEY", "META_MODEL", "SUBQ_MODEL"):
-                os.environ.setdefault(key, value.strip().strip("\"'"))
+                if not os.environ.get(key):
+                    os.environ[key] = value.strip().strip("\"'")
 
 
 def readiness():
