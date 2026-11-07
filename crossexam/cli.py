@@ -15,7 +15,9 @@ def main():
     parser = argparse.ArgumentParser(description="CrossExam: find broken software your evals accept")
     sub = parser.add_subparsers(dest="command", required=True)
     run = sub.add_parser("run", help="Execute a complete evaluation campaign")
-    run.add_argument("--live", action="store_true", help="Use credited Meta and Subquadratic APIs; no silent fallback")
+    mode = run.add_mutually_exclusive_group()
+    mode.add_argument("--live", action="store_true", help="Use credited Meta and Subquadratic APIs; no silent fallback")
+    mode.add_argument("--subq-only", action="store_true", help="Live Subquadratic risk routing with explicitly local attacks and proposals")
     run.add_argument("--out", type=Path)
     sub.add_parser("doctor", help="Probe sandbox boundaries and report provider readiness")
     serve = sub.add_parser("serve", help="Start the local evidence workspace")
@@ -38,10 +40,12 @@ def main():
             print(f"Sandbox: {inspection['runtime']} — all enforcement probes passed", flush=True)
             if args.live and not all(readiness().values()):
                 raise RuntimeError("Live mode needs MODEL_API_KEY and SUBQ_API_KEY with usable credits")
+            if args.subq_only and not readiness()["subquadratic"]:
+                raise RuntimeError("Subquadratic mode needs SUBQ_API_KEY with usable credits")
             out = args.out or ROOT / "runs" / datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
             def emit(e):
                 print(f"[{e['kind']}] {e['message']}", flush=True)
-            report = Campaign(out, args.live, emit).run()
+            report = Campaign(out, args.live, emit, subq_only=args.subq_only).run()
             print(f"\nAudit: {report['audit_before']['detected']}/{report['audit_before']['total']} → {report['audit_after']['detected']}/{report['audit_after']['total']} defects detected")
             print(f"Correct controls rejected: {report['audit_after']['false_rejections']}/{report['audit_after']['controls']}")
             print(f"Evidence: {out.resolve() / 'report.json'}")

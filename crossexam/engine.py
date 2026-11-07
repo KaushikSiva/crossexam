@@ -26,13 +26,14 @@ def promotion_decision(previous, proposed):
 
 
 class Campaign:
-    def __init__(self, output, live=False, emit=None):
+    def __init__(self, output, live=False, emit=None, subq_only=False):
         self.output = Path(output)
         self.output.mkdir(parents=True, exist_ok=False)
         self.live = live
+        self.use_subq = live or subq_only
         self.callback = emit or (lambda e: None)
         self.events = []
-        self.partner = Partners(self.output / "provider-calls") if live else None
+        self.partner = Partners(self.output / "provider-calls") if self.use_subq else None
         self.backend = runtime()
         self.cache = {}
         self.versions = []
@@ -83,7 +84,7 @@ class Campaign:
         base = baseline()
         current = base
         commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
-        manifest = {"schema": 1, "mode": "live partners" if self.live else "local fixtures",
+        manifest = {"schema": 1, "mode": "live partners" if self.live else "live Subquadratic + local proposals" if self.use_subq else "local fixtures",
                     "created_at": datetime.now(timezone.utc).isoformat(), "commit": commit,
                     "python_version": sys.version, "platform": platform.platform(),
                     "runtime": self.backend, "contract_sha256": digest((FIXTURE / "contract.txt").read_text()),
@@ -101,17 +102,18 @@ class Campaign:
         current_score = base_score
         active_version = 0
 
-        if self.live:
+        if self.use_subq:
             self.event("routing", "Subquadratic is prioritizing contract risks from repository context")
             routing = self.partner.route(base)
+        else:
+            routing = {"order": ["tenant_isolation", "idempotency", "payload_binding", "inventory", "validation"],
+                       "scores": {}, "origin": "fixed local order", "note": "No API calls made in this mode."}
+        if self.live:
             self.event("attack", "Meta is proposing an adversarial implementation in a separate context")
             proposed = self.partner.attack(base, routing["order"][0])
             generated = Variant("M01", proposed["title"], proposed["family"], "discovery", proposed["files"], origin="live Meta Model API")
             discovery = [generated] + discovery
             (self.output / "meta-attack.json").write_text(json.dumps(asdict(generated), indent=2))
-        else:
-            routing = {"order": ["tenant_isolation", "idempotency", "payload_binding", "inventory", "validation"],
-                       "scores": {}, "origin": "fixed local order", "note": "No API calls made in this mode."}
         self.event("routing_complete", "Risk exploration order selected", **routing)
 
         counterexamples = []

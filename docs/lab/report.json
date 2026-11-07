@@ -1,0 +1,5543 @@
+{
+  "schema": 1,
+  "manifest": {
+    "schema": 1,
+    "mode": "local fixtures",
+    "created_at": "2026-11-07T20:50:19.816281+00:00",
+    "commit": "c09a7eca9598d82ef180340c9504edfe7eb45263",
+    "python_version": "3.13.7 (main, Aug 14 2025, 11:12:11) [Clang 17.0.0 (clang-1700.0.13.3)]",
+    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "runtime": "macOS Seatbelt",
+    "contract_sha256": "382951b9677102a1e01887957480f2e9bc77b329bcdda89e0838e371e1f4bd50",
+    "oracle_sha256": "5896299208f47ea186e365edbb0f6cab9c16d7fbc8e5f9d923c816c279571a19",
+    "engine_sources": {
+      "__init__.py": "22187f3582b75d41e011844e1df37f202db456507f0a9fcab92b30c9cbb20441",
+      "__main__.py": "9c7c331028f54ff84a932c0ccdb35c8bfbe62226c411145cc6e2718824108491",
+      "benchmark.py": "03274b1e8216bdce152309784b9a6502ece9a654fec9477d1d601734058f701e",
+      "cli.py": "5b88f210b7fa60953a8458e6e8f94475d326be22ff5ff0c9001ef3f0068a5f6d",
+      "doctor.py": "03adbb4b9ee9f89c7af3e0c8b57ab98777d0edd95591aa622572a30a477605c2",
+      "engine.py": "99e91da04b0006bdb9ae3c08cec2566e196950d06f1cfca08ab684b00f520f65",
+      "oracle.py": "5896299208f47ea186e365edbb0f6cab9c16d7fbc8e5f9d923c816c279571a19",
+      "providers.py": "c9654ef3075a7cfef9e5f5a24123a819d60737612024e758398381857d5b3fbc",
+      "runner.py": "5b88b7552506569d4bc8c5437aba42a2cbe9fcfbe713f45c55688f6d1aedebaa",
+      "scenarios.py": "5693e96de19dfc83ec660d3f5ae1a004c2313645b372a05329f74c3638d2d223",
+      "server.py": "da602b90160757868e7fb68207c3882037ae6c7c3f62056cd4f093949e698268",
+      "worker.py": "c01676adcbd4057f8a8ffdfcf599575a5bcf6c57a92377249d1780e18b98c1f4"
+    },
+    "corpus_sha256": "c7da1c6ad6032512dcbea69929c955a318226e7fcee177346e7e27fb75d0e496",
+    "audit_input_sha256": "9cb1170df73d51205cc1b77ffa6be332ccf2cdbe4b4fd5ad9e3c5b6f93569781",
+    "split_counts": {
+      "discovery": 5,
+      "validation": 8,
+      "audit": 8,
+      "control": 4
+    }
+  },
+  "routing": {
+    "order": [
+      "tenant_isolation",
+      "idempotency",
+      "payload_binding",
+      "inventory",
+      "validation"
+    ],
+    "scores": {},
+    "origin": "fixed local order",
+    "note": "No API calls made in this mode."
+  },
+  "versions": [
+    {
+      "version": 0,
+      "suite": [
+        {
+          "name": "new reservation",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "release reservation",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "release",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "insufficient inventory",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 6
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-2",
+              "sku": "widget",
+              "qty": 5
+            }
+          ]
+        },
+        {
+          "name": "independent products",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "other",
+              "sku": "sensor",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "sensor"
+            }
+          ]
+        }
+      ],
+      "suite_sha256": "08f2e094428a331be9647246c7baff5c9896d95877bc7c1e7ff584d41cdebddd",
+      "rationale": "Existing happy-path tests",
+      "origin": "hand-authored baseline",
+      "accepted": true,
+      "validation": {
+        "detected": 1,
+        "total": 8,
+        "false_rejections": 0,
+        "controls": 4,
+        "seconds": 0.7815,
+        "rows": [
+          {
+            "id": "V01",
+            "title": "Case-folded tenant namespaces collide",
+            "family": "tenant_isolation",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0872,
+            "failure": null
+          },
+          {
+            "id": "V02",
+            "title": "Delimited tuple keys are ambiguous",
+            "family": "tenant_isolation",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0891,
+            "failure": null
+          },
+          {
+            "id": "V03",
+            "title": "Released reservations can be replayed as new",
+            "family": "idempotency",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.083,
+            "failure": null
+          },
+          {
+            "id": "V04",
+            "title": "Product changes under an existing key",
+            "family": "payload_binding",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0889,
+            "failure": null
+          },
+          {
+            "id": "V05",
+            "title": "Last available unit cannot be reserved",
+            "family": "inventory",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.073,
+            "failure": null
+          },
+          {
+            "id": "V06",
+            "title": "Booleans accepted as quantities",
+            "family": "validation",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.079,
+            "failure": null
+          },
+          {
+            "id": "V07",
+            "title": "Tenants share the same inventory bucket",
+            "family": "inventory",
+            "split": "validation",
+            "correct": false,
+            "detected": true,
+            "error": null,
+            "seconds": 0.0804,
+            "failure": {
+              "name": "new reservation",
+              "family": "inventory",
+              "passed": false,
+              "actions": [
+                {
+                  "op": "reserve",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "stock",
+                  "tenant": "atlas",
+                  "sku": "widget"
+                }
+              ],
+              "expected": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 8
+                }
+              ],
+              "actual": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 10
+                }
+              ]
+            }
+          },
+          {
+            "id": "V08",
+            "title": "Zero quantity accepted",
+            "family": "validation",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0408,
+            "failure": null
+          },
+          {
+            "id": "C01",
+            "title": "Reference implementation",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0418,
+            "failure": null
+          },
+          {
+            "id": "C02",
+            "title": "Equivalent response copy refactor",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0389,
+            "failure": null
+          },
+          {
+            "id": "C03",
+            "title": "Equivalent boundary expression",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0421,
+            "failure": null
+          },
+          {
+            "id": "C04",
+            "title": "Equivalent tuple construction",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0373,
+            "failure": null
+          }
+        ]
+      },
+      "active_version": 0,
+      "decision": "Baseline"
+    },
+    {
+      "version": 1,
+      "suite": [
+        {
+          "name": "new reservation",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "release reservation",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "release",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "insufficient inventory",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 6
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-2",
+              "sku": "widget",
+              "qty": 5
+            }
+          ]
+        },
+        {
+          "name": "independent products",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "other",
+              "sku": "sensor",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "sensor"
+            }
+          ]
+        },
+        {
+          "name": "same key, different customers",
+          "family": "tenant_isolation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "beacon",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "beacon",
+              "sku": "widget"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "tenant spelling is significant",
+          "family": "tenant_isolation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "Atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "Atlas",
+              "sku": "widget"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "tuple namespaces cannot collide",
+          "family": "tenant_isolation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "a:b",
+              "key": "c",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "a",
+              "key": "b:c",
+              "sku": "widget",
+              "qty": 2
+            }
+          ]
+        },
+        {
+          "name": "tenant prefixes stay separate",
+          "family": "tenant_isolation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas-east",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas-west",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas-west",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "foreign release is invisible",
+          "family": "tenant_isolation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "release",
+              "tenant": "beacon",
+              "key": "order-1"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            },
+            {
+              "op": "stock",
+              "tenant": "beacon",
+              "sku": "widget"
+            }
+          ]
+        }
+      ],
+      "suite_sha256": "446ec8bb651645dd3f92ef34cc1082ce04897a55d6c32e02afc62241ef659656",
+      "rationale": "Exercise tenant isolation",
+      "origin": "hand-authored local proposal",
+      "accepted": true,
+      "validation": {
+        "detected": 3,
+        "total": 8,
+        "false_rejections": 0,
+        "controls": 4,
+        "seconds": 0.5125,
+        "rows": [
+          {
+            "id": "V01",
+            "title": "Case-folded tenant namespaces collide",
+            "family": "tenant_isolation",
+            "split": "validation",
+            "correct": false,
+            "detected": true,
+            "error": null,
+            "seconds": 0.0437,
+            "failure": {
+              "name": "tenant spelling is significant",
+              "family": "tenant_isolation",
+              "passed": false,
+              "actions": [
+                {
+                  "op": "reserve",
+                  "tenant": "Atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "reserve",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "stock",
+                  "tenant": "Atlas",
+                  "sku": "widget"
+                },
+                {
+                  "op": "stock",
+                  "tenant": "atlas",
+                  "sku": "widget"
+                }
+              ],
+              "expected": [
+                {
+                  "status": "reserved",
+                  "tenant": "Atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 8
+                },
+                {
+                  "available": 8
+                }
+              ],
+              "actual": [
+                {
+                  "status": "reserved",
+                  "tenant": "Atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "status": "reserved",
+                  "tenant": "Atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 8
+                },
+                {
+                  "available": 10
+                }
+              ]
+            }
+          },
+          {
+            "id": "V02",
+            "title": "Delimited tuple keys are ambiguous",
+            "family": "tenant_isolation",
+            "split": "validation",
+            "correct": false,
+            "detected": true,
+            "error": null,
+            "seconds": 0.0421,
+            "failure": {
+              "name": "tuple namespaces cannot collide",
+              "family": "tenant_isolation",
+              "passed": false,
+              "actions": [
+                {
+                  "op": "reserve",
+                  "tenant": "a:b",
+                  "key": "c",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "reserve",
+                  "tenant": "a",
+                  "key": "b:c",
+                  "sku": "widget",
+                  "qty": 2
+                }
+              ],
+              "expected": [
+                {
+                  "status": "reserved",
+                  "tenant": "a:b",
+                  "key": "c",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "status": "reserved",
+                  "tenant": "a",
+                  "key": "b:c",
+                  "sku": "widget",
+                  "qty": 2
+                }
+              ],
+              "actual": [
+                {
+                  "status": "reserved",
+                  "tenant": "a:b",
+                  "key": "c",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "status": "reserved",
+                  "tenant": "a:b",
+                  "key": "c",
+                  "sku": "widget",
+                  "qty": 2
+                }
+              ]
+            }
+          },
+          {
+            "id": "V03",
+            "title": "Released reservations can be replayed as new",
+            "family": "idempotency",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0436,
+            "failure": null
+          },
+          {
+            "id": "V04",
+            "title": "Product changes under an existing key",
+            "family": "payload_binding",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0419,
+            "failure": null
+          },
+          {
+            "id": "V05",
+            "title": "Last available unit cannot be reserved",
+            "family": "inventory",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0442,
+            "failure": null
+          },
+          {
+            "id": "V06",
+            "title": "Booleans accepted as quantities",
+            "family": "validation",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0442,
+            "failure": null
+          },
+          {
+            "id": "V07",
+            "title": "Tenants share the same inventory bucket",
+            "family": "inventory",
+            "split": "validation",
+            "correct": false,
+            "detected": true,
+            "error": null,
+            "seconds": 0.0452,
+            "failure": {
+              "name": "new reservation",
+              "family": "inventory",
+              "passed": false,
+              "actions": [
+                {
+                  "op": "reserve",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "stock",
+                  "tenant": "atlas",
+                  "sku": "widget"
+                }
+              ],
+              "expected": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 8
+                }
+              ],
+              "actual": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 10
+                }
+              ]
+            }
+          },
+          {
+            "id": "V08",
+            "title": "Zero quantity accepted",
+            "family": "validation",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0436,
+            "failure": null
+          },
+          {
+            "id": "C01",
+            "title": "Reference implementation",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.043,
+            "failure": null
+          },
+          {
+            "id": "C02",
+            "title": "Equivalent response copy refactor",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0427,
+            "failure": null
+          },
+          {
+            "id": "C03",
+            "title": "Equivalent boundary expression",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0397,
+            "failure": null
+          },
+          {
+            "id": "C04",
+            "title": "Equivalent tuple construction",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0386,
+            "failure": null
+          }
+        ]
+      },
+      "active_version": 1,
+      "decision": "Promoted: new validation defects caught, no regressions or false rejections"
+    },
+    {
+      "version": 2,
+      "suite": [
+        {
+          "name": "new reservation",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "release reservation",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "release",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "insufficient inventory",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 6
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-2",
+              "sku": "widget",
+              "qty": 5
+            }
+          ]
+        },
+        {
+          "name": "independent products",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "other",
+              "sku": "sensor",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "sensor"
+            }
+          ]
+        },
+        {
+          "name": "same key, different customers",
+          "family": "tenant_isolation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "beacon",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "beacon",
+              "sku": "widget"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "tenant spelling is significant",
+          "family": "tenant_isolation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "Atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "Atlas",
+              "sku": "widget"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "tuple namespaces cannot collide",
+          "family": "tenant_isolation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "a:b",
+              "key": "c",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "a",
+              "key": "b:c",
+              "sku": "widget",
+              "qty": 2
+            }
+          ]
+        },
+        {
+          "name": "tenant prefixes stay separate",
+          "family": "tenant_isolation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas-east",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas-west",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas-west",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "foreign release is invisible",
+          "family": "tenant_isolation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "release",
+              "tenant": "beacon",
+              "key": "order-1"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            },
+            {
+              "op": "stock",
+              "tenant": "beacon",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "retry consumes no inventory",
+          "family": "idempotency",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "released keys retain their response",
+          "family": "idempotency",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "release",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "quantity cannot change under a key",
+          "family": "payload_binding",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 3
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "product cannot change under a key",
+          "family": "payload_binding",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "sensor",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "sensor"
+            }
+          ]
+        },
+        {
+          "name": "failed keys may recover",
+          "family": "idempotency",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 8
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "retry",
+              "sku": "widget",
+              "qty": 4
+            },
+            {
+              "op": "release",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "retry",
+              "sku": "widget",
+              "qty": 4
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        }
+      ],
+      "suite_sha256": "29f28cc4ef7f150f7d5b109e780885544ca025afa7104e33a942102f7e629936",
+      "rationale": "Exercise idempotency, payload binding",
+      "origin": "hand-authored local proposal",
+      "accepted": true,
+      "validation": {
+        "detected": 5,
+        "total": 8,
+        "false_rejections": 0,
+        "controls": 4,
+        "seconds": 0.5177,
+        "rows": [
+          {
+            "id": "V01",
+            "title": "Case-folded tenant namespaces collide",
+            "family": "tenant_isolation",
+            "split": "validation",
+            "correct": false,
+            "detected": true,
+            "error": null,
+            "seconds": 0.044,
+            "failure": {
+              "name": "tenant spelling is significant",
+              "family": "tenant_isolation",
+              "passed": false,
+              "actions": [
+                {
+                  "op": "reserve",
+                  "tenant": "Atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "reserve",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "stock",
+                  "tenant": "Atlas",
+                  "sku": "widget"
+                },
+                {
+                  "op": "stock",
+                  "tenant": "atlas",
+                  "sku": "widget"
+                }
+              ],
+              "expected": [
+                {
+                  "status": "reserved",
+                  "tenant": "Atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 8
+                },
+                {
+                  "available": 8
+                }
+              ],
+              "actual": [
+                {
+                  "status": "reserved",
+                  "tenant": "Atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "status": "reserved",
+                  "tenant": "Atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 8
+                },
+                {
+                  "available": 10
+                }
+              ]
+            }
+          },
+          {
+            "id": "V02",
+            "title": "Delimited tuple keys are ambiguous",
+            "family": "tenant_isolation",
+            "split": "validation",
+            "correct": false,
+            "detected": true,
+            "error": null,
+            "seconds": 0.0454,
+            "failure": {
+              "name": "tuple namespaces cannot collide",
+              "family": "tenant_isolation",
+              "passed": false,
+              "actions": [
+                {
+                  "op": "reserve",
+                  "tenant": "a:b",
+                  "key": "c",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "reserve",
+                  "tenant": "a",
+                  "key": "b:c",
+                  "sku": "widget",
+                  "qty": 2
+                }
+              ],
+              "expected": [
+                {
+                  "status": "reserved",
+                  "tenant": "a:b",
+                  "key": "c",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "status": "reserved",
+                  "tenant": "a",
+                  "key": "b:c",
+                  "sku": "widget",
+                  "qty": 2
+                }
+              ],
+              "actual": [
+                {
+                  "status": "reserved",
+                  "tenant": "a:b",
+                  "key": "c",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "status": "reserved",
+                  "tenant": "a:b",
+                  "key": "c",
+                  "sku": "widget",
+                  "qty": 2
+                }
+              ]
+            }
+          },
+          {
+            "id": "V03",
+            "title": "Released reservations can be replayed as new",
+            "family": "idempotency",
+            "split": "validation",
+            "correct": false,
+            "detected": true,
+            "error": null,
+            "seconds": 0.0439,
+            "failure": {
+              "name": "released keys retain their response",
+              "family": "idempotency",
+              "passed": false,
+              "actions": [
+                {
+                  "op": "reserve",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "release",
+                  "tenant": "atlas",
+                  "key": "order-1"
+                },
+                {
+                  "op": "reserve",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "stock",
+                  "tenant": "atlas",
+                  "sku": "widget"
+                }
+              ],
+              "expected": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "status": "released",
+                  "tenant": "atlas",
+                  "key": "order-1"
+                },
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 10
+                }
+              ],
+              "actual": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "status": "released",
+                  "tenant": "atlas",
+                  "key": "order-1"
+                },
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 8
+                }
+              ]
+            }
+          },
+          {
+            "id": "V04",
+            "title": "Product changes under an existing key",
+            "family": "payload_binding",
+            "split": "validation",
+            "correct": false,
+            "detected": true,
+            "error": null,
+            "seconds": 0.0437,
+            "failure": {
+              "name": "product cannot change under a key",
+              "family": "payload_binding",
+              "passed": false,
+              "actions": [
+                {
+                  "op": "reserve",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "reserve",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "sensor",
+                  "qty": 2
+                },
+                {
+                  "op": "stock",
+                  "tenant": "atlas",
+                  "sku": "sensor"
+                }
+              ],
+              "expected": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "error": "conflict"
+                },
+                {
+                  "available": 10
+                }
+              ],
+              "actual": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 10
+                }
+              ]
+            }
+          },
+          {
+            "id": "V05",
+            "title": "Last available unit cannot be reserved",
+            "family": "inventory",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0449,
+            "failure": null
+          },
+          {
+            "id": "V06",
+            "title": "Booleans accepted as quantities",
+            "family": "validation",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0449,
+            "failure": null
+          },
+          {
+            "id": "V07",
+            "title": "Tenants share the same inventory bucket",
+            "family": "inventory",
+            "split": "validation",
+            "correct": false,
+            "detected": true,
+            "error": null,
+            "seconds": 0.0446,
+            "failure": {
+              "name": "new reservation",
+              "family": "inventory",
+              "passed": false,
+              "actions": [
+                {
+                  "op": "reserve",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "stock",
+                  "tenant": "atlas",
+                  "sku": "widget"
+                }
+              ],
+              "expected": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 8
+                }
+              ],
+              "actual": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 10
+                }
+              ]
+            }
+          },
+          {
+            "id": "V08",
+            "title": "Zero quantity accepted",
+            "family": "validation",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0425,
+            "failure": null
+          },
+          {
+            "id": "C01",
+            "title": "Reference implementation",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0423,
+            "failure": null
+          },
+          {
+            "id": "C02",
+            "title": "Equivalent response copy refactor",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0408,
+            "failure": null
+          },
+          {
+            "id": "C03",
+            "title": "Equivalent boundary expression",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0404,
+            "failure": null
+          },
+          {
+            "id": "C04",
+            "title": "Equivalent tuple construction",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0403,
+            "failure": null
+          }
+        ]
+      },
+      "active_version": 2,
+      "decision": "Promoted: new validation defects caught, no regressions or false rejections"
+    },
+    {
+      "version": 3,
+      "suite": [
+        {
+          "name": "new reservation",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "release reservation",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "release",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "insufficient inventory",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 6
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-2",
+              "sku": "widget",
+              "qty": 5
+            }
+          ]
+        },
+        {
+          "name": "independent products",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "other",
+              "sku": "sensor",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "sensor"
+            }
+          ]
+        },
+        {
+          "name": "same key, different customers",
+          "family": "tenant_isolation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "beacon",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "beacon",
+              "sku": "widget"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "tenant spelling is significant",
+          "family": "tenant_isolation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "Atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "Atlas",
+              "sku": "widget"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "tuple namespaces cannot collide",
+          "family": "tenant_isolation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "a:b",
+              "key": "c",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "a",
+              "key": "b:c",
+              "sku": "widget",
+              "qty": 2
+            }
+          ]
+        },
+        {
+          "name": "tenant prefixes stay separate",
+          "family": "tenant_isolation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas-east",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas-west",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas-west",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "foreign release is invisible",
+          "family": "tenant_isolation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "release",
+              "tenant": "beacon",
+              "key": "order-1"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            },
+            {
+              "op": "stock",
+              "tenant": "beacon",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "retry consumes no inventory",
+          "family": "idempotency",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "released keys retain their response",
+          "family": "idempotency",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "release",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "quantity cannot change under a key",
+          "family": "payload_binding",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 3
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "product cannot change under a key",
+          "family": "payload_binding",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "sensor",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "sensor"
+            }
+          ]
+        },
+        {
+          "name": "failed keys may recover",
+          "family": "idempotency",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 8
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "retry",
+              "sku": "widget",
+              "qty": 4
+            },
+            {
+              "op": "release",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "retry",
+              "sku": "widget",
+              "qty": 4
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "release is idempotent",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "release",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "op": "release",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "last unit can be reserved",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 10
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "each tenant owns its stock",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 8
+            },
+            {
+              "op": "reserve",
+              "tenant": "beacon",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 8
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            },
+            {
+              "op": "stock",
+              "tenant": "beacon",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "release restores the original product",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "sensor",
+              "qty": 2
+            },
+            {
+              "op": "release",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "sensor"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "negative quantity is invalid",
+          "family": "validation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": -2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "zero is invalid",
+          "family": "validation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 0
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "booleans are not quantities",
+          "family": "validation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": true
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "float quantities are invalid",
+          "family": "validation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2.0
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "empty tenant is invalid",
+          "family": "validation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            }
+          ]
+        },
+        {
+          "name": "empty key is invalid",
+          "family": "validation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "",
+              "sku": "widget",
+              "qty": 2
+            }
+          ]
+        },
+        {
+          "name": "invalid retry cannot bypass validation",
+          "family": "validation",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": true
+            }
+          ]
+        }
+      ],
+      "suite_sha256": "1e9af70ce1e43bdfa9e37d43497821e9d8a1843b5b999ed560e9e4ee15a037bf",
+      "rationale": "Exercise inventory, validation",
+      "origin": "hand-authored local proposal",
+      "accepted": true,
+      "validation": {
+        "detected": 8,
+        "total": 8,
+        "false_rejections": 0,
+        "controls": 4,
+        "seconds": 0.5477,
+        "rows": [
+          {
+            "id": "V01",
+            "title": "Case-folded tenant namespaces collide",
+            "family": "tenant_isolation",
+            "split": "validation",
+            "correct": false,
+            "detected": true,
+            "error": null,
+            "seconds": 0.0456,
+            "failure": {
+              "name": "tenant spelling is significant",
+              "family": "tenant_isolation",
+              "passed": false,
+              "actions": [
+                {
+                  "op": "reserve",
+                  "tenant": "Atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "reserve",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "stock",
+                  "tenant": "Atlas",
+                  "sku": "widget"
+                },
+                {
+                  "op": "stock",
+                  "tenant": "atlas",
+                  "sku": "widget"
+                }
+              ],
+              "expected": [
+                {
+                  "status": "reserved",
+                  "tenant": "Atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 8
+                },
+                {
+                  "available": 8
+                }
+              ],
+              "actual": [
+                {
+                  "status": "reserved",
+                  "tenant": "Atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "status": "reserved",
+                  "tenant": "Atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 8
+                },
+                {
+                  "available": 10
+                }
+              ]
+            }
+          },
+          {
+            "id": "V02",
+            "title": "Delimited tuple keys are ambiguous",
+            "family": "tenant_isolation",
+            "split": "validation",
+            "correct": false,
+            "detected": true,
+            "error": null,
+            "seconds": 0.0438,
+            "failure": {
+              "name": "tuple namespaces cannot collide",
+              "family": "tenant_isolation",
+              "passed": false,
+              "actions": [
+                {
+                  "op": "reserve",
+                  "tenant": "a:b",
+                  "key": "c",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "reserve",
+                  "tenant": "a",
+                  "key": "b:c",
+                  "sku": "widget",
+                  "qty": 2
+                }
+              ],
+              "expected": [
+                {
+                  "status": "reserved",
+                  "tenant": "a:b",
+                  "key": "c",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "status": "reserved",
+                  "tenant": "a",
+                  "key": "b:c",
+                  "sku": "widget",
+                  "qty": 2
+                }
+              ],
+              "actual": [
+                {
+                  "status": "reserved",
+                  "tenant": "a:b",
+                  "key": "c",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "status": "reserved",
+                  "tenant": "a:b",
+                  "key": "c",
+                  "sku": "widget",
+                  "qty": 2
+                }
+              ]
+            }
+          },
+          {
+            "id": "V03",
+            "title": "Released reservations can be replayed as new",
+            "family": "idempotency",
+            "split": "validation",
+            "correct": false,
+            "detected": true,
+            "error": null,
+            "seconds": 0.0454,
+            "failure": {
+              "name": "released keys retain their response",
+              "family": "idempotency",
+              "passed": false,
+              "actions": [
+                {
+                  "op": "reserve",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "release",
+                  "tenant": "atlas",
+                  "key": "order-1"
+                },
+                {
+                  "op": "reserve",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "stock",
+                  "tenant": "atlas",
+                  "sku": "widget"
+                }
+              ],
+              "expected": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "status": "released",
+                  "tenant": "atlas",
+                  "key": "order-1"
+                },
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 10
+                }
+              ],
+              "actual": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "status": "released",
+                  "tenant": "atlas",
+                  "key": "order-1"
+                },
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 8
+                }
+              ]
+            }
+          },
+          {
+            "id": "V04",
+            "title": "Product changes under an existing key",
+            "family": "payload_binding",
+            "split": "validation",
+            "correct": false,
+            "detected": true,
+            "error": null,
+            "seconds": 0.0432,
+            "failure": {
+              "name": "product cannot change under a key",
+              "family": "payload_binding",
+              "passed": false,
+              "actions": [
+                {
+                  "op": "reserve",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "reserve",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "sensor",
+                  "qty": 2
+                },
+                {
+                  "op": "stock",
+                  "tenant": "atlas",
+                  "sku": "sensor"
+                }
+              ],
+              "expected": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "error": "conflict"
+                },
+                {
+                  "available": 10
+                }
+              ],
+              "actual": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 10
+                }
+              ]
+            }
+          },
+          {
+            "id": "V05",
+            "title": "Last available unit cannot be reserved",
+            "family": "inventory",
+            "split": "validation",
+            "correct": false,
+            "detected": true,
+            "error": null,
+            "seconds": 0.0443,
+            "failure": {
+              "name": "last unit can be reserved",
+              "family": "inventory",
+              "passed": false,
+              "actions": [
+                {
+                  "op": "reserve",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 10
+                },
+                {
+                  "op": "stock",
+                  "tenant": "atlas",
+                  "sku": "widget"
+                }
+              ],
+              "expected": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 10
+                },
+                {
+                  "available": 0
+                }
+              ],
+              "actual": [
+                {
+                  "error": "insufficient"
+                },
+                {
+                  "available": 10
+                }
+              ]
+            }
+          },
+          {
+            "id": "V06",
+            "title": "Booleans accepted as quantities",
+            "family": "validation",
+            "split": "validation",
+            "correct": false,
+            "detected": true,
+            "error": null,
+            "seconds": 0.0398,
+            "failure": {
+              "name": "booleans are not quantities",
+              "family": "validation",
+              "passed": false,
+              "actions": [
+                {
+                  "op": "reserve",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": true
+                },
+                {
+                  "op": "stock",
+                  "tenant": "atlas",
+                  "sku": "widget"
+                }
+              ],
+              "expected": [
+                {
+                  "error": "invalid"
+                },
+                {
+                  "available": 10
+                }
+              ],
+              "actual": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": true
+                },
+                {
+                  "available": 9
+                }
+              ]
+            }
+          },
+          {
+            "id": "V07",
+            "title": "Tenants share the same inventory bucket",
+            "family": "inventory",
+            "split": "validation",
+            "correct": false,
+            "detected": true,
+            "error": null,
+            "seconds": 0.0794,
+            "failure": {
+              "name": "new reservation",
+              "family": "inventory",
+              "passed": false,
+              "actions": [
+                {
+                  "op": "reserve",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "stock",
+                  "tenant": "atlas",
+                  "sku": "widget"
+                }
+              ],
+              "expected": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 8
+                }
+              ],
+              "actual": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 10
+                }
+              ]
+            }
+          },
+          {
+            "id": "V08",
+            "title": "Zero quantity accepted",
+            "family": "validation",
+            "split": "validation",
+            "correct": false,
+            "detected": true,
+            "error": null,
+            "seconds": 0.0417,
+            "failure": {
+              "name": "zero is invalid",
+              "family": "validation",
+              "passed": false,
+              "actions": [
+                {
+                  "op": "reserve",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 0
+                },
+                {
+                  "op": "stock",
+                  "tenant": "atlas",
+                  "sku": "widget"
+                }
+              ],
+              "expected": [
+                {
+                  "error": "invalid"
+                },
+                {
+                  "available": 10
+                }
+              ],
+              "actual": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 0
+                },
+                {
+                  "available": 10
+                }
+              ]
+            }
+          },
+          {
+            "id": "C01",
+            "title": "Reference implementation",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0416,
+            "failure": null
+          },
+          {
+            "id": "C02",
+            "title": "Equivalent response copy refactor",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.041,
+            "failure": null
+          },
+          {
+            "id": "C03",
+            "title": "Equivalent boundary expression",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0405,
+            "failure": null
+          },
+          {
+            "id": "C04",
+            "title": "Equivalent tuple construction",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0414,
+            "failure": null
+          }
+        ]
+      },
+      "active_version": 3,
+      "decision": "Promoted: new validation defects caught, no regressions or false rejections"
+    },
+    {
+      "version": 4,
+      "suite": [
+        {
+          "name": "new reservation",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "release reservation",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "release",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ]
+        },
+        {
+          "name": "insufficient inventory",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 6
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-2",
+              "sku": "widget",
+              "qty": 5
+            }
+          ]
+        },
+        {
+          "name": "independent products",
+          "family": "inventory",
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "other",
+              "sku": "sensor",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "sensor"
+            }
+          ]
+        }
+      ],
+      "suite_sha256": "08f2e094428a331be9647246c7baff5c9896d95877bc7c1e7ff584d41cdebddd",
+      "rationale": "Regression challenge: reduce execution cost by returning to the smoke suite",
+      "origin": "system-injected rollback demonstration",
+      "accepted": false,
+      "validation": {
+        "detected": 1,
+        "total": 8,
+        "false_rejections": 0,
+        "controls": 4,
+        "seconds": 0.7815,
+        "rows": [
+          {
+            "id": "V01",
+            "title": "Case-folded tenant namespaces collide",
+            "family": "tenant_isolation",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0872,
+            "failure": null
+          },
+          {
+            "id": "V02",
+            "title": "Delimited tuple keys are ambiguous",
+            "family": "tenant_isolation",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0891,
+            "failure": null
+          },
+          {
+            "id": "V03",
+            "title": "Released reservations can be replayed as new",
+            "family": "idempotency",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.083,
+            "failure": null
+          },
+          {
+            "id": "V04",
+            "title": "Product changes under an existing key",
+            "family": "payload_binding",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0889,
+            "failure": null
+          },
+          {
+            "id": "V05",
+            "title": "Last available unit cannot be reserved",
+            "family": "inventory",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.073,
+            "failure": null
+          },
+          {
+            "id": "V06",
+            "title": "Booleans accepted as quantities",
+            "family": "validation",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.079,
+            "failure": null
+          },
+          {
+            "id": "V07",
+            "title": "Tenants share the same inventory bucket",
+            "family": "inventory",
+            "split": "validation",
+            "correct": false,
+            "detected": true,
+            "error": null,
+            "seconds": 0.0804,
+            "failure": {
+              "name": "new reservation",
+              "family": "inventory",
+              "passed": false,
+              "actions": [
+                {
+                  "op": "reserve",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "op": "stock",
+                  "tenant": "atlas",
+                  "sku": "widget"
+                }
+              ],
+              "expected": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 8
+                }
+              ],
+              "actual": [
+                {
+                  "status": "reserved",
+                  "tenant": "atlas",
+                  "key": "order-1",
+                  "sku": "widget",
+                  "qty": 2
+                },
+                {
+                  "available": 10
+                }
+              ]
+            }
+          },
+          {
+            "id": "V08",
+            "title": "Zero quantity accepted",
+            "family": "validation",
+            "split": "validation",
+            "correct": false,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0408,
+            "failure": null
+          },
+          {
+            "id": "C01",
+            "title": "Reference implementation",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0418,
+            "failure": null
+          },
+          {
+            "id": "C02",
+            "title": "Equivalent response copy refactor",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0389,
+            "failure": null
+          },
+          {
+            "id": "C03",
+            "title": "Equivalent boundary expression",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0421,
+            "failure": null
+          },
+          {
+            "id": "C04",
+            "title": "Equivalent tuple construction",
+            "family": "control",
+            "split": "control",
+            "correct": true,
+            "detected": false,
+            "error": null,
+            "seconds": 0.0373,
+            "failure": null
+          }
+        ]
+      },
+      "active_version": 3,
+      "decision": "Rejected: no strict validation gain or a correctness regression"
+    }
+  ],
+  "active_version": 3,
+  "counterexamples": [
+    {
+      "id": "D01",
+      "title": "Global replay cache leaks reservations",
+      "family": "tenant_isolation",
+      "origin": "hand-authored benchmark",
+      "baseline_passed": true,
+      "baseline_checks": 4,
+      "witness": {
+        "name": "same key, different customers",
+        "family": "tenant_isolation",
+        "passed": false,
+        "actions": [
+          {
+            "op": "reserve",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 2
+          },
+          {
+            "op": "reserve",
+            "tenant": "beacon",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 2
+          }
+        ],
+        "expected": [
+          {
+            "status": "reserved",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 2
+          },
+          {
+            "status": "reserved",
+            "tenant": "beacon",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 2
+          }
+        ],
+        "actual": [
+          {
+            "status": "reserved",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 2
+          },
+          {
+            "status": "reserved",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 2
+          }
+        ]
+      },
+      "diff": "--- a/cache.py\n+++ b/cache.py\n@@ -2,7 +2,7 @@\n \n \n def cache_key(tenant, key):\n-    return (tenant, key)\n+    return key\n \n \n class ReplayCache:",
+      "source_sha256": "2892e63a424c03e37e544bcedf7e5e3c27d3c2042e22a179d264b45ca6ab99c6"
+    },
+    {
+      "id": "D02",
+      "title": "Retries consume inventory twice",
+      "family": "idempotency",
+      "origin": "hand-authored benchmark",
+      "baseline_passed": true,
+      "baseline_checks": 4,
+      "witness": {
+        "name": "retry consumes no inventory",
+        "family": "idempotency",
+        "passed": false,
+        "actions": [
+          {
+            "op": "reserve",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 2
+          },
+          {
+            "op": "reserve",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 2
+          },
+          {
+            "op": "stock",
+            "tenant": "atlas",
+            "sku": "widget"
+          }
+        ],
+        "expected": [
+          {
+            "status": "reserved",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 2
+          },
+          {
+            "status": "reserved",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 2
+          },
+          {
+            "available": 8
+          }
+        ],
+        "actual": [
+          {
+            "status": "reserved",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 2
+          },
+          {
+            "status": "reserved",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 2
+          },
+          {
+            "available": 6
+          }
+        ]
+      },
+      "diff": "--- a/service.py\n+++ b/service.py\n@@ -37,6 +37,7 @@\n         if record is not None:\n             if record[\"sku\"] != sku or record[\"qty\"] != qty:\n                 return {\"error\": \"conflict\"}\n+            self.stock[(tenant, sku)] = self.stock.get((tenant, sku), 10) - qty\n             return record[\"response\"].copy()\n         slot = (tenant, sku)\n         available = self.stock.get(slot, 10)",
+      "source_sha256": "3aec6ea4a717b31e8b09e2152eca3fd39724f1afd3b1c762fa93d7432ab229b4"
+    },
+    {
+      "id": "D03",
+      "title": "Changed payload silently reuses a key",
+      "family": "payload_binding",
+      "origin": "hand-authored benchmark",
+      "baseline_passed": true,
+      "baseline_checks": 4,
+      "witness": {
+        "name": "quantity cannot change under a key",
+        "family": "payload_binding",
+        "passed": false,
+        "actions": [
+          {
+            "op": "reserve",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 2
+          },
+          {
+            "op": "reserve",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 3
+          }
+        ],
+        "expected": [
+          {
+            "status": "reserved",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 2
+          },
+          {
+            "error": "conflict"
+          }
+        ],
+        "actual": [
+          {
+            "status": "reserved",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 2
+          },
+          {
+            "status": "reserved",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 2
+          }
+        ]
+      },
+      "diff": "--- a/service.py\n+++ b/service.py\n@@ -35,7 +35,7 @@\n             return {\"error\": \"invalid\"}\n         record = self.cache.get(tenant, key)\n         if record is not None:\n-            if record[\"sku\"] != sku or record[\"qty\"] != qty:\n+            if False:\n                 return {\"error\": \"conflict\"}\n             return record[\"response\"].copy()\n         slot = (tenant, sku)",
+      "source_sha256": "c6934b98fc0ec90f4b1393894bb8864015ef3a5a103f85156cbaf9c9a5ad7dac"
+    },
+    {
+      "id": "D04",
+      "title": "Repeated release creates inventory",
+      "family": "inventory",
+      "origin": "hand-authored benchmark",
+      "baseline_passed": true,
+      "baseline_checks": 4,
+      "witness": {
+        "name": "release is idempotent",
+        "family": "inventory",
+        "passed": false,
+        "actions": [
+          {
+            "op": "reserve",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 2
+          },
+          {
+            "op": "release",
+            "tenant": "atlas",
+            "key": "order-1"
+          },
+          {
+            "op": "release",
+            "tenant": "atlas",
+            "key": "order-1"
+          },
+          {
+            "op": "stock",
+            "tenant": "atlas",
+            "sku": "widget"
+          }
+        ],
+        "expected": [
+          {
+            "status": "reserved",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 2
+          },
+          {
+            "status": "released",
+            "tenant": "atlas",
+            "key": "order-1"
+          },
+          {
+            "status": "released",
+            "tenant": "atlas",
+            "key": "order-1"
+          },
+          {
+            "available": 10
+          }
+        ],
+        "actual": [
+          {
+            "status": "reserved",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": 2
+          },
+          {
+            "status": "released",
+            "tenant": "atlas",
+            "key": "order-1"
+          },
+          {
+            "status": "released",
+            "tenant": "atlas",
+            "key": "order-1"
+          },
+          {
+            "available": 12
+          }
+        ]
+      },
+      "diff": "--- a/service.py\n+++ b/service.py\n@@ -26,7 +26,7 @@\n             record = self.cache.get(tenant, key)\n             if record is None:\n                 return {\"error\": \"not_found\"}\n-            if not record[\"released\"]:\n+            if True:\n                 slot = (tenant, record[\"sku\"])\n                 self.stock[slot] = self.stock.get(slot, 10) + record[\"qty\"]\n                 record[\"released\"] = True",
+      "source_sha256": "22c556c3dd34b7a6e7cd4800ae34c3371e1f49c04531cb1a890a535fd1e280f7"
+    },
+    {
+      "id": "D05",
+      "title": "Negative reservations increase stock",
+      "family": "validation",
+      "origin": "hand-authored benchmark",
+      "baseline_passed": true,
+      "baseline_checks": 4,
+      "witness": {
+        "name": "negative quantity is invalid",
+        "family": "validation",
+        "passed": false,
+        "actions": [
+          {
+            "op": "reserve",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": -2
+          }
+        ],
+        "expected": [
+          {
+            "error": "invalid"
+          }
+        ],
+        "actual": [
+          {
+            "status": "reserved",
+            "tenant": "atlas",
+            "key": "order-1",
+            "sku": "widget",
+            "qty": -2
+          }
+        ]
+      },
+      "diff": "--- a/service.py\n+++ b/service.py\n@@ -31,7 +31,7 @@\n                 self.stock[slot] = self.stock.get(slot, 10) + record[\"qty\"]\n                 record[\"released\"] = True\n             return {\"status\": \"released\", \"tenant\": tenant, \"key\": key}\n-        if sku not in (\"widget\", \"sensor\") or type(qty) is not int or not 1 <= qty <= 10:\n+        if sku not in (\"widget\", \"sensor\") or type(qty) is not int or not -10 <= qty <= 10:\n             return {\"error\": \"invalid\"}\n         record = self.cache.get(tenant, key)\n         if record is not None:",
+      "source_sha256": "8fd0b1489877c4589b3d4bba17740ce889c196fb955933c3c501ae9f2a328ba5"
+    }
+  ],
+  "validation_before": {
+    "detected": 1,
+    "total": 8,
+    "false_rejections": 0,
+    "controls": 4,
+    "seconds": 0.7815,
+    "rows": [
+      {
+        "id": "V01",
+        "title": "Case-folded tenant namespaces collide",
+        "family": "tenant_isolation",
+        "split": "validation",
+        "correct": false,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0872,
+        "failure": null
+      },
+      {
+        "id": "V02",
+        "title": "Delimited tuple keys are ambiguous",
+        "family": "tenant_isolation",
+        "split": "validation",
+        "correct": false,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0891,
+        "failure": null
+      },
+      {
+        "id": "V03",
+        "title": "Released reservations can be replayed as new",
+        "family": "idempotency",
+        "split": "validation",
+        "correct": false,
+        "detected": false,
+        "error": null,
+        "seconds": 0.083,
+        "failure": null
+      },
+      {
+        "id": "V04",
+        "title": "Product changes under an existing key",
+        "family": "payload_binding",
+        "split": "validation",
+        "correct": false,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0889,
+        "failure": null
+      },
+      {
+        "id": "V05",
+        "title": "Last available unit cannot be reserved",
+        "family": "inventory",
+        "split": "validation",
+        "correct": false,
+        "detected": false,
+        "error": null,
+        "seconds": 0.073,
+        "failure": null
+      },
+      {
+        "id": "V06",
+        "title": "Booleans accepted as quantities",
+        "family": "validation",
+        "split": "validation",
+        "correct": false,
+        "detected": false,
+        "error": null,
+        "seconds": 0.079,
+        "failure": null
+      },
+      {
+        "id": "V07",
+        "title": "Tenants share the same inventory bucket",
+        "family": "inventory",
+        "split": "validation",
+        "correct": false,
+        "detected": true,
+        "error": null,
+        "seconds": 0.0804,
+        "failure": {
+          "name": "new reservation",
+          "family": "inventory",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ],
+          "expected": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "available": 8
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "available": 10
+            }
+          ]
+        }
+      },
+      {
+        "id": "V08",
+        "title": "Zero quantity accepted",
+        "family": "validation",
+        "split": "validation",
+        "correct": false,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0408,
+        "failure": null
+      },
+      {
+        "id": "C01",
+        "title": "Reference implementation",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0418,
+        "failure": null
+      },
+      {
+        "id": "C02",
+        "title": "Equivalent response copy refactor",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0389,
+        "failure": null
+      },
+      {
+        "id": "C03",
+        "title": "Equivalent boundary expression",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0421,
+        "failure": null
+      },
+      {
+        "id": "C04",
+        "title": "Equivalent tuple construction",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0373,
+        "failure": null
+      }
+    ]
+  },
+  "validation_after": {
+    "detected": 8,
+    "total": 8,
+    "false_rejections": 0,
+    "controls": 4,
+    "seconds": 0.5477,
+    "rows": [
+      {
+        "id": "V01",
+        "title": "Case-folded tenant namespaces collide",
+        "family": "tenant_isolation",
+        "split": "validation",
+        "correct": false,
+        "detected": true,
+        "error": null,
+        "seconds": 0.0456,
+        "failure": {
+          "name": "tenant spelling is significant",
+          "family": "tenant_isolation",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "Atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "Atlas",
+              "sku": "widget"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ],
+          "expected": [
+            {
+              "status": "reserved",
+              "tenant": "Atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "available": 8
+            },
+            {
+              "available": 8
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "Atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "reserved",
+              "tenant": "Atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "available": 8
+            },
+            {
+              "available": 10
+            }
+          ]
+        }
+      },
+      {
+        "id": "V02",
+        "title": "Delimited tuple keys are ambiguous",
+        "family": "tenant_isolation",
+        "split": "validation",
+        "correct": false,
+        "detected": true,
+        "error": null,
+        "seconds": 0.0438,
+        "failure": {
+          "name": "tuple namespaces cannot collide",
+          "family": "tenant_isolation",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "a:b",
+              "key": "c",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "a",
+              "key": "b:c",
+              "sku": "widget",
+              "qty": 2
+            }
+          ],
+          "expected": [
+            {
+              "status": "reserved",
+              "tenant": "a:b",
+              "key": "c",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "reserved",
+              "tenant": "a",
+              "key": "b:c",
+              "sku": "widget",
+              "qty": 2
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "a:b",
+              "key": "c",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "reserved",
+              "tenant": "a:b",
+              "key": "c",
+              "sku": "widget",
+              "qty": 2
+            }
+          ]
+        }
+      },
+      {
+        "id": "V03",
+        "title": "Released reservations can be replayed as new",
+        "family": "idempotency",
+        "split": "validation",
+        "correct": false,
+        "detected": true,
+        "error": null,
+        "seconds": 0.0454,
+        "failure": {
+          "name": "released keys retain their response",
+          "family": "idempotency",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "release",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ],
+          "expected": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "released",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "available": 10
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "released",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "available": 8
+            }
+          ]
+        }
+      },
+      {
+        "id": "V04",
+        "title": "Product changes under an existing key",
+        "family": "payload_binding",
+        "split": "validation",
+        "correct": false,
+        "detected": true,
+        "error": null,
+        "seconds": 0.0432,
+        "failure": {
+          "name": "product cannot change under a key",
+          "family": "payload_binding",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "sensor",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "sensor"
+            }
+          ],
+          "expected": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "error": "conflict"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "available": 10
+            }
+          ]
+        }
+      },
+      {
+        "id": "V05",
+        "title": "Last available unit cannot be reserved",
+        "family": "inventory",
+        "split": "validation",
+        "correct": false,
+        "detected": true,
+        "error": null,
+        "seconds": 0.0443,
+        "failure": {
+          "name": "last unit can be reserved",
+          "family": "inventory",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 10
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ],
+          "expected": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 10
+            },
+            {
+              "available": 0
+            }
+          ],
+          "actual": [
+            {
+              "error": "insufficient"
+            },
+            {
+              "available": 10
+            }
+          ]
+        }
+      },
+      {
+        "id": "V06",
+        "title": "Booleans accepted as quantities",
+        "family": "validation",
+        "split": "validation",
+        "correct": false,
+        "detected": true,
+        "error": null,
+        "seconds": 0.0398,
+        "failure": {
+          "name": "booleans are not quantities",
+          "family": "validation",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": true
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ],
+          "expected": [
+            {
+              "error": "invalid"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": true
+            },
+            {
+              "available": 9
+            }
+          ]
+        }
+      },
+      {
+        "id": "V07",
+        "title": "Tenants share the same inventory bucket",
+        "family": "inventory",
+        "split": "validation",
+        "correct": false,
+        "detected": true,
+        "error": null,
+        "seconds": 0.0794,
+        "failure": {
+          "name": "new reservation",
+          "family": "inventory",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ],
+          "expected": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "available": 8
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "available": 10
+            }
+          ]
+        }
+      },
+      {
+        "id": "V08",
+        "title": "Zero quantity accepted",
+        "family": "validation",
+        "split": "validation",
+        "correct": false,
+        "detected": true,
+        "error": null,
+        "seconds": 0.0417,
+        "failure": {
+          "name": "zero is invalid",
+          "family": "validation",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 0
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ],
+          "expected": [
+            {
+              "error": "invalid"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 0
+            },
+            {
+              "available": 10
+            }
+          ]
+        }
+      },
+      {
+        "id": "C01",
+        "title": "Reference implementation",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0416,
+        "failure": null
+      },
+      {
+        "id": "C02",
+        "title": "Equivalent response copy refactor",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.041,
+        "failure": null
+      },
+      {
+        "id": "C03",
+        "title": "Equivalent boundary expression",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0405,
+        "failure": null
+      },
+      {
+        "id": "C04",
+        "title": "Equivalent tuple construction",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0414,
+        "failure": null
+      }
+    ]
+  },
+  "audit_before": {
+    "detected": 1,
+    "total": 8,
+    "false_rejections": 0,
+    "controls": 4,
+    "seconds": 0.4942,
+    "rows": [
+      {
+        "id": "A01",
+        "title": "Tenant prefix optimization aliases organizations",
+        "family": "tenant_isolation",
+        "split": "audit",
+        "correct": false,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0404,
+        "failure": null
+      },
+      {
+        "id": "A02",
+        "title": "Replay availability check precedes idempotency",
+        "family": "idempotency",
+        "split": "audit",
+        "correct": false,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0422,
+        "failure": null
+      },
+      {
+        "id": "A03",
+        "title": "Quantity changes slip through payload binding",
+        "family": "payload_binding",
+        "split": "audit",
+        "correct": false,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0422,
+        "failure": null
+      },
+      {
+        "id": "A04",
+        "title": "Release restores only one unit",
+        "family": "inventory",
+        "split": "audit",
+        "correct": false,
+        "detected": true,
+        "error": null,
+        "seconds": 0.0421,
+        "failure": {
+          "name": "release reservation",
+          "family": "inventory",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "release",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ],
+          "expected": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "released",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "released",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "available": 9
+            }
+          ]
+        }
+      },
+      {
+        "id": "A05",
+        "title": "Integral floats pass quantity validation",
+        "family": "validation",
+        "split": "audit",
+        "correct": false,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0385,
+        "failure": null
+      },
+      {
+        "id": "A06",
+        "title": "Retry of released key consumes stock again",
+        "family": "idempotency",
+        "split": "audit",
+        "correct": false,
+        "detected": false,
+        "error": null,
+        "seconds": 0.043,
+        "failure": null
+      },
+      {
+        "id": "A07",
+        "title": "Empty tenants accepted",
+        "family": "validation",
+        "split": "audit",
+        "correct": false,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0429,
+        "failure": null
+      },
+      {
+        "id": "A08",
+        "title": "Foreign release finds another tenant's key",
+        "family": "tenant_isolation",
+        "split": "audit",
+        "correct": false,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0428,
+        "failure": null
+      },
+      {
+        "id": "C01",
+        "title": "Reference implementation",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0418,
+        "failure": null
+      },
+      {
+        "id": "C02",
+        "title": "Equivalent response copy refactor",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0389,
+        "failure": null
+      },
+      {
+        "id": "C03",
+        "title": "Equivalent boundary expression",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0421,
+        "failure": null
+      },
+      {
+        "id": "C04",
+        "title": "Equivalent tuple construction",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0373,
+        "failure": null
+      }
+    ]
+  },
+  "audit_after": {
+    "detected": 7,
+    "total": 8,
+    "false_rejections": 0,
+    "controls": 4,
+    "seconds": 0.5141,
+    "rows": [
+      {
+        "id": "A01",
+        "title": "Tenant prefix optimization aliases organizations",
+        "family": "tenant_isolation",
+        "split": "audit",
+        "correct": false,
+        "detected": true,
+        "error": null,
+        "seconds": 0.0429,
+        "failure": {
+          "name": "tenant prefixes stay separate",
+          "family": "tenant_isolation",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas-east",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas-west",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas-west",
+              "sku": "widget"
+            }
+          ],
+          "expected": [
+            {
+              "status": "reserved",
+              "tenant": "atlas-east",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "reserved",
+              "tenant": "atlas-west",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "available": 8
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "atlas-east",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "reserved",
+              "tenant": "atlas-east",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "available": 10
+            }
+          ]
+        }
+      },
+      {
+        "id": "A02",
+        "title": "Replay availability check precedes idempotency",
+        "family": "idempotency",
+        "split": "audit",
+        "correct": false,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0425,
+        "failure": null
+      },
+      {
+        "id": "A03",
+        "title": "Quantity changes slip through payload binding",
+        "family": "payload_binding",
+        "split": "audit",
+        "correct": false,
+        "detected": true,
+        "error": null,
+        "seconds": 0.0423,
+        "failure": {
+          "name": "quantity cannot change under a key",
+          "family": "payload_binding",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 3
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ],
+          "expected": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "error": "conflict"
+            },
+            {
+              "available": 8
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "available": 8
+            }
+          ]
+        }
+      },
+      {
+        "id": "A04",
+        "title": "Release restores only one unit",
+        "family": "inventory",
+        "split": "audit",
+        "correct": false,
+        "detected": true,
+        "error": null,
+        "seconds": 0.0422,
+        "failure": {
+          "name": "release reservation",
+          "family": "inventory",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "release",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ],
+          "expected": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "released",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "released",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "available": 9
+            }
+          ]
+        }
+      },
+      {
+        "id": "A05",
+        "title": "Integral floats pass quantity validation",
+        "family": "validation",
+        "split": "audit",
+        "correct": false,
+        "detected": true,
+        "error": null,
+        "seconds": 0.0449,
+        "failure": {
+          "name": "float quantities are invalid",
+          "family": "validation",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2.0
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ],
+          "expected": [
+            {
+              "error": "invalid"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2.0
+            },
+            {
+              "available": 8.0
+            }
+          ]
+        }
+      },
+      {
+        "id": "A06",
+        "title": "Retry of released key consumes stock again",
+        "family": "idempotency",
+        "split": "audit",
+        "correct": false,
+        "detected": true,
+        "error": null,
+        "seconds": 0.0455,
+        "failure": {
+          "name": "released keys retain their response",
+          "family": "idempotency",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "release",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ],
+          "expected": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "released",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "available": 10
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "released",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "available": 8
+            }
+          ]
+        }
+      },
+      {
+        "id": "A07",
+        "title": "Empty tenants accepted",
+        "family": "validation",
+        "split": "audit",
+        "correct": false,
+        "detected": true,
+        "error": null,
+        "seconds": 0.0452,
+        "failure": {
+          "name": "empty tenant is invalid",
+          "family": "validation",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            }
+          ],
+          "expected": [
+            {
+              "error": "invalid"
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            }
+          ]
+        }
+      },
+      {
+        "id": "A08",
+        "title": "Foreign release finds another tenant's key",
+        "family": "tenant_isolation",
+        "split": "audit",
+        "correct": false,
+        "detected": true,
+        "error": null,
+        "seconds": 0.0441,
+        "failure": {
+          "name": "foreign release is invisible",
+          "family": "tenant_isolation",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "release",
+              "tenant": "beacon",
+              "key": "order-1"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            },
+            {
+              "op": "stock",
+              "tenant": "beacon",
+              "sku": "widget"
+            }
+          ],
+          "expected": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "error": "not_found"
+            },
+            {
+              "available": 8
+            },
+            {
+              "available": 10
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "released",
+              "tenant": "beacon",
+              "key": "order-1"
+            },
+            {
+              "available": 8
+            },
+            {
+              "available": 12
+            }
+          ]
+        }
+      },
+      {
+        "id": "C01",
+        "title": "Reference implementation",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0416,
+        "failure": null
+      },
+      {
+        "id": "C02",
+        "title": "Equivalent response copy refactor",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.041,
+        "failure": null
+      },
+      {
+        "id": "C03",
+        "title": "Equivalent boundary expression",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0405,
+        "failure": null
+      },
+      {
+        "id": "C04",
+        "title": "Equivalent tuple construction",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0414,
+        "failure": null
+      }
+    ]
+  },
+  "fresh_input_controls": {
+    "detected": 0,
+    "total": 0,
+    "false_rejections": 0,
+    "controls": 4,
+    "seconds": 0.1779,
+    "rows": [
+      {
+        "id": "C01",
+        "title": "Reference implementation",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.044,
+        "failure": null
+      },
+      {
+        "id": "C02",
+        "title": "Equivalent response copy refactor",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0431,
+        "failure": null
+      },
+      {
+        "id": "C03",
+        "title": "Equivalent boundary expression",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0449,
+        "failure": null
+      },
+      {
+        "id": "C04",
+        "title": "Equivalent tuple construction",
+        "family": "control",
+        "split": "control",
+        "correct": true,
+        "detected": false,
+        "error": null,
+        "seconds": 0.0459,
+        "failure": null
+      }
+    ]
+  },
+  "provider_calls": [],
+  "elapsed_seconds": 2.418,
+  "limitations": [
+    "Synthetic, hand-authored benchmark; these are not real-world defect detection rates.",
+    "Held-out variants exercise familiar defect families, not wholly new classes of bugs.",
+    "Same model family can retain correlated blind spots despite separate contexts.",
+    "The specification and independent oracle remain trusted assumptions.",
+    "This prototype verifies a fixed sequential reservation API; it is not a universal repository verifier."
+  ],
+  "events": [
+    {
+      "sequence": 0,
+      "timestamp": "2026-11-07T20:50:19.839230+00:00",
+      "kind": "start",
+      "message": "Manifest sealed. Final audit is withheld from proposal generation.",
+      "data": {
+        "schema": 1,
+        "mode": "local fixtures",
+        "created_at": "2026-11-07T20:50:19.816281+00:00",
+        "commit": "c09a7eca9598d82ef180340c9504edfe7eb45263",
+        "python_version": "3.13.7 (main, Aug 14 2025, 11:12:11) [Clang 17.0.0 (clang-1700.0.13.3)]",
+        "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+        "runtime": "macOS Seatbelt",
+        "contract_sha256": "382951b9677102a1e01887957480f2e9bc77b329bcdda89e0838e371e1f4bd50",
+        "oracle_sha256": "5896299208f47ea186e365edbb0f6cab9c16d7fbc8e5f9d923c816c279571a19",
+        "engine_sources": {
+          "__init__.py": "22187f3582b75d41e011844e1df37f202db456507f0a9fcab92b30c9cbb20441",
+          "__main__.py": "9c7c331028f54ff84a932c0ccdb35c8bfbe62226c411145cc6e2718824108491",
+          "benchmark.py": "03274b1e8216bdce152309784b9a6502ece9a654fec9477d1d601734058f701e",
+          "cli.py": "5b88f210b7fa60953a8458e6e8f94475d326be22ff5ff0c9001ef3f0068a5f6d",
+          "doctor.py": "03adbb4b9ee9f89c7af3e0c8b57ab98777d0edd95591aa622572a30a477605c2",
+          "engine.py": "99e91da04b0006bdb9ae3c08cec2566e196950d06f1cfca08ab684b00f520f65",
+          "oracle.py": "5896299208f47ea186e365edbb0f6cab9c16d7fbc8e5f9d923c816c279571a19",
+          "providers.py": "c9654ef3075a7cfef9e5f5a24123a819d60737612024e758398381857d5b3fbc",
+          "runner.py": "5b88b7552506569d4bc8c5437aba42a2cbe9fcfbe713f45c55688f6d1aedebaa",
+          "scenarios.py": "5693e96de19dfc83ec660d3f5ae1a004c2313645b372a05329f74c3638d2d223",
+          "server.py": "da602b90160757868e7fb68207c3882037ae6c7c3f62056cd4f093949e698268",
+          "worker.py": "c01676adcbd4057f8a8ffdfcf599575a5bcf6c57a92377249d1780e18b98c1f4"
+        },
+        "corpus_sha256": "c7da1c6ad6032512dcbea69929c955a318226e7fcee177346e7e27fb75d0e496",
+        "audit_input_sha256": "9cb1170df73d51205cc1b77ffa6be332ccf2cdbe4b4fd5ad9e3c5b6f93569781",
+        "split_counts": {
+          "discovery": 5,
+          "validation": 8,
+          "audit": 8,
+          "control": 4
+        }
+      },
+      "previous": "0000000000000000000000000000000000000000000000000000000000000000",
+      "sha256": "de4bf5f94bc78ce36962d658a4f4fcfc1ccbd4bfd5d7b8337af308b90b25ae05"
+    },
+    {
+      "sequence": 1,
+      "timestamp": "2026-11-07T20:50:19.840062+00:00",
+      "kind": "suite_frozen",
+      "message": "Suite v0 frozen before evaluation",
+      "data": {
+        "version": 0,
+        "sha256": "08f2e094428a331be9647246c7baff5c9896d95877bc7c1e7ff584d41cdebddd",
+        "scenarios": 4
+      },
+      "previous": "de4bf5f94bc78ce36962d658a4f4fcfc1ccbd4bfd5d7b8337af308b90b25ae05",
+      "sha256": "eaa6f0e9c096ef12d14984671039ae4a8cacc7f6f9bed0eb775619fa960269df"
+    },
+    {
+      "sequence": 2,
+      "timestamp": "2026-11-07T20:50:20.051195+00:00",
+      "kind": "routing_complete",
+      "message": "Risk exploration order selected",
+      "data": {
+        "order": [
+          "tenant_isolation",
+          "idempotency",
+          "payload_binding",
+          "inventory",
+          "validation"
+        ],
+        "scores": {},
+        "origin": "fixed local order",
+        "note": "No API calls made in this mode."
+      },
+      "previous": "eaa6f0e9c096ef12d14984671039ae4a8cacc7f6f9bed0eb775619fa960269df",
+      "sha256": "cb43643922ddc1eee8e5390bae2e8064d042d2cef565fd8c66174e90520b58aa"
+    },
+    {
+      "sequence": 3,
+      "timestamp": "2026-11-07T20:50:20.494469+00:00",
+      "kind": "counterexample",
+      "message": "D01: existing tests pass; contract fails",
+      "data": {
+        "id": "D01",
+        "title": "Global replay cache leaks reservations",
+        "family": "tenant_isolation",
+        "origin": "hand-authored benchmark",
+        "baseline_passed": true,
+        "baseline_checks": 4,
+        "witness": {
+          "name": "same key, different customers",
+          "family": "tenant_isolation",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "beacon",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            }
+          ],
+          "expected": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "reserved",
+              "tenant": "beacon",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            }
+          ]
+        },
+        "diff": "--- a/cache.py\n+++ b/cache.py\n@@ -2,7 +2,7 @@\n \n \n def cache_key(tenant, key):\n-    return (tenant, key)\n+    return key\n \n \n class ReplayCache:",
+        "source_sha256": "2892e63a424c03e37e544bcedf7e5e3c27d3c2042e22a179d264b45ca6ab99c6"
+      },
+      "previous": "cb43643922ddc1eee8e5390bae2e8064d042d2cef565fd8c66174e90520b58aa",
+      "sha256": "b8bebf5af8aa7e64e847ee860941d9dac28109ab1ba9d90178cb5aeed50cf0eb"
+    },
+    {
+      "sequence": 4,
+      "timestamp": "2026-11-07T20:50:20.742519+00:00",
+      "kind": "counterexample",
+      "message": "D02: existing tests pass; contract fails",
+      "data": {
+        "id": "D02",
+        "title": "Retries consume inventory twice",
+        "family": "idempotency",
+        "origin": "hand-authored benchmark",
+        "baseline_passed": true,
+        "baseline_checks": 4,
+        "witness": {
+          "name": "retry consumes no inventory",
+          "family": "idempotency",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ],
+          "expected": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "available": 8
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "available": 6
+            }
+          ]
+        },
+        "diff": "--- a/service.py\n+++ b/service.py\n@@ -37,6 +37,7 @@\n         if record is not None:\n             if record[\"sku\"] != sku or record[\"qty\"] != qty:\n                 return {\"error\": \"conflict\"}\n+            self.stock[(tenant, sku)] = self.stock.get((tenant, sku), 10) - qty\n             return record[\"response\"].copy()\n         slot = (tenant, sku)\n         available = self.stock.get(slot, 10)",
+        "source_sha256": "3aec6ea4a717b31e8b09e2152eca3fd39724f1afd3b1c762fa93d7432ab229b4"
+      },
+      "previous": "b8bebf5af8aa7e64e847ee860941d9dac28109ab1ba9d90178cb5aeed50cf0eb",
+      "sha256": "dd2055d5ab83f72666b8f82a6bcecaf0d961db7e4b40049774dadb3d7f3e64b2"
+    },
+    {
+      "sequence": 5,
+      "timestamp": "2026-11-07T20:50:21.068989+00:00",
+      "kind": "counterexample",
+      "message": "D03: existing tests pass; contract fails",
+      "data": {
+        "id": "D03",
+        "title": "Changed payload silently reuses a key",
+        "family": "payload_binding",
+        "origin": "hand-authored benchmark",
+        "baseline_passed": true,
+        "baseline_checks": 4,
+        "witness": {
+          "name": "quantity cannot change under a key",
+          "family": "payload_binding",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 3
+            }
+          ],
+          "expected": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "error": "conflict"
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            }
+          ]
+        },
+        "diff": "--- a/service.py\n+++ b/service.py\n@@ -35,7 +35,7 @@\n             return {\"error\": \"invalid\"}\n         record = self.cache.get(tenant, key)\n         if record is not None:\n-            if record[\"sku\"] != sku or record[\"qty\"] != qty:\n+            if False:\n                 return {\"error\": \"conflict\"}\n             return record[\"response\"].copy()\n         slot = (tenant, sku)",
+        "source_sha256": "c6934b98fc0ec90f4b1393894bb8864015ef3a5a103f85156cbaf9c9a5ad7dac"
+      },
+      "previous": "dd2055d5ab83f72666b8f82a6bcecaf0d961db7e4b40049774dadb3d7f3e64b2",
+      "sha256": "b5aa70ddfee0884d906ee7e365205e261e28f6855bc6275ec5b0fafb5d6151b8"
+    },
+    {
+      "sequence": 6,
+      "timestamp": "2026-11-07T20:50:21.357730+00:00",
+      "kind": "counterexample",
+      "message": "D04: existing tests pass; contract fails",
+      "data": {
+        "id": "D04",
+        "title": "Repeated release creates inventory",
+        "family": "inventory",
+        "origin": "hand-authored benchmark",
+        "baseline_passed": true,
+        "baseline_checks": 4,
+        "witness": {
+          "name": "release is idempotent",
+          "family": "inventory",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "op": "release",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "op": "release",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "op": "stock",
+              "tenant": "atlas",
+              "sku": "widget"
+            }
+          ],
+          "expected": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "released",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "status": "released",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": 2
+            },
+            {
+              "status": "released",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "status": "released",
+              "tenant": "atlas",
+              "key": "order-1"
+            },
+            {
+              "available": 12
+            }
+          ]
+        },
+        "diff": "--- a/service.py\n+++ b/service.py\n@@ -26,7 +26,7 @@\n             record = self.cache.get(tenant, key)\n             if record is None:\n                 return {\"error\": \"not_found\"}\n-            if not record[\"released\"]:\n+            if True:\n                 slot = (tenant, record[\"sku\"])\n                 self.stock[slot] = self.stock.get(slot, 10) + record[\"qty\"]\n                 record[\"released\"] = True",
+        "source_sha256": "22c556c3dd34b7a6e7cd4800ae34c3371e1f49c04531cb1a890a535fd1e280f7"
+      },
+      "previous": "b5aa70ddfee0884d906ee7e365205e261e28f6855bc6275ec5b0fafb5d6151b8",
+      "sha256": "d0f26ced2542fda0d964096fd11c96846ad8199eed026395f3dae6a5a402f5a0"
+    },
+    {
+      "sequence": 7,
+      "timestamp": "2026-11-07T20:50:21.563326+00:00",
+      "kind": "counterexample",
+      "message": "D05: existing tests pass; contract fails",
+      "data": {
+        "id": "D05",
+        "title": "Negative reservations increase stock",
+        "family": "validation",
+        "origin": "hand-authored benchmark",
+        "baseline_passed": true,
+        "baseline_checks": 4,
+        "witness": {
+          "name": "negative quantity is invalid",
+          "family": "validation",
+          "passed": false,
+          "actions": [
+            {
+              "op": "reserve",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": -2
+            }
+          ],
+          "expected": [
+            {
+              "error": "invalid"
+            }
+          ],
+          "actual": [
+            {
+              "status": "reserved",
+              "tenant": "atlas",
+              "key": "order-1",
+              "sku": "widget",
+              "qty": -2
+            }
+          ]
+        },
+        "diff": "--- a/service.py\n+++ b/service.py\n@@ -31,7 +31,7 @@\n                 self.stock[slot] = self.stock.get(slot, 10) + record[\"qty\"]\n                 record[\"released\"] = True\n             return {\"status\": \"released\", \"tenant\": tenant, \"key\": key}\n-        if sku not in (\"widget\", \"sensor\") or type(qty) is not int or not 1 <= qty <= 10:\n+        if sku not in (\"widget\", \"sensor\") or type(qty) is not int or not -10 <= qty <= 10:\n             return {\"error\": \"invalid\"}\n         record = self.cache.get(tenant, key)\n         if record is not None:",
+        "source_sha256": "8fd0b1489877c4589b3d4bba17740ce889c196fb955933c3c501ae9f2a328ba5"
+      },
+      "previous": "d0f26ced2542fda0d964096fd11c96846ad8199eed026395f3dae6a5a402f5a0",
+      "sha256": "9a7b5a617eae0a3be0c6fa8f3f355d067ac255d5744c0c6c3c29efdb436de314"
+    },
+    {
+      "sequence": 8,
+      "timestamp": "2026-11-07T20:50:21.563687+00:00",
+      "kind": "suite_frozen",
+      "message": "Suite v1 frozen before evaluation",
+      "data": {
+        "version": 1,
+        "sha256": "446ec8bb651645dd3f92ef34cc1082ce04897a55d6c32e02afc62241ef659656",
+        "scenarios": 9
+      },
+      "previous": "9a7b5a617eae0a3be0c6fa8f3f355d067ac255d5744c0c6c3c29efdb436de314",
+      "sha256": "80e1d6fdb461f668d18d94db494d6d435a95c29958ac200a48c8230e9b031c25"
+    },
+    {
+      "sequence": 9,
+      "timestamp": "2026-11-07T20:50:21.695427+00:00",
+      "kind": "promotion",
+      "message": "Promoted: new validation defects caught, no regressions or false rejections",
+      "data": {
+        "version": 1,
+        "active_version": 1,
+        "detected": 3,
+        "total": 8,
+        "false_rejections": 0
+      },
+      "previous": "80e1d6fdb461f668d18d94db494d6d435a95c29958ac200a48c8230e9b031c25",
+      "sha256": "9dd74fb0a66c27a29d2ef984495c6a875396da87ea4a14e031cd0630da8bebf3"
+    },
+    {
+      "sequence": 10,
+      "timestamp": "2026-11-07T20:50:21.695996+00:00",
+      "kind": "suite_frozen",
+      "message": "Suite v2 frozen before evaluation",
+      "data": {
+        "version": 2,
+        "sha256": "29f28cc4ef7f150f7d5b109e780885544ca025afa7104e33a942102f7e629936",
+        "scenarios": 14
+      },
+      "previous": "9dd74fb0a66c27a29d2ef984495c6a875396da87ea4a14e031cd0630da8bebf3",
+      "sha256": "5eb97b5d8f37d22c3e80a9a51dbb779a344173096a11f91b7ba13e04a46ac672"
+    },
+    {
+      "sequence": 11,
+      "timestamp": "2026-11-07T20:50:21.829327+00:00",
+      "kind": "promotion",
+      "message": "Promoted: new validation defects caught, no regressions or false rejections",
+      "data": {
+        "version": 2,
+        "active_version": 2,
+        "detected": 5,
+        "total": 8,
+        "false_rejections": 0
+      },
+      "previous": "5eb97b5d8f37d22c3e80a9a51dbb779a344173096a11f91b7ba13e04a46ac672",
+      "sha256": "46cac6d6079d7a7382a036fdb8d36be05ccf872d2cdd98cbfa0bc92bbf90f9db"
+    },
+    {
+      "sequence": 12,
+      "timestamp": "2026-11-07T20:50:21.829998+00:00",
+      "kind": "suite_frozen",
+      "message": "Suite v3 frozen before evaluation",
+      "data": {
+        "version": 3,
+        "sha256": "1e9af70ce1e43bdfa9e37d43497821e9d8a1843b5b999ed560e9e4ee15a037bf",
+        "scenarios": 25
+      },
+      "previous": "46cac6d6079d7a7382a036fdb8d36be05ccf872d2cdd98cbfa0bc92bbf90f9db",
+      "sha256": "553bdaee74167a9cdd4c14f2fead20bb994868830a41117231c1eaaf3b8e30c8"
+    },
+    {
+      "sequence": 13,
+      "timestamp": "2026-11-07T20:50:21.998592+00:00",
+      "kind": "promotion",
+      "message": "Promoted: new validation defects caught, no regressions or false rejections",
+      "data": {
+        "version": 3,
+        "active_version": 3,
+        "detected": 8,
+        "total": 8,
+        "false_rejections": 0
+      },
+      "previous": "553bdaee74167a9cdd4c14f2fead20bb994868830a41117231c1eaaf3b8e30c8",
+      "sha256": "22b21377ecb5d06f3edbaf606f296e2f356397b1c5668f9b0d6603e49143c816"
+    },
+    {
+      "sequence": 14,
+      "timestamp": "2026-11-07T20:50:21.998946+00:00",
+      "kind": "suite_frozen",
+      "message": "Suite v4 frozen before evaluation",
+      "data": {
+        "version": 4,
+        "sha256": "08f2e094428a331be9647246c7baff5c9896d95877bc7c1e7ff584d41cdebddd",
+        "scenarios": 4
+      },
+      "previous": "22b21377ecb5d06f3edbaf606f296e2f356397b1c5668f9b0d6603e49143c816",
+      "sha256": "4b2687c9c1d5a925beec5979728cd803b6a746de6a493f1cb348c46b7a046034"
+    },
+    {
+      "sequence": 15,
+      "timestamp": "2026-11-07T20:50:21.999024+00:00",
+      "kind": "rejection",
+      "message": "Rejected: no strict validation gain or a correctness regression",
+      "data": {
+        "version": 4,
+        "active_version": 3,
+        "detected": 1,
+        "total": 8,
+        "false_rejections": 0
+      },
+      "previous": "4b2687c9c1d5a925beec5979728cd803b6a746de6a493f1cb348c46b7a046034",
+      "sha256": "1cbe9a91e4c5c777026ce583f6cf4c84350c4e33629e20287b897e6b6b62c514"
+    },
+    {
+      "sequence": 16,
+      "timestamp": "2026-11-07T20:50:21.999080+00:00",
+      "kind": "audit_opened",
+      "message": "Learning finished. Opening the final audit once; no further proposals are allowed.",
+      "data": {
+        "active_version": 3
+      },
+      "previous": "1cbe9a91e4c5c777026ce583f6cf4c84350c4e33629e20287b897e6b6b62c514",
+      "sha256": "2536e24c47d8093ba1628f957d9d93ca11b3a3debec0d2f77c5609aa8b8ab109"
+    },
+    {
+      "sequence": 17,
+      "timestamp": "2026-11-07T20:50:22.224339+00:00",
+      "kind": "complete",
+      "message": "Final audit complete. Evidence and suite versions saved.",
+      "data": {
+        "audit_detected": 7,
+        "audit_total": 8,
+        "false_rejections": 0
+      },
+      "previous": "2536e24c47d8093ba1628f957d9d93ca11b3a3debec0d2f77c5609aa8b8ab109",
+      "sha256": "dfdc541374ce960781a43a49afa20ded7c6c8f05ed8dfcece6470e5d051d8207"
+    }
+  ],
+  "event_root_sha256": "dfdc541374ce960781a43a49afa20ded7c6c8f05ed8dfcece6470e5d051d8207"
+}
