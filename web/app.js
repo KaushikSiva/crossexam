@@ -2,7 +2,7 @@ const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const label = value => value.replaceAll('_', ' ');
-const pct = score => score.total ? Math.round(100 * score.detected / score.total) : 0;
+const pct = score => score.total ? Math.round(1000 * score.detected / score.total) / 10 : 0;
 let report = null, local = false, busy = false, replaying = false, selected = 0, currentView = 'overview', providers = {};
 const titles = {overview:['The perfect-score problem.','Find the broken implementations your existing tests accept.'],learning:['The eval gets better.','Every proposed improvement must earn promotion on separate validation work.'],audit:['The unseen test.','Learning is finished. Now measure what transfers to different implementations.'],evidence:['Show your work.','Source hashes, provider usage, frozen suites, and an execution journal.']};
 

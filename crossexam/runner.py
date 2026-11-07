@@ -13,7 +13,9 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 import time
+import uuid
 
 from .oracle import evaluate
 
@@ -64,23 +66,58 @@ def execute(files, scenarios, backend=None):
         (folder / "worker.py").write_text(WORKER.read_text())
         payload = "".join(json.dumps(c["actions"], allow_nan=False) + "\n" for c in scenarios).encode()
         env = {"PATH": "/usr/bin:/bin", "HOME": str(folder), "LANG": "en_US.UTF-8", "PYTHONHASHSEED": "0"}
+        container_name = None
         if backend == "macOS Seatbelt":
             command = ["sandbox-exec", "-p", profile(folder), str(Path(sys.executable).resolve()), "-I", "-B", str(folder / "worker.py")]
         else:
-            command = ["docker", "run", "--rm", "--network=none", "--read-only", "--cap-drop=ALL",
+            container_name = "crossexam-" + uuid.uuid4().hex
+            command = ["docker", "run", "--rm", "--name", container_name, "--network=none", "--read-only", "--cap-drop=ALL",
                        "--security-opt=no-new-privileges", "--pids-limit=16", "--memory=128m", "--cpus=1",
                        "--user=65534:65534", "--ulimit=fsize=1048576:1048576", "-i",
                        "-v", f"{folder}:/app:ro", "-w", "/app", "python:3.12-slim", "python", "-I", "-B", "/app/worker.py"]
-        with (folder / "stdout").open("wb") as out, (folder / "stderr").open("wb") as err:
+        # Bounded readers avoid unbounded host memory/disk if a candidate floods
+        # stdout. No preexec_fn: campaigns may launch from multiple host threads.
+        p = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                             cwd=folder, env=env if backend == "macOS Seatbelt" else None)
+        buffers = {"stdout": bytearray(), "stderr": bytearray()}
+        overflow = threading.Event()
+
+        def read_stream(stream, name, cap):
+            while chunk := stream.read(4096):
+                remaining = cap - len(buffers[name])
+                buffers[name].extend(chunk[:max(0, remaining)])
+                if len(chunk) > remaining:
+                    overflow.set()
+                    p.kill()
+                    break
+            stream.close()
+
+        def send_inputs():
             try:
-                p = subprocess.run(command, input=payload, stdout=out, stderr=err,
-                                   cwd=folder, env=env if backend == "macOS Seatbelt" else None,
-                                   timeout=12)
-                code = p.returncode
-            except subprocess.TimeoutExpired:
-                code = -124
-        raw = (folder / "stdout").read_bytes()[:1048576]
-        stderr = (folder / "stderr").read_text(errors="replace")[:2000]
+                p.stdin.write(payload)
+                p.stdin.close()
+            except (BrokenPipeError, OSError):
+                pass
+
+        threads = [threading.Thread(target=read_stream, args=(p.stdout, "stdout", 1048576), daemon=True),
+                   threading.Thread(target=read_stream, args=(p.stderr, "stderr", 8192), daemon=True),
+                   threading.Thread(target=send_inputs, daemon=True)]
+        for thread in threads:
+            thread.start()
+        try:
+            code = p.wait(timeout=12)
+        except subprocess.TimeoutExpired:
+            p.kill()
+            p.wait(timeout=3)
+            code = -124
+        if container_name and (code != 0 or overflow.is_set()):
+            subprocess.run(["docker", "rm", "-f", container_name], capture_output=True, timeout=8)
+        for thread in threads:
+            thread.join(timeout=2)
+        if overflow.is_set():
+            code = -125
+        raw = bytes(buffers["stdout"])
+        stderr = bytes(buffers["stderr"]).decode(errors="replace")[:2000]
         if code != 0:
             return {"outputs": None, "error": f"Candidate exited {code}: {stderr}", "seconds": time.perf_counter() - started}
         try:

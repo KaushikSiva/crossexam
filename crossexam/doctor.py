@@ -31,8 +31,8 @@ class Service:
             s.settimeout(1)
             s.connect(("1.1.1.1", 53))
             results["network_blocked"] = False
-        except (PermissionError, OSError):
-            results["network_blocked"] = True
+        except OSError as exc:
+            results["network_blocked"] = exc.errno in (1, 13, 51, 65, 101, 113)
         results["credentials_absent"] = not any(os.environ.get(k) for k in ("MODEL_API_KEY", "SUBQ_API_KEY", "GH_TOKEN", "GITHUB_TOKEN"))
         return results
 '''.replace("CANARY", repr(str(canary))).replace("OUTSIDE", repr(str(Path(tmp) / "outside.txt")))

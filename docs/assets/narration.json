@@ -1,0 +1,12 @@
+{
+  "mode": "local fixtures",
+  "segments": [
+    "Meet CrossExam. It finds broken software that your tests accept, then proves whether stronger evaluations actually help.",
+    "Here, all four tests pass. But an optimization drops the tenant from the cache key. Two customers reuse the same request ID, and the second gets the first customer's reservation. CrossExam reduces the failure to two requests.",
+    "The eval improves through versioned proposals. Each suite is frozen, then challenged on separate validation defects and correct implementations. Only measured gains earn promotion. A deliberately weakened suite is rejected.",
+    "Now the final audit opens. Detection rises from 1 of 8 defects to 7 of 8, with 0 correct controls rejected. Every result, including remaining misses, is published.",
+    "This is the reproducible local benchmark. Live Meta and Subquadratic adapters are separate. Every result includes source hashes, frozen tests, and execution traces.",
+    "CrossExam. Your tests passed. Your software failed. Here is the evidence."
+  ],
+  "words": 146
+}

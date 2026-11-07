@@ -6,7 +6,9 @@ from datetime import datetime, timezone
 import difflib
 import json
 from pathlib import Path
+import platform
 import subprocess
+import sys
 import time
 
 from .benchmark import ROOT, FIXTURE, Variant, corpus, source
@@ -83,6 +85,7 @@ class Campaign:
         commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
         manifest = {"schema": 1, "mode": "live partners" if self.live else "local fixtures",
                     "created_at": datetime.now(timezone.utc).isoformat(), "commit": commit,
+                    "python_version": sys.version, "platform": platform.platform(),
                     "runtime": self.backend, "contract_sha256": digest((FIXTURE / "contract.txt").read_text()),
                     "oracle_sha256": digest((ROOT / "crossexam" / "oracle.py").read_text()),
                     "engine_sources": {p.name: digest(p.read_text()) for p in sorted((ROOT / "crossexam").glob("*.py"))},

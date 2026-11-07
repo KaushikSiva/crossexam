@@ -99,6 +99,11 @@ class ExecutionTests(unittest.TestCase):
     def test_missing_or_extra_candidate_files_rejected(self):
         with self.assertRaises(ValueError): execute({'service.py':'','cache.py':'','oracle.py':''},baseline())
 
+    def test_output_flood_is_bounded(self):
+        result=execute({'service.py':'class Service:\n def handle(self, a):\n  print("x" * 1100000)\n  return {}\n','cache.py':''},baseline())
+        self.assertIsNotNone(result['error'])
+        self.assertLess(result['seconds'],10)
+
     def test_full_campaign_orders_audit_after_learning(self):
         with tempfile.TemporaryDirectory() as tmp:
             campaign=Campaign(Path(tmp)/'run')
