@@ -9,7 +9,6 @@ import json
 import os
 from pathlib import Path
 import platform
-import resource
 import shutil
 import subprocess
 import sys
@@ -50,13 +49,6 @@ def profile(folder):
 '''
 
 
-def limits():
-    resource.setrlimit(resource.RLIMIT_CPU, (4, 4))
-    resource.setrlimit(resource.RLIMIT_FSIZE, (1048576, 1048576))
-    resource.setrlimit(resource.RLIMIT_NOFILE, (64, 64))
-    resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
-
-
 def execute(files, scenarios, backend=None):
     backend = backend or runtime()
     started = time.perf_counter()
@@ -83,7 +75,7 @@ def execute(files, scenarios, backend=None):
             try:
                 p = subprocess.run(command, input=payload, stdout=out, stderr=err,
                                    cwd=folder, env=env if backend == "macOS Seatbelt" else None,
-                                   timeout=12, preexec_fn=limits if backend == "macOS Seatbelt" else None)
+                                   timeout=12)
                 code = p.returncode
             except subprocess.TimeoutExpired:
                 code = -124

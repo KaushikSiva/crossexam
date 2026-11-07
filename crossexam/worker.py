@@ -3,6 +3,12 @@
 import json
 import sys
 from pathlib import Path
+import resource
+
+resource.setrlimit(resource.RLIMIT_CPU, (4, 4))
+resource.setrlimit(resource.RLIMIT_FSIZE, (1048576, 1048576))
+resource.setrlimit(resource.RLIMIT_NOFILE, (64, 64))
+resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
 
 sys.path.insert(0, str(Path(__file__).parent))
 from service import Service
