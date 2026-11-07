@@ -73,12 +73,12 @@ function curveSVG(){
   const x=i=>L+i*iw/(versions.length-1), y=n=>T+(100-n)*ih/100;
   let active=versions[0].validation,points=[];
   versions.forEach((v,i)=>{if(v.accepted)active=v.validation;points.push([x(i),y(pct(active)),pct(active)]);});
-  const grid=[0,25,50,75,100].map(n=>`<line x1="${L}" x2="${W-R}" y1="${y(n)}" y2="${y(n)}" stroke="#dfe3d5" stroke-dasharray="${n?'3 5':'0'}"/><text x="${L-12}" y="${y(n)+4}" text-anchor="end">${n}%</text>`).join('');
+  const grid=[0,25,50,75,100].map(n=>`<line x1="${L}" x2="${W-R}" y1="${y(n)}" y2="${y(n)}" stroke="#e1e1e1" stroke-dasharray="${n?'3 5':'0'}"/><text x="${L-12}" y="${y(n)+4}" text-anchor="end">${n}%</text>`).join('');
   const path=points.map((p,i)=>`${i?'L':'M'}${p[0]},${p[1]}`).join(' ');
   const fill=`${path} L${points.at(-1)[0]},${y(0)} L${L},${y(0)} Z`;
-  const marks=points.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="#f5f4ef" stroke="#5e7e2f" stroke-width="2.5"><title>After v${i}: ${p[2]}% of validation defects detected</title></circle><text class="value-label" x="${p[0]}" y="${p[1]-12}" text-anchor="middle">${p[2]}%</text><text x="${p[0]}" y="${H-17}" text-anchor="middle">v${i}${versions[i].accepted?'':' ×'}</text>`).join('');
-  const rejected=versions.map((v,i)=>!v.accepted?`<line x1="${x(i)}" x2="${x(i)}" y1="${points[i][1]+7}" y2="${y(pct(v.validation))-7}" stroke="#bc7667" stroke-dasharray="3 4"/><circle cx="${x(i)}" cy="${y(pct(v.validation))}" r="5" fill="#ba483a"><title>Rejected proposal v${i}: ${pct(v.validation)}%. Active suite retained.</title></circle>`:'').join('');
-  return `<svg class="chart-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Validation detection across evaluation versions">${grid}<path d="${fill}" fill="#d9e7b6" opacity=".45"/><path class="curve-path" d="${path}" fill="none" stroke="#5e7e2f" stroke-width="3"/>${marks}${rejected}</svg>`;
+  const marks=points.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="#f7f7f7" stroke="#242424" stroke-width="2.5"><title>After v${i}: ${p[2]}% of validation defects detected</title></circle><text class="value-label" x="${p[0]}" y="${p[1]-12}" text-anchor="middle">${p[2]}%</text><text x="${p[0]}" y="${H-17}" text-anchor="middle">v${i}${versions[i].accepted?'':' ×'}</text>`).join('');
+  const rejected=versions.map((v,i)=>!v.accepted?`<line x1="${x(i)}" x2="${x(i)}" y1="${points[i][1]+7}" y2="${y(pct(v.validation))-7}" stroke="#848484" stroke-dasharray="3 4"/><circle cx="${x(i)}" cy="${y(pct(v.validation))}" r="5" fill="#555555"><title>Rejected proposal v${i}: ${pct(v.validation)}%. Active suite retained.</title></circle>`:'').join('');
+  return `<svg class="chart-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Validation detection across evaluation versions">${grid}<path d="${fill}" fill="#e0e0e0" opacity=".45"/><path class="curve-path" d="${path}" fill="none" stroke="#242424" stroke-width="3"/>${marks}${rejected}</svg>`;
 }
 function renderLearning(){
   $('#curve').innerHTML=curveSVG();
@@ -111,7 +111,7 @@ function render(){
   if(!report)return;
   const modeLabel=report.manifest.mode==='live partners'?'LIVE PARTNERS':report.manifest.mode.startsWith('live Subquadratic')?'SUBQ + FIXTURES':'LOCAL FIXTURES';
   $('#mode').textContent=`${local?'Saved run':'Recorded evidence'} · ${modeLabel}`;
-  $('#footer-mode').textContent=`${report.manifest.mode==='live partners'?'Live partner run':'Local fixture run'} · ${report.elapsed_seconds}s · Synthetic benchmark`;
+  $('#footer-mode').textContent=`${report.manifest.mode==='live partners'?'Live partner run':report.manifest.mode.startsWith('live Subquadratic')?'Live Subquadratic + local fixtures':'Local fixture run'} · ${report.elapsed_seconds}s · Synthetic benchmark`;
   renderStats();renderCases();renderLearning();renderAudit();renderEvidence();
   if(!local){$('#run').innerHTML='Run locally <span>↗</span>';$('#run').onclick=()=>window.open('https://github.com/KaushikSiva/crossexam#quick-start','_blank','noopener');}
 }

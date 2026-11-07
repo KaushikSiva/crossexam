@@ -109,7 +109,8 @@ function renderEvidence(){
 }
 function render(){
   if(!report)return;
-  $('#mode').textContent=`${local?'Saved run':'Recorded evidence'} · ${report.manifest.mode}`;
+  const modeLabel=report.manifest.mode==='live partners'?'LIVE PARTNERS':report.manifest.mode.startsWith('live Subquadratic')?'SUBQ + FIXTURES':'LOCAL FIXTURES';
+  $('#mode').textContent=`${local?'Saved run':'Recorded evidence'} · ${modeLabel}`;
   $('#footer-mode').textContent=`${report.manifest.mode==='live partners'?'Live partner run':'Local fixture run'} · ${report.elapsed_seconds}s · Synthetic benchmark`;
   renderStats();renderCases();renderLearning();renderAudit();renderEvidence();
   if(!local){$('#run').innerHTML='Run locally <span>↗</span>';$('#run').onclick=()=>window.open('https://github.com/KaushikSiva/crossexam#quick-start','_blank','noopener');}

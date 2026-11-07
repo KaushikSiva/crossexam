@@ -20,9 +20,9 @@ parser.add_argument("--out", type=Path, default=Path("docs/assets"))
 args = parser.parse_args()
 r = json.loads(args.report.read_text())
 args.out.mkdir(parents=True, exist_ok=True)
-PAPER, INK, MUTED, GREEN, RED = "#f5f4ef", "#1b211e", "#7d8673", "#678a36", "#ba483a"
+PAPER, INK, MUTED, GREEN, RED = "#f7f7f7", "#171717", "#838383", "#252525", "#555555"
 plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 11, "axes.spines.top": False,
-                     "axes.spines.right": False, "axes.edgecolor": "#cbd2bf", "axes.labelcolor": INK,
+                     "axes.spines.right": False, "axes.edgecolor": "#cfcfcf", "axes.labelcolor": INK,
                      "text.color": INK, "xtick.color": MUTED, "ytick.color": MUTED,
                      "figure.facecolor": PAPER, "axes.facecolor": PAPER, "savefig.facecolor": PAPER})
 
@@ -63,7 +63,7 @@ fig.subplots_adjust(left=.09,right=.95,top=.79,bottom=.2,wspace=.45)
 fig.suptitle("The final audit: different code, frozen evaluation.",x=.07,ha="left",fontsize=19,fontweight="bold")
 before,after=r["audit_before"],r["audit_after"]
 values=[before["detected"],after["detected"]]
-bars=axes[0].bar([0,1],values,color=["#b9c2ab",GREEN],width=.53)
+bars=axes[0].bar([0,1],values,color=["#bebebe",GREEN],width=.53)
 axes[0].set_xticks([0,1],["Original suite",f"Promoted v{r['active_version']}"])
 axes[0].set_ylim(0,after["total"]+1.5);axes[0].set_ylabel("Audit defects detected");axes[0].set_yticks(range(0,after["total"]+1,2))
 for b,v in zip(bars,values): axes[0].text(b.get_x()+b.get_width()/2,v+.25,f"{v}/{after['total']}",ha="center",fontsize=17,fontweight="bold")
@@ -77,7 +77,7 @@ rows=[row for row in r["validation_after"]["rows"] if not row["correct"]]
 matrix=np.array([[int(next(vr for vr in v["validation"]["rows"] if vr["id"]==row["id"])["detected"]) for v in versions] for row in rows])
 fig,ax=plt.subplots(figsize=(11,5.8));fig.subplots_adjust(left=.38,right=.94,top=.82,bottom=.16)
 fig.suptitle("Which blind spots disappear?",x=.07,ha="left",fontsize=20,fontweight="bold")
-ax.imshow(matrix,cmap=ListedColormap(["#e7e7dc",GREEN]),vmin=0,vmax=1,aspect="auto")
+ax.imshow(matrix,cmap=ListedColormap(["#e6e6e6",GREEN]),vmin=0,vmax=1,aspect="auto")
 ax.set_xticks(range(len(versions)),[f"v{v['version']}"+ (" · rejected" if not v["accepted"] else "") for v in versions],fontsize=9)
 ax.set_yticks(range(len(rows)),[row["title"] for row in rows],fontsize=9)
 for i in range(len(rows)):
@@ -99,7 +99,7 @@ if r["provider_calls"]:
     fig,ax=plt.subplots(figsize=(11,5.3));fig.subplots_adjust(left=.1,right=.94,top=.8,bottom=.3)
     fig.suptitle("What the live model calls actually consumed.",x=.07,ha="left",fontsize=19,fontweight="bold")
     counts=[c["usage"].get("input_tokens",c["usage"].get("prompt_tokens",0)) for c in calls]
-    ax.bar(range(len(calls)),counts,color=[GREEN if c["provider"]=="subquadratic" else "#a1ae8c" for c in calls])
+    ax.bar(range(len(calls)),counts,color=[GREEN if c["provider"]=="subquadratic" else "#a9a9a9" for c in calls])
     ax.set_xticks(range(len(calls)),[c["purpose"].replace("-","\n") for c in calls],fontsize=8)
     ax.set_ylabel("Reported input tokens")
     finish(fig,"provider-usage","Usage comes from provider API responses. These are token counts, not a dollar-cost estimate.")

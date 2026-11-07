@@ -1,16 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="800" viewBox="0 0 1600 800">
-<rect width="1600" height="800" fill="#171d19"/>
-<g stroke="#2c3926" stroke-width="1"><path d="M0 670H1600M1040 0V800"/><path d="M1100 120L1480 500M1480 120L1100 500" stroke-width="95"/></g>
-<path d="M70 67l28 28m0-28L70 95" stroke="#d9fa77" stroke-width="8"/>
-<text x="120" y="89" fill="#9dab92" font-family="monospace" font-size="17" letter-spacing="3">ADVERSARIAL EVALS FOR CODING AGENTS</text>
-<text x="65" y="257" fill="#f5f4ef" font-family="Arial, sans-serif" font-size="128" font-weight="bold" letter-spacing="-8">CrossExam</text>
-<text x="74" y="356" fill="#f5f4ef" font-family="Arial, sans-serif" font-size="51" letter-spacing="-2">Your tests passed.</text>
-<text x="74" y="425" fill="#d9fa77" font-family="Arial, sans-serif" font-size="51" letter-spacing="-2">Your software failed.</text>
-<text x="75" y="502" fill="#a4b09b" font-family="Arial, sans-serif" font-size="23">Find the counterexample. Improve the evaluation.</text>
-<text x="75" y="538" fill="#a4b09b" font-family="Arial, sans-serif" font-size="23">Prove the improvement on different implementations.</text>
-<text x="1100" y="570" fill="#f5f4ef" font-family="Arial, sans-serif" font-size="62" font-weight="bold">1/8 → 7/8</text>
-<text x="1100" y="610" fill="#9dab92" font-family="monospace" font-size="15">FINAL AUDIT DEFECTS CAUGHT</text>
-<text x="75" y="725" fill="#d9fa77" font-family="monospace" font-size="16">ATTACK → REPRODUCE → IMPROVE → AUDIT</text>
-<text x="75" y="760" fill="#84947a" font-family="monospace" font-size="13">LIVE SUBQUADRATIC + LOCAL PROPOSALS · SYNTHETIC BENCHMARK · ALL RESULTS PUBLISHED</text>
-<text x="1100" y="725" fill="#a4b09b" font-family="monospace" font-size="15">github.com/KaushikSiva/crossexam</text>
+<rect width="1600" height="800" fill="#111111"/>
+<g stroke="#353535" stroke-width="1"><path d="M0 670H1600M1040 0V800"/><path d="M1100 120L1480 500M1480 120L1100 500" stroke-width="95"/></g>
+<path d="M70 67l28 28m0-28L70 95" stroke="#f5f5f5" stroke-width="8"/>
+<text x="120" y="89" fill="#a6a6a6" font-family="monospace" font-size="17" letter-spacing="3">ADVERSARIAL EVALS FOR CODING AGENTS</text>
+<text x="65" y="257" fill="#f7f7f7" font-family="Arial, sans-serif" font-size="128" font-weight="bold" letter-spacing="-8">CrossExam</text>
+<text x="74" y="356" fill="#f7f7f7" font-family="Arial, sans-serif" font-size="51" letter-spacing="-2">Your tests passed.</text>
+<text x="74" y="425" fill="#f5f5f5" font-family="Arial, sans-serif" font-size="51" letter-spacing="-2">Your software failed.</text>
+<text x="75" y="502" fill="#acacac" font-family="Arial, sans-serif" font-size="23">Find the counterexample. Improve the evaluation.</text>
+<text x="75" y="538" fill="#acacac" font-family="Arial, sans-serif" font-size="23">Prove the improvement on different implementations.</text>
+<text x="1100" y="570" fill="#f7f7f7" font-family="Arial, sans-serif" font-size="62" font-weight="bold">1/8 → 7/8</text>
+<text x="1100" y="610" fill="#a6a6a6" font-family="monospace" font-size="15">FINAL AUDIT DEFECTS CAUGHT</text>
+<text x="75" y="725" fill="#f5f5f5" font-family="monospace" font-size="16">ATTACK → REPRODUCE → IMPROVE → AUDIT</text>
+<text x="75" y="760" fill="#8f8f8f" font-family="monospace" font-size="13">LIVE SUBQUADRATIC + LOCAL PROPOSALS · SYNTHETIC BENCHMARK · ALL RESULTS PUBLISHED</text>
+<text x="1100" y="725" fill="#acacac" font-family="monospace" font-size="15">github.com/KaushikSiva/crossexam</text>
 </svg>

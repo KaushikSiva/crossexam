@@ -8,7 +8,7 @@ const browser=await chromium.launch({headless:true});
 const context=await browser.newContext({viewport:{width:1600,height:900},deviceScaleFactor:1,recordVideo:{dir:'recordings/raw',size:{width:1600,height:900}}});
 const page=await context.newPage();
 const banner=await fs.readFile('docs/assets/banner.svg','utf8');
-const title=`<!doctype html><html><body style="margin:0;background:#171d19;display:flex;align-items:center;justify-content:center;height:100vh">${banner.replace('height="800"','height="800" style="width:100%;height:auto"')}</body></html>`;
+const title=`<!doctype html><html><body style="margin:0;background:#111111;display:flex;align-items:center;justify-content:center;height:100vh">${banner.replace('height="800"','height="800" style="width:100%;height:auto"')}</body></html>`;
 const site=process.env.CROSSEXAM_SITE_URL||'http://127.0.0.1:5178/';
 await page.goto(site,{waitUntil:'networkidle'});
 const started=Date.now();let deadline=0;
