@@ -1,0 +1,34 @@
+RELAY RESERVATIONS — API CONTRACT v1
+
+Each scenario starts with a new service. Each (tenant, sku) has 10 units.
+Tenants are nonempty strings; skus are "widget" or "sensor".
+Keys are nonempty strings. Quantity is an integer from 1 through 10 inclusive;
+booleans, strings, zero, negative values, and floats are invalid.
+Unknown operations, missing required fields, or invalid values return
+{"error": "invalid"} without changing state.
+
+reserve: {"op":"reserve", "tenant":str, "key":str, "sku":str, "qty":int}
+  Validate all fields first. Idempotency is scoped to the exact (tenant, key)
+  tuple, with no case folding, truncation, or ambiguous string concatenation.
+  If the key already succeeded with identical sku and qty, return the original
+  response, including after release, without consuming any more stock.
+  If the key already succeeded with different sku or qty, return
+  {"error":"conflict"}, without changing state.
+  If available stock is below qty, return {"error":"insufficient"}.
+  A failed reservation must not occupy the key: it may be retried later.
+  Otherwise subtract qty and return
+  {"status":"reserved", "tenant":tenant, "key":key, "sku":sku, "qty":qty}.
+
+release: {"op":"release", "tenant":str, "key":str}
+  If this exact tenant/key has no successful reservation, return
+  {"error":"not_found"}. Other tenants' reservations must remain invisible.
+  On first release restore the original reserved quantity to its original sku.
+  Return {"status":"released", "tenant":tenant, "key":key}.
+  Repeated releases return the same response without restoring stock again.
+
+stock: {"op":"stock", "tenant":str, "sku":str}
+  Return {"available":integer} for this exact tenant/sku.
+
+The service exposes Service().handle(action_dict) -> response_dict.
+Extra fields are ignored. Scenarios are sequential; concurrency and persistence
+are outside this version's contract. Ordering of object keys is irrelevant.
