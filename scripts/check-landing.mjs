@@ -31,7 +31,7 @@ await page.getByRole('button',{name:/Watch the one-minute film/}).click();
 await page.waitForFunction(()=>document.querySelector('video')?.readyState>=2);
 const duration=await page.locator('video').evaluate(v=>v.duration);
 assert.ok(duration<=60&&duration>=50);
-await page.keyboard.press('Escape');assert.equal(await page.locator('video').count(),0);
+await page.keyboard.press('Escape');await page.waitForSelector('video',{state:'detached'});
 await page.setViewportSize({width:390,height:844});
 await page.goto(process.env.CROSSEXAM_SITE_URL||'http://127.0.0.1:5178/',{waitUntil:'networkidle'});
 await page.waitForTimeout(1300);
