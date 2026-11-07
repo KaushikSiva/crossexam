@@ -106,4 +106,36 @@ if r["provider_calls"]:
     ax.set_ylabel("Reported input tokens")
     finish(fig,"provider-usage","Usage comes from provider API responses. These are token counts, not a dollar-cost estimate.")
 
+# A compact README figure: connecting lines join measured checkpoints only.
+active = versions[0]
+counts, scenarios = [], []
+for v in versions:
+    if v["accepted"]:
+        active = v
+    counts.append(active["validation"]["detected"])
+    scenarios.append(len(active["suite"]))
+x = list(range(len(versions)))
+fig, axes = plt.subplots(1, 2, figsize=(12, 5.4))
+fig.subplots_adjust(left=.08, right=.95, top=.73, bottom=.25, wspace=.31)
+fig.text(.07, .93, "CrossExam gets better at finding broken code.", fontsize=22, weight="bold", color=INK)
+fig.text(.07, .86, f"One recorded {r['manifest']['mode'].removeprefix('live ')} run. Each dot is a frozen evaluation version.", fontsize=11, color=MUTED)
+for ax, values, title, ylabel, ceiling in zip(axes, [counts, scenarios],
+        ["Faulty implementations caught", "Input scenarios in the active suite"],
+        [f"Validation detections / {r['validation_after']['total']}", "Scenario count"],
+        [r["validation_after"]["total"] + .6, max(scenarios) * 1.2]):
+    ax.plot(x, values, color=INK, linewidth=2.7, marker="o", markersize=7, zorder=3)
+    ax.fill_between(x, values, color=INK, alpha=.055)
+    for i, value in enumerate(values):
+        ax.annotate(str(value), (i, value), xytext=(0, 11), textcoords="offset points", ha="center", weight="bold", fontsize=12)
+    ax.set_title(title, loc="left", fontsize=12, pad=20)
+    ax.set_xticks(x, [f"v{v['version']}" for v in versions])
+    ax.set_ylim(0, ceiling)
+    ax.set_xlim(-.25, len(x)-.75)
+    ax.set_ylabel(ylabel)
+    ax.grid(axis="y", alpha=.14)
+    ax.set_axisbelow(True)
+axes[0].set_yticks(range(0, r["validation_after"]["total"] + 1, 2))
+fig.text(.07, .115, f"FINAL AUDIT   {before['detected']}/{before['total']} → {after['detected']}/{after['total']} caught     ·     {after['false_rejections']}/{after['controls']} correct controls rejected", fontsize=12, weight="bold")
+finish(fig, "improvement-curve", "Public synthetic benchmark. Lines connect measured checkpoints; final audit is measured only before and after learning.")
+
 print(f"Rendered measured figures to {args.out}")

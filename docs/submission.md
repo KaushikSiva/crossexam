@@ -1,35 +1,31 @@
 # CrossExam submission
 
-**Team:** CrossExam
+**Team name:** CrossExam
 
-**Member:** Kaushik Sivakumar (`kaushik07`)
+**Team member:** Kaushik Sivakumar (`kaushik07`)
 
-**Project description** (2336/3,000 characters)
+**Project description** (1584/3,000 characters)
 
-CrossExam asks a question every coding-agent team should fear: can broken software still get a perfect score on our tests?
+Your coding agent says the patch is ready. Every test is green. What did the tests miss?
 
-It puts evaluations on trial. An attacker proposes a faulty implementation. An OS sandbox runs it against an independent contract model. A fault only counts when the original tests pass and an executable counterexample proves the violation.
+CrossExam tries to answer that before the code ships. In our demo, OpenAI writes an inventory optimization that passes all four existing tests. But reserving two units for one customer also reduces another customer's stock. CrossExam proves the bug with just two requests.
 
-In our live demo, OpenAI generates an inventory optimization that passes all four existing tests. But reserving two units for one customer also reduces another customer's stock. CrossExam proves it with two requests.
+It then asks a fresh model session to write better tests without showing it the faulty code. Every proposed suite is saved before evaluation. It only earns promotion if it catches more faulty implementations, preserves previous detections, and keeps correct code passing. A separate executable contract model decides whether the behavior is right.
 
-A fresh model context then writes input-only tests from the contract and observed failures. It cannot see the implementation, attacker reasoning, oracle, or held-out variants. The oracle supplies expected outcomes. Each proposal is frozen and hashed before evaluation. Promotion requires additional validation detections, no lost coverage, and no false rejection of correct code. Prior aggregate feedback guides the next proposal.
+In one 25-second live run, the suite grew from 4 to 29 test scenarios. Validation detection improved from 1/8 to 7/8 faulty implementations. A separate final audit improved from 1/8 to 6/8, while all four correct implementations passed. Two bugs were still missed, and we publish them. This is a small, public synthetic benchmark; the audit implementations stay out of model prompts.
 
-One real 25-second campaign improved validation detection from 1 to 4 to 5 to 6 to 7 of 8 defects across four model-generated proposals. All four earned promotion; no rejection was staged. A separate final audit improved from 1/8 to 6/8, with 0/4 correct controls rejected. Both misses are published. This public synthetic corpus is withheld from model prompts, not previously unseen by the authors; these are not production accuracy claims.
+Subquadratic helps choose where to look. OpenAI generates the faulty patch and new tests. OpenUI lets you inspect the results, and candidate code runs in an OS sandbox. The repo includes the improvement curves, every model call, frozen test suites, and runnable counterexamples.
 
-Subquadratic's SubQ Snap 1.1 is used live to prioritize risks from the contract, repository, and tests. OpenAI GPT-5.4 mini generates the faulty patch and independent test proposals. Five OpenAI calls used about $0.034 at published token rates, excluding Subquadratic and narration. Every request, response, suite, hash, and decision is archived. Meta's optional adapter remains available but is not claimed as a successful integration.
+CrossExam improves the evaluation itself, so passing tests come with evidence you can inspect. Built for Trust but Verify, with versioned evaluation improvements also addressing The System That Gets Better.
 
-A monochrome React/Three.js/Motion landing page and OpenUI evidence explorer make the results inspectable. OpenUI reads metrics directly from the report. The dependency-free Python engine enforces sandbox boundaries and runs in Docker CI. Its gate also has explicit tests for no-gain proposals, lost coverage, and false rejections.
+**Public GitHub repository:** https://github.com/KaushikSiva/crossexam
 
-Primary track: Trust but Verify. The versioned evaluation loop also addresses The System That Gets Better.
+**One-minute demo video:** https://kaushiksiva.github.io/crossexam/demo.html
 
-**Public GitHub:** https://github.com/KaushikSiva/crossexam
+**Direct MP4 (52.1 seconds):** https://kaushiksiva.github.io/crossexam/assets/crossexam-demo.mp4
 
-**One-minute demo:** https://kaushiksiva.github.io/crossexam/demo.html
+**Partner products:** Select Subquadratic. If OpenAI or OpenUI are offered as additional options, both are used. Meta was not used successfully in the published run.
 
-**Direct MP4:** https://kaushiksiva.github.io/crossexam/assets/crossexam-demo.mp4
+**Feedback for Cerebral Valley:** A single page with deadlines, judging criteria, and credit setup would make the event easier to navigate.
 
-**Partner products:** Subquadratic. OpenAI and OpenUI are also used; select them only if the form offers them. Do not select Meta as a successful live integration.
-
-**Cerebral Valley feedback:** Publish prize-stacking rules and a precise judging rubric alongside the participant guide.
-
-**Partner feedback:** SubQ’s typed risk decisions were useful and fast. Clearer credit activation would help teams resolve Meta billing restrictions.
+**Feedback for partner products:** SubQ’s typed risk decisions were easy to use. Clearer credit activation and billing errors would help teams get started faster.

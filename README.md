@@ -32,6 +32,10 @@ In this labeled seeded example, two customers use the same request ID. **Beacon 
 
 The first completed **live OpenAI + Subquadratic campaign** produced the following, without hand-authored test proposals:
 
+![Measured improvement: faulty implementations detected rise from 1 to 7 out of 8 while input scenarios grow from 4 to 29](docs/assets/improvement-curve.png)
+
+Each dot is an observed version. The left curve counts faulty implementations caught; the right curve counts input scenarios.
+
 | Measure | Original evaluation | Promoted evaluation |
 | --- | ---: | ---: |
 | Input scenarios per implementation | 4 | **29** |
@@ -56,8 +60,6 @@ The final audit caught **6/8**: tenant-prefix aliasing and empty-tenant acceptan
 The campaign took **25.46 seconds**, with five OpenAI calls and one Subquadratic call. OpenAI reported 22,213 input tokens (2,176 cached) and 4,264 output tokens. At the [published GPT‑5.4 mini rates](https://developers.openai.com/api/docs/models/gpt-5.4-mini), that is approximately **$0.0344 for OpenAI generation**, excluding Subquadratic and narration. This is a rate-based estimate, not a billing receipt.
 
 **Small synthetic benchmark—not a production accuracy estimate.** Audit implementations are withheld from model prompts within a campaign, but this public corpus was already observed by project authors and shares defect families with discovery. The evaluation suite improves; model weights do not change. [Scope and limitations →](docs/methodology.md)
-
-![Measured model-generated evaluation improvements](docs/assets/self-improvement.png)
 
 | Final audit | Coverage across versions |
 | --- | --- |
