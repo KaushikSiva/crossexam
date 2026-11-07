@@ -26,7 +26,7 @@ await page.screenshot({path:'docs/assets/landing-openui.png'});
 await page.locator('#improvement').scrollIntoViewIfNeeded();
 await page.locator('.version-selector button').last().click();
 assert.ok((await page.locator('.version-status').innerText()).includes(report.versions.at(-1).accepted?'PROMOTED':'REJECTED'));
-await page.waitForTimeout(1200);
+await page.waitForTimeout(2200);
 await page.screenshot({path:'docs/assets/landing-learning.png'});
 await page.getByRole('button',{name:/Watch the one-minute film/}).click();
 await page.waitForFunction(()=>document.querySelector('video')?.readyState>=2);

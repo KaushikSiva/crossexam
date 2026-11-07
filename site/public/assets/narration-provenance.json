@@ -3,10 +3,10 @@
   "model": "eleven_v4",
   "voice_name": "Brian - Deep, Resonant and Comforting",
   "voice_id": "nPczCjzI2devNBz1zQrb",
-  "script_sha256": "04da5809db2a057415ea5c36326b32a474d8f4f71e0788e2fd85dd8d8f3dcde7",
-  "raw_audio_sha256": "25070cd00a074d63e5944defb6719069fcc884de5d1e4ab073a30ac0b7e58720",
-  "raw_seconds": 49.76,
+  "script_sha256": "d6d3c7d42f9e0e74a99783350f79728398f79e8b37369b92cbff73522decd00e",
+  "raw_audio_sha256": "4572c58b5bc20c6cef738bce841c64fa2d5a5b66c329175de139d79ece154197",
+  "raw_seconds": 50.08,
   "playback_speed": 1,
-  "final_seconds": 49.76,
+  "final_seconds": 50.08,
   "synthetic_narration": true
 }

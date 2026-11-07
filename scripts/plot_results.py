@@ -31,6 +31,8 @@ def finish(fig, name, note):
     fig.text(.07, .025, note, fontsize=8, color=MUTED)
     fig.savefig(args.out / f"{name}.png", dpi=180, bbox_inches="tight")
     fig.savefig(args.out / f"{name}.svg", bbox_inches="tight")
+    svg = args.out / f"{name}.svg"
+    svg.write_text("\n".join(line.rstrip() for line in svg.read_text().splitlines()) + "\n")
     plt.close(fig)
 
 

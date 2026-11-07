@@ -1,12 +1,12 @@
 {
-  "mode": "live Subquadratic + local proposals",
+  "mode": "live OpenAI + Subquadratic",
   "segments": [
-    "Your AI says the code is ready. Every test passes. Would you merge it? CrossExam puts the tests on trial.",
-    "This cache change passes all four tests. But two customers reuse a request ID, and one gets the other's reservation. CrossExam proves it with just two requests.",
-    "Then it strengthens the tests. New versions must catch more bugs while correct code keeps passing. This weaker version? Rejected.",
-    "Finally, a separate audit: 1 out of 8 bugs caught becomes 7. No correct controls rejected. It's a small synthetic benchmark, and we show the miss, too.",
-    "Subquadratic helps decide where to look. This run uses seeded bugs and test proposals. OpenUI lets you inspect every result.",
-    "CrossExam. Don't just trust the score. Make it prove something."
+    "Every test passed. So the code is ready, right? CrossExam asks a harder question: what did those tests miss?",
+    "OpenAI wrote this optimization. It passes all four tests. But one customer reserves two units, and another customer's stock drops too. Two requests prove it.",
+    "Then it writes stronger tests in a separate context. Detection jumps from one to four, then climbs to seven. Every promotion has to pass the same gate.",
+    "Now freeze the tests and open the final audit. 6 of 8 bugs caught. 2 missed. All four correct implementations still pass.",
+    "Subquadratic chooses where to look. OpenAI makes the proposals. OpenUI shows the evidence. One real run, on a small synthetic benchmark.",
+    "CrossExam. Passing tests should mean something."
   ],
-  "words": 124
+  "words": 120
 }

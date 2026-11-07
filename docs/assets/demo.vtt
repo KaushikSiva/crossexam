@@ -1,81 +1,81 @@
 WEBVTT
 
 1
-00:00:00.000 --> 00:00:02.160
-Your AI says the code is ready.
+00:00:00.000 --> 00:00:01.360
+Every test passed.
 
 2
-00:00:02.320 --> 00:00:03.600
-Every test passes.
+00:00:01.680 --> 00:00:03.040
+So the code is ready, right?
 
 3
-00:00:03.680 --> 00:00:04.800
-Would you merge it?
+00:00:03.520 --> 00:00:07.600
+CrossExam asks a harder question: what did those tests miss?
 
 4
-00:00:05.000 --> 00:00:07.360
-CrossExam puts the tests on trial.
+00:00:08.080 --> 00:00:10.000
+OpenAI wrote this optimization.
 
 5
-00:00:07.480 --> 00:00:10.160
-This cache change passes all four tests.
+00:00:10.320 --> 00:00:12.160
+It passes all four tests.
 
 6
-00:00:10.280 --> 00:00:15.120
-But two customers reuse a request ID, and one gets the other's reservation.
+00:00:12.400 --> 00:00:16.640
+But one customer reserves two units, and another customer's stock drops too.
 
 7
-00:00:15.280 --> 00:00:18.080
-CrossExam proves it with just two requests.
+00:00:17.120 --> 00:00:18.160
+Two requests prove it.
 
 8
-00:00:18.280 --> 00:00:20.240
-Then it strengthens the tests.
+00:00:18.560 --> 00:00:21.280
+Then it writes stronger tests in a separate context.
 
 9
-00:00:20.320 --> 00:00:24.320
-New versions must catch more bugs while correct code keeps passing.
+00:00:21.680 --> 00:00:25.200
+Detection jumps from one to four, then climbs to seven.
 
 10
-00:00:24.440 --> 00:00:25.600
-This weaker version?
+00:00:25.440 --> 00:00:27.840
+Every promotion has to pass the same gate.
 
 11
-00:00:25.920 --> 00:00:26.800
-Rejected.
+00:00:28.240 --> 00:00:30.640
+Now freeze the tests and open the final audit.
 
 12
-00:00:27.040 --> 00:00:31.280
-Finally, a separate audit: 1 out of 8 bugs caught becomes 7.
+00:00:31.120 --> 00:00:32.400
+6 of 8 bugs caught.
 
 13
-00:00:31.360 --> 00:00:33.360
-No correct controls rejected.
+00:00:32.720 --> 00:00:33.360
+2 missed.
 
 14
-00:00:33.440 --> 00:00:36.880
-It's a small synthetic benchmark, and we show the miss, too.
+00:00:33.840 --> 00:00:36.600
+All four correct implementations still pass.
 
 15
-00:00:36.960 --> 00:00:39.520
-Subquadratic helps decide where to look.
+00:00:36.880 --> 00:00:38.920
+Subquadratic chooses where to look.
 
 16
-00:00:39.640 --> 00:00:42.640
-This run uses seeded bugs and test proposals.
+00:00:39.120 --> 00:00:40.880
+OpenAI makes the proposals.
 
 17
-00:00:42.720 --> 00:00:45.520
-OpenUI lets you inspect every result.
+00:00:41.280 --> 00:00:43.040
+OpenUI shows the evidence.
 
 18
-00:00:45.680 --> 00:00:46.720
-CrossExam.
+00:00:43.520 --> 00:00:46.320
+One real run, on a small synthetic benchmark.
 
 19
-00:00:46.760 --> 00:00:48.320
-Don't just trust the score.
+00:00:46.720 --> 00:00:47.520
+CrossExam.
 
 20
-00:00:48.400 --> 00:00:49.840
-Make it prove something.
+00:00:47.920 --> 00:00:50.160
+Passing tests should mean something.

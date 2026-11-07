@@ -20,7 +20,7 @@ await page.evaluate(src=>{
 },new URL('lab/',site).href);
 const frame=await (await page.$('#recording-workspace')).contentFrame();
 await frame.waitForSelector('.case-button');
-await frame.evaluate(()=>{document.body.classList.add('recording');const r=window.CrossExam.getReport();window.CrossExam.selectCase(r.counterexamples.findIndex(c=>c.id==='D01'));});
+await frame.evaluate(()=>{document.body.classList.add('recording');const r=window.CrossExam.getReport();window.CrossExam.selectCase(r.counterexamples.findIndex(c=>c.id===(r.manifest.mode.startsWith('live OpenAI')?'M01':'D01')));});
 await page.waitForTimeout(1200);
 // A unique synchronization frame is removed from the final film by mux_demo.py.
 // It gives the capture an actual visual time origin, independent of encoder flush.
