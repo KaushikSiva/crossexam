@@ -47,12 +47,13 @@ architecture='''<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="650
 </g></svg>'''
 (out/"architecture.svg").write_text(architecture)
 live=r["manifest"]["mode"]=="live partners"
+subq=r["manifest"]["mode"].startswith("live Subquadratic")
 parts=[
  "Meet CrossExam. It finds broken software that your tests accept, then proves whether stronger evaluations actually help.",
  "Here, all four tests pass. But an optimization drops the tenant from the cache key. Two customers reuse the same request ID, and the second gets the first customer's reservation. CrossExam reduces the failure to two requests.",
  "The eval improves through versioned proposals. Each suite is frozen, then challenged on separate validation defects and correct implementations. Only measured gains earn promotion. A deliberately weakened suite is rejected.",
  f"Now the final audit opens. Detection rises from {b['detected']} of {b['total']} defects to {a['detected']} of {a['total']}, with {a['false_rejections']} correct controls rejected. Every result, including remaining misses, is published.",
- ("Meta generates attacks and independent tests. Subquadratic prioritizes risks. Provider calls, frozen tests, and execution traces are all recorded." if live else "This is the reproducible local benchmark. Live Meta and Subquadratic adapters are separate. Every result includes source hashes, frozen tests, and execution traces."),
+ ("Meta generates attacks and independent tests. Subquadratic prioritizes risks. OpenUI makes the evidence interactive. Every provider call is recorded." if live else "Subquadratic prioritizes risks from repository context. This run uses local attack and test fixtures. OpenUI makes every result inspectable." if subq else "OpenUI turns the recorded results into interactive evidence. This local benchmark uses fixtures; live partner integrations are labeled separately."),
  "CrossExam. Your tests passed. Your software failed. Here is the evidence."
 ]
 (out/"narration.json").write_text(json.dumps({"mode":r["manifest"]["mode"],"segments":parts,"words":sum(len(p.split()) for p in parts)},indent=2))
