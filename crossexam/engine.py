@@ -26,14 +26,14 @@ def promotion_decision(previous, proposed):
 
 
 class Campaign:
-    def __init__(self, output, live=False, emit=None, subq_only=False):
+    def __init__(self, output, live=False, emit=None, subq_only=False, generator="openai"):
         self.output = Path(output)
         self.output.mkdir(parents=True, exist_ok=False)
         self.live = live
         self.use_subq = live or subq_only
         self.callback = emit or (lambda e: None)
         self.events = []
-        self.partner = Partners(self.output / "provider-calls") if self.use_subq else None
+        self.partner = Partners(self.output / "provider-calls", generator=generator) if self.use_subq else None
         self.backend = runtime()
         self.cache = {}
         self.versions = []
@@ -84,7 +84,7 @@ class Campaign:
         base = baseline()
         current = base
         commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
-        manifest = {"schema": 1, "mode": "live partners" if self.live else "live Subquadratic + local proposals" if self.use_subq else "local fixtures",
+        manifest = {"schema": 2, "mode": f"live {self.partner.label} + Subquadratic" if self.live else "live Subquadratic + local proposals" if self.use_subq else "local fixtures",
                     "created_at": datetime.now(timezone.utc).isoformat(), "commit": commit,
                     "python_version": sys.version, "platform": platform.platform(),
                     "runtime": self.backend, "contract_sha256": digest((FIXTURE / "contract.txt").read_text()),
@@ -92,6 +92,10 @@ class Campaign:
                     "engine_sources": {p.name: digest(p.read_text()) for p in sorted((ROOT / "crossexam").glob("*.py"))},
                     "corpus_sha256": digest([asdict(v) for v in variants]),
                     "audit_input_sha256": digest(audit_scenarios()),
+                    "proposal_protocol": {"rounds": 4 if self.live else 3, "generator": self.partner.generator if self.live else "fixtures",
+                        "feedback": "aggregate validation counts and decisions only" if self.live else "none",
+                        "discovery_probes": "hand-authored contract probes", "injected_rollback": not self.live,
+                        "audit_scope": "Public synthetic corpus; withheld from model prompts, previously observed by project authors"},
                     "split_counts": {s: sum(v.split == s for v in variants) for s in ("discovery", "validation", "audit", "control")}}
         (self.output / "manifest.json").write_text(json.dumps(manifest, indent=2))
         self.event("start", "Manifest sealed. Final audit is withheld from proposal generation.", **manifest)
@@ -109,11 +113,11 @@ class Campaign:
             routing = {"order": ["tenant_isolation", "idempotency", "payload_binding", "inventory", "validation"],
                        "scores": {}, "origin": "fixed local order", "note": "No API calls made in this mode."}
         if self.live:
-            self.event("attack", "Meta is proposing an adversarial implementation in a separate context")
+            self.event("attack", f"{self.partner.label} is proposing an adversarial implementation in a separate context")
             proposed = self.partner.attack(base, routing["order"][0])
-            generated = Variant("M01", proposed["title"], proposed["family"], "discovery", proposed["files"], origin="live Meta Model API")
+            generated = Variant("M01", proposed["title"], proposed["family"], "discovery", proposed["files"], origin=f"live {self.partner.label}")
             discovery = [generated] + discovery
-            (self.output / "meta-attack.json").write_text(json.dumps(asdict(generated), indent=2))
+            (self.output / "generated-attack.json").write_text(json.dumps(asdict(generated), indent=2))
         self.event("routing_complete", "Risk exploration order selected", **routing)
 
         counterexamples = []
@@ -137,19 +141,28 @@ class Campaign:
                 self.event("attack_rejected", f"{v.id}: not a demonstrated blind spot", baseline_passed=old["passed"], reproduced=bool(probe["failure"]), origin=v.origin)
 
         order = routing["order"]
-        groups = [order[:1], order[1:3], order[3:]]
+        groups = [order] * 4 if self.live else [order[:1], order[1:3], order[3:]]
+        feedback = []
         for n, group in enumerate(groups, 1):
             visible = [{"family": c["family"], "witness": c["witness"]} for c in counterexamples if c["family"] in group]
             if self.live:
-                self.event("proposal", f"Meta is independently generating test proposal {n}", families=group)
-                added, rationale = self.partner.propose(current, visible, group, n)
-                origin = "live Meta Model API; fresh context, implementation withheld"
+                # Adapt priorities to executable discovery results; no validation/audit source enters context.
+                unresolved = {v.family for v in discovery if check(v.files, current, self.backend)["passed"]}
+                group = sorted(order, key=lambda family: family not in unresolved)
+                self.event("proposal", f"{self.partner.label} is independently generating test proposal {n}", families=group)
+                added, rationale = self.partner.propose(current, visible, group, n, feedback=feedback)
+                origin = f"live {self.partner.label}; fresh context, implementation withheld"
             else:
                 added = [c for c in strengthened()[len(base):] if c["family"] in group]
                 rationale = "Exercise " + ", ".join(f.replace("_", " ") for f in group)
                 origin = "hand-authored local proposal"
             seen = {digest(c["actions"]) for c in current}
-            candidate = current + [c for c in added if digest(c["actions"]) not in seen]
+            candidate = list(current)
+            for item in added:
+                key = digest(item["actions"])
+                if key not in seen:
+                    candidate.append(item)
+                    seen.add(key)
             record = self.freeze(n, candidate, rationale, origin)
             score = self.measure(validation, candidate)
             accepted, decision = promotion_decision(current_score, score)
@@ -159,27 +172,34 @@ class Campaign:
             self.versions.append(record)
             self.event("promotion" if accepted else "rejection", decision, version=n, active_version=active_version,
                        detected=score["detected"], total=score["total"], false_rejections=score["false_rejections"])
+            feedback.append({"round": n, "accepted": accepted, "detected": score["detected"], "total": score["total"],
+                             "false_rejections": score["false_rejections"], "decision": decision,
+                             "proposed_inputs": added})
 
-        # Explicitly labeled regression challenge, not a fabricated model mistake.
-        regression = self.freeze(4, base, "Regression challenge: reduce execution cost by returning to the smoke suite", "system-injected rollback demonstration")
-        regression_accepted, regression_decision = promotion_decision(current_score, base_score)
-        regression.update(accepted=regression_accepted, validation=base_score, active_version=active_version,
-                          decision=regression_decision)
-        self.versions.append(regression)
-        self.event("rejection", regression["decision"], version=4, active_version=active_version,
-                   detected=base_score["detected"], total=base_score["total"], false_rejections=base_score["false_rejections"])
+        if not self.live:
+            # Fixture mode only: never count this as a real model mistake.
+            regression = self.freeze(4, base, "Regression challenge: reduce execution cost by returning to the smoke suite", "system-injected rollback demonstration")
+            regression_accepted, regression_decision = promotion_decision(current_score, base_score)
+            regression.update(accepted=regression_accepted, validation=base_score, active_version=active_version,
+                              decision=regression_decision)
+            self.versions.append(regression)
+            self.event("rejection", regression["decision"], version=4, active_version=active_version,
+                       detected=base_score["detected"], total=base_score["total"], false_rejections=base_score["false_rejections"])
 
         self.event("audit_opened", "Learning finished. Opening the final audit once; no further proposals are allowed.", active_version=active_version)
         audit_before = self.measure(audit, base)
         audit_after = self.measure(audit, current)
         input_audit = self.measure([v for v in variants if v.correct], audit_scenarios())
-        report = {"schema": 1, "manifest": manifest, "routing": routing, "versions": self.versions,
+        report = {"schema": 2, "manifest": manifest, "routing": routing, "versions": self.versions,
                   "active_version": active_version, "counterexamples": counterexamples,
                   "validation_before": base_score, "validation_after": current_score,
                   "audit_before": audit_before, "audit_after": audit_after,
                   "fresh_input_controls": input_audit, "provider_calls": self.partner.calls if self.partner else [],
                   "elapsed_seconds": round(time.perf_counter() - started, 3),
                   "limitations": ["Synthetic, hand-authored benchmark; these are not real-world defect detection rates.",
+                                  "Public audit variants were previously observed by project authors; withheld from model prompts, not a new secret benchmark.",
+                                  "Repeated aggregate validation feedback can overfit this small validation set.",
+                                  "Discovery combines seeded defects and, in live mode, one generated patch; discovery probes remain hand-authored.",
                                   "Held-out variants exercise familiar defect families, not wholly new classes of bugs.",
                                   "Same model family can retain correlated blind spots despite separate contexts.",
                                   "The specification and independent oracle remain trusted assumptions.",

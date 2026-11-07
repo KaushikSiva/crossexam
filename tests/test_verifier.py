@@ -8,7 +8,7 @@ from crossexam.benchmark import corpus, source
 from crossexam.doctor import inspect_sandbox
 from crossexam.engine import Campaign, promotion_decision
 from crossexam.oracle import evaluate
-from crossexam.providers import Partners, ProviderError
+from crossexam.providers import Partners, ProviderError, json_object, readiness
 from crossexam.runner import check, execute, minimize
 from crossexam.scenarios import baseline, strengthened, reserve, release, stock, case, digest, validate_suite
 
@@ -68,6 +68,47 @@ class GateTests(unittest.TestCase):
     def test_live_mode_never_silently_substitutes_fixtures(self):
         with tempfile.TemporaryDirectory() as tmp, patch.dict('os.environ',{'SUBQ_API_KEY':''}):
             with self.assertRaises(ProviderError): Partners(tmp).route(baseline())
+
+    def test_openai_parses_response_and_preserves_invalid_input_types(self):
+        value={'cases':[{'name':'boolean quantity','family':'validation','actions_json':json.dumps([reserve(qty=True)])}], 'rationale':'Check the contract'}
+        response={'status':'completed','output':[{'type':'reasoning'}, {'type':'message','content':[{'type':'output_text','text':json.dumps(value)}]}]}
+        with tempfile.TemporaryDirectory() as tmp:
+            p=Partners(tmp,generator='openai')
+            with patch.object(p,'request',return_value=response) as request:
+                cases,_=p.propose(baseline(),[],['validation'],1,feedback=[])
+            self.assertIs(cases[0]['actions'][0]['qty'],True)
+            payload=request.call_args.args[2]
+            self.assertFalse(payload['store'])
+            self.assertTrue(payload['text']['format']['strict'])
+            context=json.loads(payload['input'][0]['content'])
+            self.assertEqual(set(context),{'contract','current_suite','observed_counterexamples','focus_families','previous_validation_feedback'})
+            self.assertNotIn('class Service',json.dumps(context))
+            self.assertNotIn('previous_response_id',payload)
+
+    def test_openai_refusal_truncation_and_malformed_json_fail_closed(self):
+        responses=[{'status':'incomplete','output':[]},
+                   {'status':'completed','output':[{'type':'message','content':[{'type':'refusal','refusal':'No'}]}]},
+                   {'status':'completed','output':[{'type':'message','content':[{'type':'output_text','text':'broken'}]}]}]
+        with tempfile.TemporaryDirectory() as tmp:
+            p=Partners(tmp,generator='openai')
+            for response in responses:
+                with self.subTest(response=response), patch.object(p,'request',return_value=response):
+                    with self.assertRaises(ProviderError): p.openai_json('test','test',{},json_object({}))
+
+    def test_openai_does_not_need_meta_key_and_archives_no_authorization(self):
+        response={'status':'completed','output':[], 'usage':{}}
+        from unittest.mock import MagicMock
+        http=MagicMock()
+        http.__enter__.return_value.read.return_value=json.dumps(response).encode()
+        with tempfile.TemporaryDirectory() as tmp, patch.dict('os.environ',{'OPENAI_API_KEY':'secret-for-test-only','MODEL_API_KEY':''}), patch('urllib.request.urlopen',return_value=http) as request:
+            p=Partners(tmp,generator='openai',max_calls=1)
+            self.assertTrue(readiness()['openai'])
+            self.assertFalse(readiness()['meta'])
+            p.request('openai','test',{'model':'test'})
+            self.assertEqual(request.call_args.args[0].full_url,'https://api.openai.com/v1/responses')
+            for path in Path(tmp).glob('*.json'):
+                self.assertNotIn('secret-for-test-only',path.read_text())
+            with self.assertRaises(ProviderError): p.request('openai','over-budget',{'model':'test'})
 
 
 class ExecutionTests(unittest.TestCase):
@@ -129,6 +170,24 @@ class ExecutionTests(unittest.TestCase):
             propose.assert_not_called()
             self.assertEqual(report['manifest']['mode'],'live Subquadratic + local proposals')
             self.assertEqual(report['audit_after']['false_rejections'],0)
+
+    def test_live_records_real_plateau_without_injected_rollback(self):
+        routing={'order':['tenant_isolation','idempotency','validation','payload_binding','inventory'],'scores':{},'origin':'mock','note':'test'}
+        attack={'title':'Seed supplied by mock','family':'tenant_isolation','files':next(v.files for v in corpus() if v.id=='D01')}
+        feedback=[]
+        def proposal(suite,failures,families,round_number,**kwargs):
+            feedback.append(json.loads(json.dumps(kwargs['feedback'])))
+            return strengthened()[4:], 'Mock generated inputs'
+        with tempfile.TemporaryDirectory() as tmp, patch.object(Partners,'route',return_value=routing), patch.object(Partners,'attack',return_value=attack), patch.object(Partners,'propose',side_effect=proposal) as propose:
+            report=Campaign(Path(tmp)/'run',live=True).run()
+            self.assertEqual(propose.call_count,4)
+            self.assertEqual([v['accepted'] for v in report['versions']],[True,True,False,False,False])
+            self.assertTrue(all('system-injected' not in v['origin'] for v in report['versions']))
+            self.assertEqual(len(feedback[-1]),3)
+            self.assertNotIn('rows',feedback[-1][0])
+            self.assertFalse(report['manifest']['proposal_protocol']['injected_rollback'])
+            opened=next(e['sequence'] for e in report['events'] if e['kind']=='audit_opened')
+            self.assertTrue(all(e['sequence']<opened for e in report['events'] if e['kind']=='proposal'))
 
 
 if __name__=='__main__': unittest.main()

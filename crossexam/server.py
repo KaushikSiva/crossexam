@@ -91,8 +91,8 @@ def serve(port=8847):
                 return
             load_env(ROOT / ".env")
             live = payload["mode"] == "live"
-            if live and not all(readiness().values()):
-                self.send(409, {"error": "Configure both credited partner keys in .env"})
+            if live and not (readiness()["openai"] and readiness()["subquadratic"]):
+                self.send(409, {"error": "Configure OPENAI_API_KEY and SUBQ_API_KEY in .env"})
                 return
             if payload["mode"] == "subq" and not readiness()["subquadratic"]:
                 self.send(409, {"error": "Configure a credited SUBQ_API_KEY in .env"})
