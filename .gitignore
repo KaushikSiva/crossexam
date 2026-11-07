@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+node_modules/
+.DS_Store
+runs/
+recordings/raw/
+*.aiff
+*.wav
+*.log
+.push-clock
