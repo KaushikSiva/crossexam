@@ -18,11 +18,11 @@ export default function VerificationScene(){
       const pmrem=new T.PMREMGenerator(renderer),room=new RoomEnvironment();
       const environment=pmrem.fromScene(room,.04);scene.environment=environment.texture;room.dispose();
       const sculpture=new T.Group();scene.add(sculpture);
-      const silver=new T.MeshStandardMaterial({color:0xd7d7d7,metalness:1,roughness:.23});
+      const silver=new T.MeshStandardMaterial({color:0xd7d7d7,metalness:1,roughness:.19});
       const graphite=new T.MeshStandardMaterial({color:0x4b4b4b,metalness:.9,roughness:.3});
       const shape=new T.Shape();const s=.27,l=1.75;
       [[-s,l],[s,l],[s,s],[l,s],[l,-s],[s,-s],[s,-l],[-s,-l],[-s,-s],[-l,-s],[-l,s],[-s,s]].forEach(([x,y],i)=>i?shape.lineTo(x,y):shape.moveTo(x,y));shape.closePath();
-      const cross=new T.Mesh(new T.ExtrudeGeometry(shape,{depth:.32,bevelEnabled:true,bevelSegments:4,steps:1,bevelSize:.08,bevelThickness:.08}),silver);
+      const cross=new T.Mesh(new T.ExtrudeGeometry(shape,{depth:.64,bevelEnabled:true,bevelSegments:4,steps:1,bevelSize:.1,bevelThickness:.1}),silver);
       cross.rotation.z=Math.PI/4;cross.position.z=.2;sculpture.add(cross);
       const rings=new T.Group();sculpture.add(rings);
       [2.25,2.52,2.79].forEach((radius,i)=>{
@@ -45,14 +45,14 @@ export default function VerificationScene(){
       const move=e=>{const b=element.getBoundingClientRect();pointer={x:(e.clientX-b.left)/b.width-.5,y:(e.clientY-b.top)/b.height-.5}};
       const leave=()=>{pointer={x:0,y:0}};
       element.addEventListener('pointermove',move);element.addEventListener('pointerleave',leave);
-      const resize=()=>{const w=element.clientWidth,h=element.clientHeight;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();renderer.render(scene,camera)};
+      const resize=()=>{const w=element.clientWidth,h=element.clientHeight;renderer.setSize(w,h);camera.aspect=w/h;camera.position.z=Math.max(10.8,3.4/(Math.tan(camera.fov*Math.PI/360)*camera.aspect));camera.updateProjectionMatrix();renderer.render(scene,camera)};
       const observer=new ResizeObserver(resize);observer.observe(element);
       const intersection=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting});intersection.observe(element);
       const render=time=>{
         if(disposed)return;frame=requestAnimationFrame(render);
         if(!visible||document.hidden||time-last<32)return;last=time;
         const t=reduced?0:time/1000;
-        sculpture.rotation.y+=((-.28+(reduced?0:pointer.x*.5+Math.sin(t*.22)*.14))-sculpture.rotation.y)*.045;
+        sculpture.rotation.y+=((-.48+(reduced?0:pointer.x*.45+Math.sin(t*.22)*.13))-sculpture.rotation.y)*.045;
         sculpture.rotation.x+=((.12+(reduced?0:pointer.y*.25))-sculpture.rotation.x)*.045;
         sculpture.position.y=reduced?0:Math.sin(t*.7)*.07;
         rings.rotation.z=reduced?0:Math.sin(t*.16)*.09;

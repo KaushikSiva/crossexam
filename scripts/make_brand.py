@@ -49,12 +49,12 @@ architecture='''<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="650
 live=r["manifest"]["mode"]=="live partners"
 subq=r["manifest"]["mode"].startswith("live Subquadratic")
 parts=[
- "Meet CrossExam. It finds broken software that your tests accept, then proves whether stronger evaluations actually help.",
- "Here, all four tests pass. But an optimization drops the tenant from the cache key. Two customers reuse the same request ID, and the second gets the first customer's reservation. CrossExam reduces the failure to two requests.",
- "The eval improves through versioned proposals. Each suite is frozen, then challenged on separate validation defects and correct implementations. Only measured gains earn promotion. A deliberately weakened suite is rejected.",
- f"Now the final audit opens. Detection rises from {b['detected']} of {b['total']} defects to {a['detected']} of {a['total']}, with {a['false_rejections']} correct controls rejected. Every result, including remaining misses, is published.",
- ("Meta generates attacks and independent tests. Subquadratic prioritizes risks. OpenUI makes the evidence interactive. Every provider call is recorded." if live else "Subquadratic prioritizes risks from repository context. This run uses local attack and test fixtures. OpenUI makes every result inspectable." if subq else "OpenUI turns the recorded results into interactive evidence. This local benchmark uses fixtures; live partner integrations are labeled separately."),
- "CrossExam. Your tests passed. Your software failed. Here is the evidence."
+ "Your AI says the code is ready. Every test passes. Would you merge it? CrossExam puts the tests on trial.",
+ "This cache change passes all four tests. But two customers reuse a request ID, and one gets the other's reservation. CrossExam proves it with just two requests.",
+ "Then it strengthens the tests. New versions must catch more bugs while correct code keeps passing. This weaker version? Rejected.",
+ f"Finally, a separate audit: {b['detected']} out of {b['total']} bugs caught becomes {a['detected']}. No correct controls rejected. It's a small synthetic benchmark, and we show the miss, too.",
+ ("Meta creates the attacks and writes new tests in a separate context. Subquadratic helps decide where to look. OpenUI shows the evidence." if live else "Subquadratic helps decide where to look. This run uses seeded bugs and test proposals. OpenUI lets you inspect every result." if subq else "This run uses seeded bugs and test proposals. OpenUI lets you inspect every result and see exactly what changed."),
+ "CrossExam. Don't just trust the score. Make it prove something."
 ]
 (out/"narration.json").write_text(json.dumps({"mode":r["manifest"]["mode"],"segments":parts,"words":sum(len(p.split()) for p in parts)},indent=2))
 print('Artwork and narration prepared:',sum(len(p.split()) for p in parts),'words')
