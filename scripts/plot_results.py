@@ -44,8 +44,8 @@ for v in versions:
 fig, ax = plt.subplots(figsize=(10.5, 5.3))
 fig.subplots_adjust(left=.09, right=.94, top=.81, bottom=.17)
 fig.suptitle("The evaluation gets better. Regressions don't ship.", x=.07, ha="left", fontsize=19, fontweight="bold")
-ax.plot(range(len(versions)), scores, color=GREEN, linewidth=3, marker="o", markersize=8, label="Active evaluation")
-ax.fill_between(range(len(versions)), scores, color=GREEN, alpha=.08)
+ax.step(range(len(versions)), scores, where="post", color=GREEN, linewidth=3, marker="o", markersize=8, label="Active evaluation")
+ax.fill_between(range(len(versions)), scores, step="post", color=GREEN, alpha=.08)
 for i, (v, score) in enumerate(zip(versions, scores)):
     ax.annotate(f'{int(score) if score.is_integer() else score:g}%', (i, score), xytext=(0, 12), textcoords="offset points", ha="center", fontsize=11, color=GREEN)
     if not v["accepted"]:
@@ -83,7 +83,7 @@ ax.set_yticks(range(len(rows)),[row["title"] for row in rows],fontsize=9)
 for i in range(len(rows)):
     for j in range(len(versions)):ax.text(j,i,"caught" if matrix[i,j] else "missed",ha="center",va="center",fontsize=9,color="white" if matrix[i,j] else MUTED)
 ax.tick_params(length=0);ax.spines[:].set_visible(False)
-finish(fig,"coverage-matrix","Validation variants × proposed suites. Rejected v4 is shown for comparison; it never replaces the active suite.")
+finish(fig,"coverage-matrix","Validation variants × proposed suites. Rejected proposals remain visible; they never replace the active suite.")
 
 fig,ax=plt.subplots(figsize=(10.5,5.2));fig.subplots_adjust(left=.1,right=.94,top=.8,bottom=.19)
 fig.suptitle("Detection gains have an execution cost.",x=.07,ha="left",fontsize=20,fontweight="bold")

@@ -161,11 +161,11 @@ function renderCases(){
 
 function curveSVG(){
   const versions=report.versions, W=650,H=270,L=43,R=26,T=27,B=42,iw=W-L-R,ih=H-T-B;
-  const x=i=>L+i*iw/(versions.length-1), y=n=>T+(100-n)*ih/100;
+  const x=i=>L+i*iw/Math.max(1,versions.length-1), y=n=>T+(100-n)*ih/100;
   let active=versions[0].validation,points=[];
   versions.forEach((v,i)=>{if(v.accepted)active=v.validation;points.push([x(i),y(pct(active)),pct(active)]);});
   const grid=[0,25,50,75,100].map(n=>`<line x1="${L}" x2="${W-R}" y1="${y(n)}" y2="${y(n)}" stroke="#e1e1e1" stroke-dasharray="${n?'3 5':'0'}"/><text x="${L-12}" y="${y(n)+4}" text-anchor="end">${n}%</text>`).join('');
-  const path=points.map((p,i)=>`${i?'L':'M'}${p[0]},${p[1]}`).join(' ');
+  const path=points.map((p,i)=>i?`H${p[0]}V${p[1]}`:`M${p[0]},${p[1]}`).join(' ');
   const fill=`${path} L${points.at(-1)[0]},${y(0)} L${L},${y(0)} Z`;
   const marks=points.map((p,i)=>`<circle class="pt" cx="${p[0]}" cy="${p[1]}" r="5" fill="#f7f7f7" stroke="#242424" stroke-width="2.5"><title>After v${i}: ${p[2]}%</title></circle><text class="value-label" x="${p[0]}" y="${p[1]-12}" text-anchor="middle">${p[2]}%</text><text x="${p[0]}" y="${H-17}" text-anchor="middle">v${i}${versions[i].accepted?'':' ×'}</text>`).join('');
   const rejected=versions.map((v,i)=>!v.accepted?`<line class="drop" x1="${x(i)}" x2="${x(i)}" y1="${points[i][1]+7}" y2="${y(pct(v.validation))-7}" stroke="#848484" stroke-dasharray="3 4"/><circle class="ghost" cx="${x(i)}" cy="${y(pct(v.validation))}" r="5" fill="#555555"><title>Rejected v${i}: ${pct(v.validation)}%</title></circle>`:'').join('');
@@ -199,14 +199,14 @@ function renderEvidence(){
   const m=report.manifest;
   const entries=[['MODE',m.mode],['RUNTIME',m.runtime],['STARTED',m.created_at],['COMMIT',m.commit],['CONTRACT SHA-256',m.contract_sha256],['BENCHMARK SHA-256',m.corpus_sha256],['EVENT ROOT',report.event_root_sha256]];
   $('#provenance').innerHTML=entries.map(([k,v])=>`<dt>${k}</dt><dd class="${/SHA|ROOT|COMMIT/.test(k)?'hash':''}">${esc(v)}</dd>`).join('');
-  $('#partner-calls').innerHTML=report.provider_calls.length?report.provider_calls.map(c=>`<div class="partner-row">${esc(c.provider==='meta'?'Meta':'Subquadratic')} · ${esc(c.purpose)}<div class="mono">${esc(c.model)} · ${esc(c.status)} · ${c.seconds}s · ${c.usage.input_tokens??c.usage.prompt_tokens??'—'} in</div></div>`).join(''):'<p class="empty">None — local fixture run.</p>';
+  $('#partner-calls').innerHTML=report.provider_calls.length?report.provider_calls.map(c=>`<div class="partner-row">${esc(({meta:'Meta',openai:'OpenAI',subquadratic:'Subquadratic'})[c.provider]||c.provider)} · ${esc(c.purpose)}<div class="mono">${esc(c.model)} · ${esc(c.status)} · ${c.seconds}s · ${c.usage.input_tokens??c.usage.prompt_tokens??'—'} in</div></div>`).join(''):'<p class="empty">None — local fixture run.</p>';
   $('#event-count').textContent=`${report.events.length} EVENTS`;
   $('#journal').innerHTML=report.events.map(e=>`<div class="event"><span>${String(e.sequence).padStart(2,'0')}</span><div><strong>${esc(label(e.kind))}</strong><p>${esc(e.message)}</p></div></div>`).join('');
 }
 function render(){
   if(!report)return;
   const mode=report.manifest.mode;
-  const modeLabel=mode==='live partners'?'Live partners':mode.startsWith('live Subquadratic')?'SubQ + fixtures':'Local fixtures';
+  const modeLabel=mode==='live partners'?'Live partners':mode.startsWith('live OpenAI')?'OpenAI + SubQ':mode.startsWith('live Meta')?'Meta + SubQ':mode.startsWith('live Subquadratic')?'SubQ + fixtures':'Local fixtures';
   $('#mode').textContent=`${local?'Saved':'Recorded'} · ${modeLabel}`;
   $('#footer-mode').textContent=`${modeLabel} · ${report.elapsed_seconds}s · synthetic benchmark`;
   renderStats();renderCases();renderLearning();renderAudit();renderEvidence();
@@ -230,8 +230,8 @@ async function poll(){
   }
 }
 $('#run').onclick=()=>{
-  $('#key-status').textContent=`META ${providers.meta?'✓':'MISSING'} · SUBQUADRATIC ${providers.subquadratic?'✓':'MISSING'}`;
-  $('#start-live').disabled=!providers.meta||!providers.subquadratic;
+  $('#key-status').textContent=`OPENAI ${providers.openai?'✓':'MISSING'} · SUBQUADRATIC ${providers.subquadratic?'✓':'MISSING'}`;
+  $('#start-live').disabled=!providers.openai||!providers.subquadratic;
   $('#start-subq').disabled=!providers.subquadratic;
   $('#run-dialog').showModal();
   stagger($$('#run-dialog .run-option'), {delay:80, step:70});
@@ -245,7 +245,7 @@ $('#replay').onclick=async()=>{
   if(!report||replaying)return;
   replaying=true;$('#replay').disabled=true;$('#run').disabled=true;
   $('#notice').hidden=false;$('#notice').textContent='Playback of saved results — not a new run.';
-  const steps=[['overview',0,'Tests pass. The contract check fails.'],['overview',1,'Retries silently consume stock.'],['learning',null,'Validation decides what gets promoted.'],['learning',null,'A cheaper regression is rejected.'],['audit',null,'Then the final audit opens.'],['evidence',null,'Every decision is hashed and journaled.']];
+  const steps=[['overview',0,'Tests pass. The contract check fails.'],['overview',1,'Each counterexample is reproduced in the sandbox.'],['learning',null,'Validation decides what gets promoted.'],['learning',null,'Every proposal must earn its place. Flat results stay visible.'],['audit',null,'Then the final audit opens.'],['evidence',null,'Every decision is hashed and journaled.']];
   for(const [view,index,message]of steps){showView(view);if(index!==null)selectCase(index);toast(message);await new Promise(resolve=>setTimeout(resolve,4500));}
   replaying=false;$('#replay').disabled=false;$('#run').disabled=false;$('#notice').hidden=true;
 };

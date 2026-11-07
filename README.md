@@ -12,7 +12,7 @@
 
 A coding agent can produce a patch that passes every test and still violates the product contract. CrossExam challenges the **evaluation itself**: find a faulty implementation it accepts, reproduce the failure, propose stronger tests, and keep only changes that earn promotion on separate validation work.
 
-The final audit opens **after learning ends**. Correct implementations must keep passing. A cheaper but weaker evaluation is rejected.
+The final audit opens **after learning ends**. Correct implementations must keep passing. Only strict gains are promoted; rejected proposals remain in the record.
 
 ## The reveal
 
@@ -24,25 +24,29 @@ This cache optimization passes all four original scenarios:
 +    return key
 ```
 
-Two customers use the same request ID. **Beacon receives Atlas's reservation.** CrossExam reduces the violation to two requests. Executable checks determine whether the failure is real.
+In this labeled seeded example, two customers use the same request ID. **Beacon receives Atlas's reservation.** CrossExam reduces the violation to two requests. Executable checks determine whether the failure is real.
 
 ![Actual counterexample investigation](docs/assets/workspace.png)
 
 ## Measured improvement
 
-The reproducible local benchmark and the completed Subquadratic-routing campaign both produced:
+The first completed **live OpenAI + Subquadratic campaign** produced the following, without hand-authored test proposals:
 
 | Measure | Original evaluation | Promoted evaluation |
 | --- | ---: | ---: |
-| Final-audit seeded defects caught | 1 / 8 | **7 / 8** |
+| Final-audit seeded defects caught | 1 / 8 | **6 / 8** |
 | Correct controls rejected | 0 / 4 | **0 / 4** |
-| Validation defects caught | 1 / 8 | **8 / 8** |
+| Validation defects caught | 1 / 8 | **7 / 8** |
 
-Five faulty discovery implementations passed the original suite. Three improvements were promoted; an explicitly injected regression challenge was rejected. One final-audit defect remained undetected and is published with the other results.
+OpenAI generated a faulty inventory optimization that passed all four original scenarios. Reserving stock for one tenant silently reduced another tenant’s balance; two requests prove it. The run also reproduced five labeled seeded defects. Four real model proposals were promoted: **1 → 4 → 5 → 6 → 7 / 8** validation detections. The graph shows discrete measurements, not a continuous learning rate. There was no rejected proposal and no injected rollback in this run.
 
-**Small synthetic benchmark—not a production accuracy estimate.** Audit implementations are withheld from model prompts within a campaign, but the public corpus shares defect families with discovery. The evaluation suite improves; model weights do not change. [Scope and limitations →](docs/methodology.md)
+The final audit caught **6/8**: tenant-prefix aliasing and empty-tenant acceptance remained undetected. This is lower than the older fixture run’s 7/8; we publish the actual outcome, not the better-looking fixture score. [Full requests, responses, suites, and event journal →](docs/evidence/openai-live-001/)
 
-![Measured self-improvement and rejection of a weaker evaluation](docs/assets/self-improvement.png)
+The campaign took **25.46 seconds**, with five OpenAI calls and one Subquadratic call. OpenAI reported 22,213 input tokens (2,176 cached) and 4,264 output tokens. At the [published GPT‑5.4 mini rates](https://developers.openai.com/api/docs/models/gpt-5.4-mini), that is approximately **$0.0344 for OpenAI generation**, excluding Subquadratic and narration. This is a rate-based estimate, not a billing receipt.
+
+**Small synthetic benchmark—not a production accuracy estimate.** Audit implementations are withheld from model prompts within a campaign, but this public corpus was already observed by project authors and shares defect families with discovery. The evaluation suite improves; model weights do not change. [Scope and limitations →](docs/methodology.md)
+
+![Measured model-generated evaluation improvements](docs/assets/self-improvement.png)
 
 | Final audit | Coverage across versions |
 | --- | --- |
@@ -79,18 +83,23 @@ python3 -m crossexam verify fixtures/relayqueue \
 
 ```bash
 cp .env.example .env
-# Set your own credited MODEL_API_KEY and SUBQ_API_KEY in .env.
+# Set OPENAI_API_KEY and SUBQ_API_KEY in .env.
+# OPENAI_MODEL defaults to gpt-5.4-mini-2026-03-17.
 
 # Live risk routing + explicitly local attacks/proposals:
 python3 -m crossexam run --subq-only
 
-# Live routing + Meta-generated attack and independent test proposals:
+# Live routing + OpenAI-generated attack and four adaptive test proposals:
 python3 -m crossexam run --live
+
+# Optional Meta adapter, if MODEL_API_KEY has usable credits:
+python3 -m crossexam run --live --generator meta
 ```
 
 | Integration | Role | Verified status |
 | --- | --- | --- |
-| **Subquadratic / SubQ Snap 1.1** | Rank contract risks from repository, specification, and existing tests | Complete routing campaign succeeded; its routing call used 1,898 input tokens in 0.781 s |
+| **Subquadratic / SubQ Snap 1.1** | Rank contract risks from repository, specification, and existing tests | Live routing succeeded; 1,898 input tokens in 1.016 s in the published OpenAI campaign |
+| **OpenAI / GPT‑5.4 mini** | Generate a faulty patch and four independently authored test proposals | Five successful live generation calls; all artifacts published |
 | **Meta Model API / Muse Spark** | Generate an adversarial implementation; independently generate tests without its source | Adapter implemented. Current live request returned HTTP 402; a successful Meta campaign is pending credited access |
 | **OpenUI** | Compose interactive briefs from components bound to actual report data | Implemented and browser-tested |
 
@@ -101,9 +110,9 @@ No paid API runs in CI. Missing keys and provider failures are visible errors; l
 ![Architecture and information boundaries](docs/assets/architecture.svg)
 
 1. **Risk router:** Subquadratic prioritizes contract boundaries to investigate.
-2. **Attacker:** Meta sees the implementation and baseline scenarios. A proposed patch must pass the old evaluation to count as a blind spot.
+2. **Attacker:** OpenAI sees the implementation and baseline scenarios. A proposed patch must pass the old evaluation to count as a blind spot.
 3. **Executor:** The sandboxed candidate sees inputs, never expected outputs. A separate event-ledger oracle computes contract outcomes.
-4. **Test author:** A fresh Meta context sees the specification and observed failures, without implementation or attacker reasoning. It returns JSON scenarios, not executable assertions.
+4. **Test author:** A fresh OpenAI context sees the specification and observed failures, without implementation or attacker reasoning. It returns JSON scenarios, not executable assertions.
 5. **Promotion:** Frozen tests must catch additional validation defects, preserve previous detections, and reject no correct control.
 6. **Final audit:** Different implementations are evaluated after proposals finish. Audit results never return to the model during the campaign.
 

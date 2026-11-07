@@ -1,0 +1,120 @@
+[
+  {
+    "provider": "subquadratic",
+    "purpose": "risk-routing",
+    "model": "subq-snap-1.1",
+    "request_sha256": "11eddd2a9d758a995423eab459febd603e9641940388898b35ba92a2d13520d7",
+    "status": "complete",
+    "usage": {
+      "input_tokens": 1898,
+      "output_tokens": 0
+    },
+    "seconds": 1.016,
+    "response_sha256": "ed537364b5d29e0b8d8b4d1f60c3d976f390cd21f0244dd9e09a4e62167c24a8"
+  },
+  {
+    "provider": "openai",
+    "purpose": "adversarial-patch",
+    "model": "gpt-5.4-mini-2026-03-17",
+    "request_sha256": "8864ffe9108515ff8fd2221ff79cdf8cbe300c5bcc63c601eef8fb9d85955016",
+    "status": "complete",
+    "usage": {
+      "input_tokens": 1710,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 947,
+      "output_tokens_details": {
+        "reasoning_tokens": 202
+      },
+      "total_tokens": 2657
+    },
+    "seconds": 4.364,
+    "response_sha256": "0529b7191f262f1c23bd9413741ac7981cb32b6163cbcc5d932e09a062577d26"
+  },
+  {
+    "provider": "openai",
+    "purpose": "test-proposal-1",
+    "model": "gpt-5.4-mini-2026-03-17",
+    "request_sha256": "76f321550a5997efef00c90a7aed9be5616095584c8a0b6dfbf0079ca74395f6",
+    "status": "complete",
+    "usage": {
+      "input_tokens": 2485,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 801,
+      "output_tokens_details": {
+        "reasoning_tokens": 109
+      },
+      "total_tokens": 3286
+    },
+    "seconds": 5.47,
+    "response_sha256": "1607027fc55ce459d93bd392a79b67ddb0741bb369b3ee8bf587da87883ed1b3"
+  },
+  {
+    "provider": "openai",
+    "purpose": "test-proposal-2",
+    "model": "gpt-5.4-mini-2026-03-17",
+    "request_sha256": "d5dc324edb8026b68e1c3c79bca645c50aae20c5f11f2686d41b65dae34a922f",
+    "status": "complete",
+    "usage": {
+      "input_tokens": 4146,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 823,
+      "output_tokens_details": {
+        "reasoning_tokens": 47
+      },
+      "total_tokens": 4969
+    },
+    "seconds": 3.176,
+    "response_sha256": "b20070e6bddae535c3152e842945284df38c638ee07f217fdc8858ac96746faa"
+  },
+  {
+    "provider": "openai",
+    "purpose": "test-proposal-3",
+    "model": "gpt-5.4-mini-2026-03-17",
+    "request_sha256": "4034332b4982b630a403722e57985ccf10b0e82bb1d6f4c71a9ca46454e74b55",
+    "status": "complete",
+    "usage": {
+      "input_tokens": 6088,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 812,
+      "output_tokens_details": {
+        "reasoning_tokens": 89
+      },
+      "total_tokens": 6900
+    },
+    "seconds": 3.67,
+    "response_sha256": "7b80dc7802d1a0bea45be882d44f28b94c5e61707eb918a30279a990a981847c"
+  },
+  {
+    "provider": "openai",
+    "purpose": "test-proposal-4",
+    "model": "gpt-5.4-mini-2026-03-17",
+    "request_sha256": "3945691d5655905f45f348e55a2e41905729e6c51872e7b5f7a1e505c0212c7a",
+    "status": "complete",
+    "usage": {
+      "input_tokens": 7784,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 2176
+      },
+      "output_tokens": 881,
+      "output_tokens_details": {
+        "reasoning_tokens": 84
+      },
+      "total_tokens": 8665
+    },
+    "seconds": 3.629,
+    "response_sha256": "112eca1358d043add81358784635b5d5c06ca36c853efe8ab83e665042aa9a42"
+  }
+]

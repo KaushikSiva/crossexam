@@ -13,13 +13,13 @@ CrossExam currently verifies one synthetic, sequential reservation API. Its test
 
 All seeded variants are hand-authored and public. They are withheld from model prompts, not secret from the repository's authors or readers. Audit variants exercise familiar defect families through different code changes; we do not claim generalization to wholly unseen bug classes. The audit is opened once **per campaign**. Repeated development runs on a public corpus do not create a fresh scientific holdout each time.
 
-Validation is reused across three proposal rounds and is therefore a development signal. The final audit is kept out of proposal generation. We publish both denominators and the missed cases, rather than presenting validation performance as final generalization.
+Validation is reused across four live proposal rounds (three in fixture mode) and is therefore a development signal. The final audit is kept out of proposal generation. We publish both denominators and the missed cases, rather than presenting validation performance as final generalization.
 
 ## Independence boundaries
 
-The attacker sees the contract, original implementation, and baseline scenarios. The test author receives a fresh context containing the contract, the current input scenarios, and observed counterexamples. It receives no implementation, attacker reasoning, reference-model code, validation variants, or audit variants.
+The attacker sees the contract, original implementation, and baseline scenarios. The test author receives a fresh context containing the contract, the current input scenarios, and observed counterexamples. In live mode it also receives prior aggregate validation counts, gate decisions, and its previously proposed inputs. It receives no implementation, attacker reasoning, reference-model code, validation variants, or audit variants.
 
-Both contexts may use the same Meta model. Separate contexts reduce direct contamination; they do not eliminate correlated model blind spots.
+Both contexts use the same OpenAI model in the published live run; the optional Meta adapter has the same separation boundaries. Separate contexts reduce direct contamination; they do not eliminate correlated model blind spots.
 
 The model emits JSON inputs, never expected answers or executable assertion code. An independent event-ledger oracle computes the expected responses. The candidate receives only its two modules, a minimal input/output worker, and scenario inputs. Model confidence never overrides execution.
 
@@ -33,9 +33,9 @@ The **evaluation suite** improves. Model weights are unchanged. Every candidate 
 2. Every previously detected validation implementation remains detected.
 3. No correct control is rejected.
 
-A system-injected regression challenge proposes reverting to the original smoke suite. It passes through the same gate and is rejected. This is explicitly labeled; it is not portrayed as a spontaneous model mistake.
+Fixture mode includes a labeled system-injected regression challenge that proposes reverting to the smoke suite. **Live mode never injects this challenge.** In the published OpenAI run all four proposals earned promotion; there were no rejections. Rejection behavior is tested separately with no-gain, lost-coverage, and false-rejection cases.
 
-Local mode uses hand-authored attacks and test proposals to reproduce the mechanism without credentials. Live mode uses Subquadratic risk routing and Meta attack/test generation. API responses, token usage, latency, and request/response hashes are saved. Live failures are reported instead of silently substituting fixtures.
+Local mode uses hand-authored attacks and test proposals to reproduce the mechanism without credentials. Live mode defaults to Subquadratic risk routing and OpenAI attack/test generation. Each round prioritizes discovery families still undetected by the active suite, then asks for new tests using aggregate validation feedback. All four rounds are budgeted before the run starts. One generated attack is combined with five labeled seeded defects. Hand-authored contract probes discover witnesses; the new evaluation proposals are model-generated. The optional `--generator meta` uses the Meta adapter instead. API responses, token usage, latency, and request/response hashes are saved. Live failures are reported instead of silently substituting fixtures.
 
 ## Execution and reproducibility
 
@@ -51,6 +51,12 @@ Local mode uses hand-authored attacks and test proposals to reproduce the mechan
 
 The corpus is small and synthetic. A result such as 7/8 means seven particular seeded defects were caught; it is not an estimate of production detection accuracy. Four correct controls provide a useful sanity check, not a precise false-positive-rate estimate.
 
-Execution-time charts sum the measured wall duration of each candidate execution. They are not CPU utilization or end-to-end API latency. Reused score records retain their original execution durations. Provider token usage comes from API responses; dollar costs are not inferred.
+Execution-time charts sum the measured wall duration of each candidate execution. They are not CPU utilization or end-to-end API latency. Reused score records retain their original execution durations. Provider token usage comes from API responses. The README separately reports a transparent estimate using the published OpenAI token rates; it excludes other providers and is not a billing receipt.
 
 Concurrency, persistence, arbitrary language support, real production repositories, and automatic merging are outside this prototype's current scope.
+
+## First live OpenAI campaign
+
+The immutable archive is [openai-live-001](evidence/openai-live-001/report.json), engine commit `8161ddb`. It completed in 25.456 seconds: one live Subquadratic call, one OpenAI attack, and four OpenAI test proposals. Validation detection was 1, 4, 5, 6, and 7 of 8. The final audit improved from 1/8 to 6/8, with 0/4 correct controls rejected. Both misses remain in the published report. No prompt or suite was revised after opening this audit, and no follow-up run was selected for a better score.
+
+The older fixture campaign achieved 7/8 on this audit. We retain it as historical evidence, rather than presenting it as a live model result. The public audit is not a new scientific holdout: it was already available to the project authors before this campaign.

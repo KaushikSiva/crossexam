@@ -1,0 +1,73 @@
+{
+  "name": "release is idempotent",
+  "family": "inventory",
+  "passed": false,
+  "actions": [
+    {
+      "op": "reserve",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 2
+    },
+    {
+      "op": "release",
+      "tenant": "atlas",
+      "key": "order-1"
+    },
+    {
+      "op": "release",
+      "tenant": "atlas",
+      "key": "order-1"
+    },
+    {
+      "op": "stock",
+      "tenant": "atlas",
+      "sku": "widget"
+    }
+  ],
+  "expected": [
+    {
+      "status": "reserved",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 2
+    },
+    {
+      "status": "released",
+      "tenant": "atlas",
+      "key": "order-1"
+    },
+    {
+      "status": "released",
+      "tenant": "atlas",
+      "key": "order-1"
+    },
+    {
+      "available": 10
+    }
+  ],
+  "actual": [
+    {
+      "status": "reserved",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 2
+    },
+    {
+      "status": "released",
+      "tenant": "atlas",
+      "key": "order-1"
+    },
+    {
+      "status": "released",
+      "tenant": "atlas",
+      "key": "order-1"
+    },
+    {
+      "available": 12
+    }
+  ]
+}

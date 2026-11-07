@@ -1,73 +1,35 @@
-# CrossExam — hackathon submission
+# CrossExam submission
 
-Status: working engine, local and live-Subquadratic campaigns, published landing page, OpenUI evidence renderer, narrated video, and reproducible evidence. Meta's current request returns HTTP 402; do not count an unverified Meta run as a result.
+**Team:** CrossExam
 
-## Team Name
+**Member:** Kaushik Sivakumar (`kaushik07`)
 
-CrossExam
-
-## Team Members
-
-Kaushik Sivakumar — participant handle `kaushik07`; GitHub `KaushikSiva`.
-
-## Project Description
+**Project description** (2336/3,000 characters)
 
 CrossExam asks a question every coding-agent team should fear: can broken software still get a perfect score on our tests?
 
-It challenges an evaluation with plausible faulty implementations, executes them in an OS sandbox, and checks their behavior against a separate contract model. A fault counts as a blind spot only when the original tests pass and an independent check reproduces the violation. CrossExam minimizes the failure into an executable counterexample.
+It puts evaluations on trial. An attacker proposes a faulty implementation. An OS sandbox runs it against an independent contract model. A fault only counts when the original tests pass and an executable counterexample proves the violation.
 
-The demo exposes a one-line cache optimization that passes every existing test but returns one customer's reservation to another. Two requests prove the bug.
+In our live demo, OpenAI generates an inventory optimization that passes all four existing tests. But reserving two units for one customer also reduces another customer's stock. CrossExam proves it with two requests.
 
-CrossExam then improves the evaluation itself. Each proposed suite is versioned and hashed before validation. Promotion requires additional defects caught, no lost coverage, and no incorrect rejection of correct implementations. A deliberately weakened proposal is rejected, preserving the stronger suite. A separate final audit opens only after learning ends.
+A fresh model context then writes input-only tests from the contract and observed failures. It cannot see the implementation, attacker reasoning, oracle, or held-out variants. The oracle supplies expected outcomes. Each proposal is frozen and hashed before evaluation. Promotion requires additional validation detections, no lost coverage, and no false rejection of correct code. Prior aggregate feedback guides the next proposal.
 
-On our small synthetic benchmark, final-audit detection improves from 1/8 seeded defects to 7/8, with 0/4 correct controls rejected. We publish the remaining miss, every suite version, source hashes, execution traces, and the methodology. These are results on particular seeded defects, not a claim about production accuracy.
+One real 25-second campaign improved validation detection from 1 to 4 to 5 to 6 to 7 of 8 defects across four model-generated proposals. All four earned promotion; no rejection was staged. A separate final audit improved from 1/8 to 6/8, with 0/4 correct controls rejected. Both misses are published. This public synthetic corpus is withheld from model prompts, not previously unseen by the authors; these are not production accuracy claims.
 
-Subquadratic is used live to prioritize contract risks from repository context. Its recorded routing call consumed 1,898 input tokens and changed the exploration order. The current measured run uses explicitly labeled local attack/test fixtures. A Meta Model API adapter for adversarial patch generation and independent test authoring is implemented; its live run is pending credited access and is not included in our measured results.
+Subquadratic's SubQ Snap 1.1 is used live to prioritize risks from the contract, repository, and tests. OpenAI GPT-5.4 mini generates the faulty patch and independent test proposals. Five OpenAI calls used about $0.034 at published token rates, excluding Subquadratic and narration. Every request, response, suite, hash, and decision is archived. Meta's optional adapter remains available but is not claimed as a successful integration.
 
-The monochrome React/Three.js/Motion landing page and OpenUI evidence explorer turn the report into an interactive explanation. OpenUI components read their metrics directly from recorded evidence. The Python engine has no third-party dependencies and is reproduced in Docker by GitHub Actions.
+A monochrome React/Three.js/Motion landing page and OpenUI evidence explorer make the results inspectable. OpenUI reads metrics directly from the report. The dependency-free Python engine enforces sandbox boundaries and runs in Docker CI. Its gate also has explicit tests for no-gain proposals, lost coverage, and false rejections.
 
-Primary track: Trust but Verify. Versioned evaluation improvements and rejection of regressions also address The System That Gets Better.
+Primary track: Trust but Verify. The versioned evaluation loop also addresses The System That Gets Better.
 
-## Public GitHub Repository
+**Public GitHub:** https://github.com/KaushikSiva/crossexam
 
-https://github.com/KaushikSiva/crossexam
+**One-minute demo:** https://kaushiksiva.github.io/crossexam/demo.html
 
-## 1-Minute Demo Video
+**Direct MP4:** https://kaushiksiva.github.io/crossexam/assets/crossexam-demo.mp4
 
-Watch page: https://kaushiksiva.github.io/crossexam/demo.html
+**Partner products:** Subquadratic. OpenAI and OpenUI are also used; select them only if the form offers them. Do not select Meta as a successful live integration.
 
-Direct MP4: https://kaushiksiva.github.io/crossexam/assets/crossexam-demo.mp4
+**Cerebral Valley feedback:** Publish prize-stacking rules and a precise judging rubric alongside the participant guide.
 
-Verified video duration: 51.8 seconds. 1600×900 H.264 video, AAC narration, subtitles. The narration uses ElevenLabs V4 with the premade Brian voice.
-
-## Which partner products did you use?
-
-- **Subquadratic:** verified live API use in a completed campaign.
-- **Meta Model API:** adapter implemented, but the current request returns HTTP 402. Select Meta as a demonstrated integration only after a successful live campaign is recorded; update the description and evidence accordingly.
-- Do not select Fetch.ai, Google DeepMind, or MongoDB: no use is claimed by this project.
-
-OpenUI is an additional open-source integration, not one of the listed prize sponsors.
-
-## Feedback for Cerebral Valley
-
-Publish prize-stacking rules and a precise judging rubric alongside the participant guide.
-
-## Feedback for partner products
-
-SubQ's typed decisions made risk routing simple. Clearer credit activation and billing status would help teams unblock Meta testing.
-
-## Judge's walkthrough
-
-1. Open the investigation: the original suite passes, but the two-request tenant leak violates the contract.
-2. Show the validation curve and the rejected weaker proposal.
-3. Open the final audit: 1/8 to 7/8 detections, zero correct controls rejected, with the missed case visible.
-4. Show the real Subquadratic request/response and the information withheld from the test author.
-5. Offer the replay command and public evidence archive.
-
-## Before submitting
-
-- Use the final video and report versions if live partner access changes.
-- Confirm all team members in the event's submission form.
-- The public repository, watch page, direct video, and evidence page must open without signing in.
-- Submit before 5:00 PM Pacific on November 7, 2026 (6:30 AM IST on November 8).
-- Prize stacking has not been confirmed; do not assume the listed awards can be combined.
+**Partner feedback:** SubQ’s typed risk decisions were useful and fast. Clearer credit activation would help teams resolve Meta billing restrictions.
