@@ -113,7 +113,7 @@ Separate contexts do not eliminate shared-model blind spots. The specification, 
 
 React, Three.js, Motion, and [OpenUI](https://github.com/thesysdev/openui) power the landing page. A component such as `MeasuredMetric("audit")` reads its numbers from the saved report. Current briefs use recorded programs and are labeled accordingly.
 
-![Animated landing page](docs/assets/landing-hero.png)
+![Interactive 3D landing page](docs/assets/landing-motion.gif)
 
 ![OpenUI renders report-backed evidence](docs/assets/landing-openui.png)
 

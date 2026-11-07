@@ -1,4 +1,5 @@
 """Mux the real browser capture, narration and timed captions into a <60s film."""
+from fractions import Fraction
 import hashlib
 import json
 from pathlib import Path
@@ -7,7 +8,12 @@ import subprocess
 raw=Path('recordings/raw/crossexam-capture.webm')
 timing=json.loads(Path('recordings/capture-timing.json').read_text())
 duration=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',str(raw)],text=True))
-prefix=max(0,duration-timing['contentDuration'])
+if not timing.get('syncMarker'):raise SystemExit('Re-record with an explicit synchronization marker.')
+rate=Fraction(subprocess.check_output(['ffprobe','-v','error','-select_streams','v:0','-show_entries','stream=r_frame_rate','-of','default=noprint_wrappers=1:nokey=1',str(raw)],text=True).strip())
+pixels=subprocess.check_output(['ffmpeg','-v','error','-i',str(raw),'-vf','crop=2:2:0:0,format=rgb24','-f','rawvideo','-'])
+markers=[i//12 for i in range(0,len(pixels),12) if pixels[i]<60 and pixels[i+1]>190 and pixels[i+2]<80]
+if len(markers)<3:raise SystemExit('Synchronization marker missing; refusing to guess audio alignment.')
+prefix=float(Fraction(markers[-1]+1)/rate)
 output=Path('docs/assets/crossexam-demo.mp4')
 style='FontName=Arial,FontSize=19,PrimaryColour=&H00FFFFFF,OutlineColour=&H00111111,BorderStyle=3,Outline=1,Shadow=0,MarginV=22'
 subprocess.run(['ffmpeg','-y','-loglevel','warning','-ss',str(prefix),'-i',str(raw),'-i','recordings/narration.wav',

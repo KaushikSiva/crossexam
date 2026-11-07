@@ -1,0 +1,81 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:01.073
+Meet CrossExam.
+
+2
+00:00:01.430 --> 00:00:07.044
+It finds broken software that your tests accept, then proves whether stronger evaluations actually help.
+
+3
+00:00:07.295 --> 00:00:09.154
+Here, all four tests pass.
+
+4
+00:00:09.369 --> 00:00:12.122
+But an optimization drops the tenant from the cache key.
+
+5
+00:00:12.373 --> 00:00:17.164
+Two customers reuse the same request ID, and the second gets the first customer's reservation.
+
+6
+00:00:17.593 --> 00:00:20.239
+CrossExam reduces the failure to two requests.
+
+7
+00:00:20.454 --> 00:00:22.814
+The eval improves through versioned proposals.
+
+8
+00:00:23.029 --> 00:00:28.106
+Each suite is frozen, then challenged on separate validation defects and correct implementations.
+
+9
+00:00:28.321 --> 00:00:30.109
+Only measured gains earn promotion.
+
+10
+00:00:30.466 --> 00:00:32.540
+A deliberately weakened suite is rejected.
+
+11
+00:00:32.970 --> 00:00:34.579
+Now the final audit opens.
+
+12
+00:00:34.757 --> 00:00:39.835
+Detection rises from 1 of 8 defects to 7 of 8, with 0 correct controls rejected.
+
+13
+00:00:40.264 --> 00:00:43.053
+Every result, including remaining misses, is published.
+
+14
+00:00:43.483 --> 00:00:46.772
+Subquadratic prioritizes risks from repository context.
+
+15
+00:00:47.201 --> 00:00:49.562
+This run uses local attack and test fixtures.
+
+16
+00:00:49.919 --> 00:00:52.387
+OpenUI makes every result inspectable.
+
+17
+00:00:52.637 --> 00:00:53.352
+CrossExam.
+
+18
+00:00:53.710 --> 00:00:54.818
+Your tests passed.
+
+19
+00:00:54.997 --> 00:00:56.070
+Your software failed.
+
+20
+00:00:56.499 --> 00:00:57.572
+Here is the evidence.

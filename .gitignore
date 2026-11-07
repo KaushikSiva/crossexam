@@ -16,3 +16,4 @@ recordings/demo.srt
 *.wav
 *.log
 .push-clock
+recordings/capture-timing.json
