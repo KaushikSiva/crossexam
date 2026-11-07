@@ -165,7 +165,7 @@ function curveSVG(){
   let active=versions[0].validation,points=[];
   versions.forEach((v,i)=>{if(v.accepted)active=v.validation;points.push([x(i),y(pct(active)),pct(active)]);});
   const grid=[0,25,50,75,100].map(n=>`<line x1="${L}" x2="${W-R}" y1="${y(n)}" y2="${y(n)}" stroke="#e1e1e1" stroke-dasharray="${n?'3 5':'0'}"/><text x="${L-12}" y="${y(n)+4}" text-anchor="end">${n}%</text>`).join('');
-  const path=points.map((p,i)=>i?`H${p[0]}V${p[1]}`:`M${p[0]},${p[1]}`).join(' ');
+  const path=points.map((p,i)=>`${i?'L':'M'}${p[0]},${p[1]}`).join(' ');
   const fill=`${path} L${points.at(-1)[0]},${y(0)} L${L},${y(0)} Z`;
   const marks=points.map((p,i)=>`<circle class="pt" cx="${p[0]}" cy="${p[1]}" r="5" fill="#f7f7f7" stroke="#242424" stroke-width="2.5"><title>After v${i}: ${p[2]}%</title></circle><text class="value-label" x="${p[0]}" y="${p[1]-12}" text-anchor="middle">${p[2]}%</text><text x="${p[0]}" y="${H-17}" text-anchor="middle">v${i}${versions[i].accepted?'':' ×'}</text>`).join('');
   const rejected=versions.map((v,i)=>!v.accepted?`<line class="drop" x1="${x(i)}" x2="${x(i)}" y1="${points[i][1]+7}" y2="${y(pct(v.validation))-7}" stroke="#848484" stroke-dasharray="3 4"/><circle class="ghost" cx="${x(i)}" cy="${y(pct(v.validation))}" r="5" fill="#555555"><title>Rejected v${i}: ${pct(v.validation)}%</title></circle>`:'').join('');
