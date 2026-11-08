@@ -136,15 +136,15 @@ python3 -m crossexam run --live --generator gemini
 python3 -m crossexam run --live --generator fetchai
 ```
 
-| Integration | Role | Verified status |
-| --- | --- | --- |
-| **Subquadratic / SubQ Snap 1.1** | Rank contract risks from repository, specification, and existing tests | Live routing succeeded; 1,898 input tokens in 1.016 s in the published OpenAI campaign |
-| **OpenAI / GPT‑5.4 mini** | Generate a faulty patch and four independently authored test proposals | Five successful live generation calls; all artifacts published |
+| Integration | Role 
+| --- | ---
+| **Subquadratic / SubQ Snap 1.1** | Rank contract risks from repository, specification, and existing tests |
+| **OpenAI / GPT‑5.4 mini** | Generate a faulty patch and four independently authored test proposals 
 | **Meta Model API / Muse Spark** | Primary code-generation integration: propose adversarial implementations |  |
-| **Google DeepMind / Gemini 3.8 Flash** | Independently author stronger tests | Four successful live calls; four promotions reach 23/30 validation and 24/30 final-audit detections |
-| **Fetch.ai / ASI:One + uAgents** | Generate attacks; expose CrossExam as a callable verification agent | Live ASI:One attack reproduced; real uAgents requests block faulty code and accept correct code with verified signed receipts |
-| **MongoDB** | Archive evidence, retrieve frozen evaluations, and store signed verification receipts | 40 campaign artifacts archived and read back from local MongoDB Community 8.0.13; two agent proof records stored |
-| **OpenUI** | Compose interactive briefs from components bound to actual report data | Implemented and browser-tested |
+| **Google DeepMind / Gemini 3.8 Flash** | Independently author stronger tests|
+| **Fetch.ai / ASI:One + uAgents** | Generate attacks; expose CrossExam as a callable verification agent 
+| **MongoDB** | Archive evidence, retrieve frozen evaluations, and store signed verification receipts 
+| **OpenUI** | Compose interactive briefs from components bound to actual report data
 
 No paid API runs in CI. Missing keys and provider failures are visible errors; live mode never silently substitutes fixtures. Requests, responses, usage, latency, and hashes are saved without authorization headers or keys.
 
