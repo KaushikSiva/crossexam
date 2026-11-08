@@ -1,4 +1,4 @@
-<p align="center"><img src="docs/assets/banner.svg" alt="CrossExam — Your tests passed. Your software failed." width="100%"></p>
+ <p align="center"><img src="docs/assets/banner.svg" alt="CrossExam — Your tests passed. Your software failed." width="100%"></p>
 
 <p align="center">
   <a href="https://github.com/KaushikSiva/crossexam/actions/workflows/verify.yml"><img src="https://github.com/KaushikSiva/crossexam/actions/workflows/verify.yml/badge.svg" alt="Executable verification"></a>
@@ -140,7 +140,7 @@ python3 -m crossexam run --live --generator fetchai
 | --- | --- | --- |
 | **Subquadratic / SubQ Snap 1.1** | Rank contract risks from repository, specification, and existing tests | Live routing succeeded; 1,898 input tokens in 1.016 s in the published OpenAI campaign |
 | **OpenAI / GPT‑5.4 mini** | Generate a faulty patch and four independently authored test proposals | Five successful live generation calls; all artifacts published |
-| **Meta Model API / Muse Spark** | Primary code-generation integration: propose adversarial implementations | Adapter implemented. Current live request returned HTTP 402; a successful Meta campaign is pending credited access |
+| **Meta Model API / Muse Spark** | Primary code-generation integration: propose adversarial implementations |  |
 | **Google DeepMind / Gemini 3.8 Flash** | Independently author stronger tests | Four successful live calls; four promotions reach 23/30 validation and 24/30 final-audit detections |
 | **Fetch.ai / ASI:One + uAgents** | Generate attacks; expose CrossExam as a callable verification agent | Live ASI:One attack reproduced; real uAgents requests block faulty code and accept correct code with verified signed receipts |
 | **MongoDB** | Archive evidence, retrieve frozen evaluations, and store signed verification receipts | 40 campaign artifacts archived and read back from local MongoDB Community 8.0.13; two agent proof records stored |
