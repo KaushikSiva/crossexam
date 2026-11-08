@@ -1,0 +1,43 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\n  \"cases\": [\n    {\n      \"actions_json\": \"[{\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"t1\\\", \\\"key\\\": \\\"k1\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 5}, {\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"t2\\\", \\\"key\\\": \\\"k1\\\", \\\"sku\\\": \\\"sensor\\\", \\\"qty\\\": 5}, {\\\"op\\\": \\\"stock\\\", \\\"tenant\\\": \\\"t1\\\", \\\"sku\\\": \\\"widget\\\"}, {\\\"op\\\": \\\"stock\\\", \\\"tenant\\\": \\\"t2\\\", \\\"sku\\\": \\\"sensor\\\"}]\",\n      \"family\": \"tenant_isolation\",\n      \"name\": \"cross tenant cross sku stock isolation\"\n    },\n    {\n      \"actions_json\": \"[{\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"atlas\\\", \\\"key\\\": \\\"k1\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 10}, {\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"atlas\\\", \\\"key\\\": \\\"k1\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 10}, {\\\"op\\\": \\\"release\\\", \\\"tenant\\\": \\\"atlas\\\", \\\"key\\\": \\\"k1\\\"}, {\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"atlas\\\", \\\"key\\\": \\\"k1\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 10}, {\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"atlas\\\", \\\"key\\\": \\\"k1\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 10}, {\\\"op\\\": \\\"stock\\\", \\\"tenant\\\": \\\"atlas\\\", \\\"sku\\\": \\\"widget\\\"}]\",\n      \"family\": \"idempotency\",\n      \"name\": \"post release double idempotent retry\"\n    },\n    {\n      \"actions_json\": \"[{\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"alpha\\\", \\\"key\\\": \\\"k1\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 1}, {\\\"op\\\": \\\"release\\\", \\\"tenant\\\": \\\"alpha\\\", \\\"key\\\": \\\"k1\\\"}, {\\\"op\\\": \\\"release\\\", \\\"tenant\\\": \\\"alpha\\\", \\\"key\\\": \\\"k1\\\"}, {\\\"op\\\": \\\"stock\\\", \\\"tenant\\\": \\\"alpha\\\", \\\"sku\\\": \\\"widget\\\"}]\",\n      \"family\": \"idempotency\",\n      \"name\": \"single release idempotency stock check\"\n    },\n    {\n      \"actions_json\": \"[{\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"beta\\\", \\\"key\\\": \\\"k1\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 5}, {\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"beta\\\", \\\"key\\\": \\\"k1\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 6}, {\\\"op\\\": \\\"stock\\\", \\\"tenant\\\": \\\"beta\\\", \\\"sku\\\": \\\"widget\\\"}]\",\n      \"family\": \"payload_binding\",\n      \"name\": \"conflict preserves original stock\"\n    },\n    {\n      \"actions_json\": \"[{\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"gamma\\\", \\\"key\\\": \\\"k1\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 5}, {\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"gamma\\\", \\\"key\\\": \\\"k1\\\", \\\"sku\\\": \\\"sensor\\\", \\\"qty\\\": 5}, {\\\"op\\\": \\\"stock\\\", \\\"tenant\\\": \\\"gamma\\\", \\\"sku\\\": \\\"widget\\\"}, {\\\"op\\\": \\\"stock\\\", \\\"tenant\\\": \\\"gamma\\\", \\\"sku\\\": \\\"sensor\\\"}]\",\n      \"family\": \"payload_binding\",\n      \"name\": \"sku conflict does not alter other sku stock\"\n    },\n    {\n      \"actions_json\": \"[{\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"delta\\\", \\\"key\\\": \\\"k1\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 11}]\",\n      \"family\": \"validation\",\n      \"name\": \"quantity exactly at max limit valid\"\n    },\n    {\n      \"actions_json\": \"[{\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"epsilon\\\", \\\"key\\\": \\\"k1\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": -1}]\",\n      \"family\": \"validation\",\n      \"name\": \"negative quantity invalid no state change\"\n    },\n    {\n      \"actions_json\": \"[{\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"zeta\\\", \\\"key\\\": \\\"k1\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 3}, {\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"zeta\\\", \\\"key\\\": \\\"k1\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 8}, {\\\"op\\\": \\\"stock\\\", \\\"tenant\\\": \\\"zeta\\\", \\\"sku\\\": \\\"widget\\\"}]\",\n      \"family\": \"inventory\",\n      \"name\": \"insufficient after partial consumption\"\n    }\n  ]\n,\n  \"rationale\": \"The previous suite failed to detect silent state corruption in tenant isolation (cross-tenant stock leakage) and idempotency (double consumption on retry). This new suite introduces: 1) Cross-tenant/cross-sku isolation checks to ensure keys don't bleed inventory across tenants or SKUs. 2) Post-release idempotency verification with stock assertions to confirm retries don't consume extra stock. 3) Explicit validation of boundary quantities (max valid, negative) to catch input sanitization failures that lead to state mutations. 4) Payload binding tests that verify conflict responses do not silently update stock levels.\"\n}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning_content": null
+      }
+    }
+  ],
+  "created": 1794094590,
+  "id": "chatcmpl-b4e6703e-1560-4729-a91c-156a28a39565",
+  "model": "asi1-mini",
+  "moderation": null,
+  "object": "chat.completion",
+  "service_tier": null,
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 1153,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens": 6057,
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": 3216,
+      "created_cache_tokens": 1072,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 7210
+  }
+}

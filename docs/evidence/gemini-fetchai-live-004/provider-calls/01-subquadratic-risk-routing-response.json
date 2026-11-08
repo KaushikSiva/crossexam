@@ -1,0 +1,29 @@
+{
+  "model": "subq-snap-1.1",
+  "answers": {
+    "tenant_isolation": {
+      "type": "noul",
+      "noul": 0.9992268085479736
+    },
+    "idempotency": {
+      "type": "noul",
+      "noul": 0.9991809725761414
+    },
+    "payload_binding": {
+      "type": "noul",
+      "noul": 0.917823851108551
+    },
+    "inventory": {
+      "type": "noul",
+      "noul": 0.8288024663925171
+    },
+    "validation": {
+      "type": "noul",
+      "noul": 0.990882396697998
+    }
+  },
+  "usage": {
+    "input_tokens": 1898,
+    "output_tokens": 0
+  }
+}

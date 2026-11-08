@@ -1,0 +1,62 @@
+{
+  "selected": "expanded30-live-005",
+  "attempts": [
+    {
+      "id": "fetchai-live-001",
+      "status": "complete",
+      "evidence": "evidence/fetchai-live-001/",
+      "mode": "live OpenAI attacker + Fetch.ai / ASI:One test author + Subquadratic",
+      "validation": 5,
+      "audit": 4,
+      "denominator": 8,
+      "false_rejections": 0,
+      "seconds": 29.775
+    },
+    {
+      "id": "cross-provider-live-002",
+      "status": "failed before final audit",
+      "evidence": "evidence/cross-provider-live-002/",
+      "reason": "Invalid generated action JSON in proposal 3; this prompted the bounded-repair implementation."
+    },
+    {
+      "id": "cross-provider-live-003",
+      "status": "complete",
+      "evidence": "evidence/cross-provider-live-003/",
+      "mode": "live Fetch.ai / ASI:One attacker + OpenAI test author + Subquadratic",
+      "validation": 6,
+      "audit": 5,
+      "denominator": 8,
+      "false_rejections": 0,
+      "seconds": 33.739
+    },
+    {
+      "id": "gemini-fetchai-live-004",
+      "status": "complete",
+      "evidence": "evidence/gemini-fetchai-live-004/",
+      "mode": "live Fetch.ai / ASI:One attacker + Google DeepMind / Gemini test author + Subquadratic",
+      "validation": 8,
+      "audit": 8,
+      "denominator": 8,
+      "false_rejections": 0,
+      "seconds": 257.704
+    },
+    {
+      "id": "expanded30-live-005",
+      "status": "complete",
+      "evidence": "evidence/expanded30-live-005/",
+      "mode": "live Fetch.ai / ASI:One attacker + Google DeepMind / Gemini test author + Subquadratic",
+      "validation": 23,
+      "audit": 24,
+      "denominator": 30,
+      "false_rejections": 0,
+      "seconds": 156.654
+    }
+  ],
+  "historical_baseline": {
+    "id": "openai-live-001",
+    "validation": 7,
+    "audit": 6,
+    "denominator": 8
+  },
+  "note": "Development history on public synthetic corpora. The expanded revision has 30 faults per split; prior runs have 8. Scores across revisions are not directly comparable. Prompts and providers changed during earlier development; this is not a controlled provider benchmark. All attempts are retained."
+}

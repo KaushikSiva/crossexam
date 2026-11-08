@@ -1,0 +1,28 @@
+{
+  "name": "negative quantity is invalid",
+  "family": "validation",
+  "passed": false,
+  "actions": [
+    {
+      "op": "reserve",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": -2
+    }
+  ],
+  "expected": [
+    {
+      "error": "invalid"
+    }
+  ],
+  "actual": [
+    {
+      "status": "reserved",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": -2
+    }
+  ]
+}

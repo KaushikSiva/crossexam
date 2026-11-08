@@ -7,6 +7,10 @@ import subprocess
 
 raw=Path('recordings/raw/crossexam-capture.webm')
 timing=json.loads(Path('recordings/capture-timing.json').read_text())
+if timing.get('timingSha256') != hashlib.sha256(Path('recordings/timing.json').read_bytes()).hexdigest():
+    raise SystemExit('Capture belongs to different narration timings; re-record before muxing.')
+if timing.get('captureSha256') != hashlib.sha256(raw.read_bytes()).hexdigest():
+    raise SystemExit('Capture hash differs from the recording receipt; re-record before muxing.')
 duration=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',str(raw)],text=True))
 if not timing.get('syncMarker'):raise SystemExit('Re-record with an explicit synchronization marker.')
 rate=Fraction(subprocess.check_output(['ffprobe','-v','error','-select_streams','v:0','-show_entries','stream=r_frame_rate','-of','default=noprint_wrappers=1:nokey=1',str(raw)],text=True).strip())

@@ -1,0 +1,7 @@
+{
+  "provider": "mongodb",
+  "database": "crossexam",
+  "campaign_id": "ebcd3c10d2521636cd552b31c97e17452bb07caebe0b45c45f8d7e88eefdb67f",
+  "artifacts": 41,
+  "status": "complete"
+}

@@ -1,0 +1,321 @@
+{
+  "version": 1,
+  "suite": [
+    {
+      "name": "new reservation",
+      "family": "inventory",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "release reservation",
+      "family": "inventory",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "release",
+          "tenant": "atlas",
+          "key": "order-1"
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "insufficient inventory",
+      "family": "inventory",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 6
+        },
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-2",
+          "sku": "widget",
+          "qty": 5
+        }
+      ]
+    },
+    {
+      "name": "independent products",
+      "family": "inventory",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "order-1",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "other",
+          "sku": "sensor",
+          "qty": 2
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "sensor"
+        }
+      ]
+    },
+    {
+      "name": "tenant case sensitivity and release isolation",
+      "family": "tenant_isolation",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "atlas",
+          "key": "k1",
+          "sku": "widget",
+          "qty": 1
+        },
+        {
+          "op": "reserve",
+          "tenant": "Atlas",
+          "key": "k1",
+          "sku": "widget",
+          "qty": 1
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        },
+        {
+          "op": "stock",
+          "tenant": "Atlas",
+          "sku": "widget"
+        },
+        {
+          "op": "release",
+          "tenant": "Atlas",
+          "key": "k1"
+        },
+        {
+          "op": "stock",
+          "tenant": "atlas",
+          "sku": "widget"
+        },
+        {
+          "op": "stock",
+          "tenant": "Atlas",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "key case and punctuation variants",
+      "family": "idempotency",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "beacon",
+          "key": "Order-1",
+          "sku": "sensor",
+          "qty": 2
+        },
+        {
+          "op": "reserve",
+          "tenant": "beacon",
+          "key": "order-1",
+          "sku": "sensor",
+          "qty": 2
+        },
+        {
+          "op": "reserve",
+          "tenant": "beacon",
+          "key": "order_1",
+          "sku": "sensor",
+          "qty": 2
+        },
+        {
+          "op": "stock",
+          "tenant": "beacon",
+          "sku": "sensor"
+        }
+      ]
+    },
+    {
+      "name": "failed reservation can be retried later",
+      "family": "inventory",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "cinder",
+          "key": "big",
+          "sku": "widget",
+          "qty": 10
+        },
+        {
+          "op": "reserve",
+          "tenant": "cinder",
+          "key": "retry",
+          "sku": "widget",
+          "qty": 1
+        },
+        {
+          "op": "release",
+          "tenant": "cinder",
+          "key": "big"
+        },
+        {
+          "op": "reserve",
+          "tenant": "cinder",
+          "key": "retry",
+          "sku": "widget",
+          "qty": 1
+        },
+        {
+          "op": "stock",
+          "tenant": "cinder",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "conflict after successful key with foreign sku and qty changes",
+      "family": "payload_binding",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "delta",
+          "key": "bind",
+          "sku": "widget",
+          "qty": 2
+        },
+        {
+          "op": "reserve",
+          "tenant": "delta",
+          "key": "bind",
+          "sku": "sensor",
+          "qty": 2
+        },
+        {
+          "op": "reserve",
+          "tenant": "delta",
+          "key": "bind",
+          "sku": "widget",
+          "qty": 3
+        },
+        {
+          "op": "stock",
+          "tenant": "delta",
+          "sku": "widget"
+        },
+        {
+          "op": "stock",
+          "tenant": "delta",
+          "sku": "sensor"
+        }
+      ]
+    },
+    {
+      "name": "validation boundaries and wrong types",
+      "family": "validation",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "echo",
+          "key": "q0",
+          "sku": "widget",
+          "qty": 0
+        },
+        {
+          "op": "reserve",
+          "tenant": "echo",
+          "key": "qfloat",
+          "sku": "widget",
+          "qty": 1.5
+        },
+        {
+          "op": "reserve",
+          "tenant": "echo",
+          "key": "qstr",
+          "sku": "widget",
+          "qty": "2"
+        },
+        {
+          "op": "reserve",
+          "tenant": "echo",
+          "key": "ok",
+          "sku": "widget",
+          "qty": 1
+        },
+        {
+          "op": "stock",
+          "tenant": "echo",
+          "sku": "widget"
+        }
+      ]
+    },
+    {
+      "name": "missing fields extra fields and unknown op",
+      "family": "mixed",
+      "actions": [
+        {
+          "op": "reserve",
+          "tenant": "foxtrot",
+          "key": "m1",
+          "qty": 1
+        },
+        {
+          "op": "reserve",
+          "tenant": "foxtrot",
+          "key": "m2",
+          "sku": "widget",
+          "qty": 1,
+          "note": "ignored"
+        },
+        {
+          "op": "bogus",
+          "tenant": "foxtrot",
+          "key": "m2",
+          "sku": "widget",
+          "qty": 1
+        },
+        {
+          "op": "release",
+          "tenant": "foxtrot",
+          "key": "m2"
+        },
+        {
+          "op": "stock",
+          "tenant": "foxtrot",
+          "sku": "widget"
+        }
+      ]
+    }
+  ],
+  "suite_sha256": "bcbc65bb1cd83a6b2491f45d35ff8faaa99a2e7f6fdebde3fbe5db187e98aaff",
+  "rationale": "Added previously untested clauses and partitions: tenant exact-match behavior with mixed case plus cross-tenant release/stock visibility; key identity variations using case and separators; failed-then-retried reservation lifecycle after inventory changes; payload binding conflicts when a successful key is replayed with different sku and then different qty; validation boundaries for qty at zero, float, and string types; and mixed invalid-input handling for missing required fields, unknown ops, and ignored extra fields, with stock observations after error paths to expose silent state changes.",
+  "origin": "live OpenAI; fresh context, implementation withheld"
+}

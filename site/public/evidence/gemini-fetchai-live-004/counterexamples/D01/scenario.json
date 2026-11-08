@@ -1,0 +1,53 @@
+{
+  "name": "same key, different customers",
+  "family": "tenant_isolation",
+  "passed": false,
+  "actions": [
+    {
+      "op": "reserve",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 2
+    },
+    {
+      "op": "reserve",
+      "tenant": "beacon",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 2
+    }
+  ],
+  "expected": [
+    {
+      "status": "reserved",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 2
+    },
+    {
+      "status": "reserved",
+      "tenant": "beacon",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 2
+    }
+  ],
+  "actual": [
+    {
+      "status": "reserved",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 2
+    },
+    {
+      "status": "reserved",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 2
+    }
+  ]
+}

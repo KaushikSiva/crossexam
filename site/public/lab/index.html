@@ -54,7 +54,21 @@
     </section>
     <footer><span id="footer-mode">Executable evidence, not opinion.</span><a href="https://github.com/KaushikSiva/crossexam#quick-start" target="_blank" rel="noreferrer">Reproduce ↗</a></footer>
   </main>
-  <dialog id="run-dialog"><form method="dialog"><button class="close" aria-label="Close">×</button></form><h2>New campaign</h2><p>All candidate code runs in an OS sandbox.</p><button class="run-option" id="start-local"><strong>Local benchmark <span>↗</span></strong><span>Fixtures only · no API cost</span></button><button class="run-option" id="start-subq"><strong>Subquadratic routing <span>↗</span></strong><span>Live risk routing · local fixtures</span></button><button class="run-option" id="start-live"><strong>OpenAI + Subquadratic <span>↗</span></strong><span>Live attacks, routing, and tests</span></button><p id="key-status" class="mono small"></p></dialog>
+  <dialog id="run-dialog">
+    <form method="dialog"><button class="close" aria-label="Close">×</button></form>
+    <h2>New campaign</h2><p>All candidate code runs in an OS sandbox.</p>
+    <button class="run-option" id="start-local"><strong>Local benchmark <span>↗</span></strong><span>Fixtures only · no API cost</span></button>
+    <button class="run-option" id="start-subq"><strong>Subquadratic routing <span>↗</span></strong><span>Live risk routing · local fixtures</span></button>
+    <div class="provider-options">
+      <label for="generator">Attack model</label>
+      <select id="generator"><option value="openai">OpenAI</option><option value="meta">Meta</option><option value="gemini">Google DeepMind · Gemini</option><option value="fetchai">Fetch.ai · ASI:One</option></select>
+      <label for="test-author">Independent test author</label>
+      <select id="test-author"><option value="">Same provider · fresh context</option><option value="openai">OpenAI</option><option value="meta">Meta</option><option value="gemini">Google DeepMind · Gemini</option><option value="fetchai">Fetch.ai · ASI:One</option></select>
+    </div>
+    <button class="run-option" id="start-live"><strong>Live campaign + Subquadratic <span>↗</span></strong><span>Generate attacks and tests with the selected models</span></button>
+    <label class="archive-option"><input type="checkbox" id="archive-mongo"> Archive campaign evidence to MongoDB</label>
+    <p id="key-status" class="mono small"></p>
+  </dialog>
   <div id="toast" role="status"></div>
   <script src="app.js"></script>
 </body>

@@ -1,0 +1,169 @@
+[
+  {
+    "provider": "subquadratic",
+    "purpose": "risk-routing",
+    "model": "subq-snap-1.1",
+    "request_sha256": "11eddd2a9d758a995423eab459febd603e9641940388898b35ba92a2d13520d7",
+    "status": "complete",
+    "usage": {
+      "input_tokens": 1898,
+      "output_tokens": 0
+    },
+    "seconds": 0.8,
+    "response_sha256": "ed537364b5d29e0b8d8b4d1f60c3d976f390cd21f0244dd9e09a4e62167c24a8"
+  },
+  {
+    "provider": "fetchai",
+    "purpose": "adversarial-patch",
+    "model": "asi1-mini",
+    "request_sha256": "2adaedac9974af6e96d82e8cdb5cdff83b5a47dcd330886b235f9058e3e80305",
+    "status": "complete",
+    "usage": {
+      "completion_tokens": 1461,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": null
+      },
+      "prompt_tokens": 1912,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cached_tokens": 0,
+        "created_cache_tokens": 0,
+        "multimodal_tokens": null
+      },
+      "total_tokens": 3373
+    },
+    "seconds": 4.928,
+    "response_sha256": "045f77b292f6908ab27d72fab890bc058c7aa6d4811b42c7c930d6e6deb7348f"
+  },
+  {
+    "provider": "openai",
+    "purpose": "test-proposal-1",
+    "model": "gpt-5.4-mini-2026-03-17",
+    "request_sha256": "781d0709b77429ae1a12c2c58411ec34230265c48893df34e6f774bc7fd5f23e",
+    "status": "complete",
+    "usage": {
+      "input_tokens": 2512,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 918,
+      "output_tokens_details": {
+        "reasoning_tokens": 73
+      },
+      "total_tokens": 3430
+    },
+    "seconds": 3.692,
+    "response_sha256": "e4381c668b0fc1fe390a06f1466f49e680a3f5857d07e57a8ae71811edf5e061"
+  },
+  {
+    "provider": "openai",
+    "purpose": "test-proposal-2",
+    "model": "gpt-5.4-mini-2026-03-17",
+    "request_sha256": "796257dda2a2e5602b33edc80383e22852bb610acabffd15b480b6da48fe4c84",
+    "status": "complete",
+    "usage": {
+      "input_tokens": 4465,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 879,
+      "output_tokens_details": {
+        "reasoning_tokens": 81
+      },
+      "total_tokens": 5344
+    },
+    "seconds": 3.912,
+    "response_sha256": "efac7bdd9890b0ba8810cbccdcefb953788c5d285816c24fab6942b1d993fe39"
+  },
+  {
+    "provider": "openai",
+    "purpose": "test-proposal-3",
+    "model": "gpt-5.4-mini-2026-03-17",
+    "request_sha256": "b4e84368c9fd0060fdf9001c67c06c555aa8b593c3eadb4452d5fd93122fa41f",
+    "status": "invalid_response",
+    "usage": {
+      "input_tokens": 6287,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 1148,
+      "output_tokens_details": {
+        "reasoning_tokens": 76
+      },
+      "total_tokens": 7435
+    },
+    "seconds": 4.424,
+    "response_sha256": "530c66cfc40ce96dd97d2de20cca3eeb0d52f1915b7a5c0db8acaeb6a0badae2",
+    "error": "Invalid generated scenario or action JSON"
+  },
+  {
+    "provider": "openai",
+    "purpose": "test-proposal-3-repair-1",
+    "model": "gpt-5.4-mini-2026-03-17",
+    "request_sha256": "79321c9488d018dfecd289aa668e9938e63a7293d420bd8bddfc499d39a887eb",
+    "status": "complete",
+    "usage": {
+      "input_tokens": 6332,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 949,
+      "output_tokens_details": {
+        "reasoning_tokens": 145
+      },
+      "total_tokens": 7281
+    },
+    "seconds": 3.812,
+    "response_sha256": "2c5fff4aded815dabe0f84117d1ac33f6019ad58cd391cf95d6609338a428c62"
+  },
+  {
+    "provider": "openai",
+    "purpose": "test-proposal-4",
+    "model": "gpt-5.4-mini-2026-03-17",
+    "request_sha256": "4ffd513cfe8f499f9d615a9ba979e097b4269c009fce9a967beba3b826920ffc",
+    "status": "invalid_response",
+    "usage": {
+      "input_tokens": 7241,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 6144
+      },
+      "output_tokens": 1086,
+      "output_tokens_details": {
+        "reasoning_tokens": 67
+      },
+      "total_tokens": 8327
+    },
+    "seconds": 4.398,
+    "response_sha256": "32c0b943c6950bc285d04b1cc1a8370990e9c64d8decf8c6fbbf1c083eb5c76f",
+    "error": "Invalid generated scenario or action JSON"
+  },
+  {
+    "provider": "openai",
+    "purpose": "test-proposal-4-repair-1",
+    "model": "gpt-5.4-mini-2026-03-17",
+    "request_sha256": "3eed27aa5ee150b4722588d95307ae2fd6ecaf2b75522516a897ec22a712bba5",
+    "status": "complete",
+    "usage": {
+      "input_tokens": 7286,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 6144
+      },
+      "output_tokens": 991,
+      "output_tokens_details": {
+        "reasoning_tokens": 90
+      },
+      "total_tokens": 8277
+    },
+    "seconds": 3.978,
+    "response_sha256": "345d2a5e1bb18383fc1e1d1db0bd333c864b75befd35ef42c4d1d451f9d415b9"
+  }
+]

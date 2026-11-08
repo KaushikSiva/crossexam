@@ -1,0 +1,2 @@
+# Optional: only needed for --mongo and the archive command.
+pymongo>=4.11,<5

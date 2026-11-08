@@ -1,0 +1,17 @@
+{
+  "model": "muse-spark-1.3",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Return only a JSON object with ready set to true."
+    },
+    {
+      "role": "user",
+      "content": "{}"
+    }
+  ],
+  "max_completion_tokens": 6000,
+  "response_format": {
+    "type": "json_object"
+  }
+}

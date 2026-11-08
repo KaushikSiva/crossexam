@@ -1,0 +1,140 @@
+[
+  {
+    "provider": "subquadratic",
+    "purpose": "risk-routing",
+    "model": "subq-snap-1.1",
+    "request_sha256": "11eddd2a9d758a995423eab459febd603e9641940388898b35ba92a2d13520d7",
+    "status": "complete",
+    "usage": {
+      "input_tokens": 1898,
+      "output_tokens": 0
+    },
+    "seconds": 0.905,
+    "response_sha256": "ed537364b5d29e0b8d8b4d1f60c3d976f390cd21f0244dd9e09a4e62167c24a8"
+  },
+  {
+    "provider": "openai",
+    "purpose": "adversarial-patch",
+    "model": "gpt-5.4-mini-2026-03-17",
+    "request_sha256": "8864ffe9108515ff8fd2221ff79cdf8cbe300c5bcc63c601eef8fb9d85955016",
+    "status": "complete",
+    "usage": {
+      "input_tokens": 1710,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 896,
+      "output_tokens_details": {
+        "reasoning_tokens": 128
+      },
+      "total_tokens": 2606
+    },
+    "seconds": 5.284,
+    "response_sha256": "dba6211bfa586505b5adb5e32a5e7dc6fb3f630ee2637621263472669fa6da13"
+  },
+  {
+    "provider": "fetchai",
+    "purpose": "test-proposal-1",
+    "model": "asi1-mini",
+    "request_sha256": "ac596361982639e6d3024abdc178d59323735c85e8b0d11c7770a22cf5369a57",
+    "status": "complete",
+    "usage": {
+      "completion_tokens": 1115,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": null
+      },
+      "prompt_tokens": 2695,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cached_tokens": 0,
+        "created_cache_tokens": 1072,
+        "multimodal_tokens": null
+      },
+      "total_tokens": 3810
+    },
+    "seconds": 4.599,
+    "response_sha256": "ee1cb0b42871d365d3e15eddc1f745ef17f50ff5f61a2d89d4f43ff0b16128ed"
+  },
+  {
+    "provider": "fetchai",
+    "purpose": "test-proposal-2",
+    "model": "asi1-mini",
+    "request_sha256": "17dae93a6d18daa3e9a62741c624f4a0bda74b05ed3a645f1759295b5777f766",
+    "status": "complete",
+    "usage": {
+      "completion_tokens": 1146,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": null
+      },
+      "prompt_tokens": 4346,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cached_tokens": 0,
+        "created_cache_tokens": 3216,
+        "multimodal_tokens": null
+      },
+      "total_tokens": 5492
+    },
+    "seconds": 4.393,
+    "response_sha256": "3186344b5095312b87004dd724e6832c6938a284cb5238d1505440cbd2efb22c"
+  },
+  {
+    "provider": "fetchai",
+    "purpose": "test-proposal-3",
+    "model": "asi1-mini",
+    "request_sha256": "869ff532ba364a4053a48e2f1f5ab0d910f47ec9ee2ba0142cd3b355c105b1b5",
+    "status": "complete",
+    "usage": {
+      "completion_tokens": 972,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": null
+      },
+      "prompt_tokens": 5202,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cached_tokens": 3216,
+        "created_cache_tokens": 0,
+        "multimodal_tokens": null
+      },
+      "total_tokens": 6174
+    },
+    "seconds": 5.694,
+    "response_sha256": "b5aec615baa40cc9a5a3d03a5972500dc9cd6e7e424729243391253e66aab6d2"
+  },
+  {
+    "provider": "fetchai",
+    "purpose": "test-proposal-4",
+    "model": "asi1-mini",
+    "request_sha256": "4cdd3e49db7113fb2cac43b89289b15aaa3009c78230669c9cf9d412c4ce328e",
+    "status": "complete",
+    "usage": {
+      "completion_tokens": 1153,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": null
+      },
+      "prompt_tokens": 6057,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cached_tokens": 3216,
+        "created_cache_tokens": 1072,
+        "multimodal_tokens": null
+      },
+      "total_tokens": 7210
+    },
+    "seconds": 4.779,
+    "response_sha256": "db6ff3e66a1b82745c51b73065eeebda20f4e0eb509804f769b92b7343c2b95b"
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "provider": "mongodb",
+  "status": "verified",
+  "deployment": "local",
+  "campaign_id": "ee305e3bff26117b30d553e86fc8491f35002f37102acc11ad367101a0870c1f",
+  "artifacts_verified": 40,
+  "event_root_sha256": "5ab31465d099516c2ee79ab9505cdfba2f7c98d653bddf60aface2834115159e"
+}

@@ -11,7 +11,7 @@ from urllib.parse import urlparse
 from .benchmark import ROOT
 from .doctor import inspect_sandbox
 from .engine import Campaign
-from .providers import load_env, readiness
+from .providers import GENERATORS, load_env, readiness
 
 
 def serve(port=8847):
@@ -21,16 +21,26 @@ def serve(port=8847):
     if candidates:
         state["report"] = json.loads(candidates[0].read_text())
 
-    def run_job(mode):
+    def run_job(mode, generator, test_author, mongo):
         try:
+            if mongo:
+                from .storage import MongoArchive
+                with MongoArchive():
+                    pass
             inspect_sandbox()
             output = ROOT / "runs" / datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
             def emit(event):
                 with lock:
                     state["events"].append(event)
-            report = Campaign(output, live=mode == "live", emit=emit, subq_only=mode == "subq").run()
+            report = Campaign(output, live=mode == "live", emit=emit, subq_only=mode == "subq",
+                              generator=generator, test_author=test_author).run()
             with lock:
                 state["report"] = report
+            if mongo:
+                from .storage import archive_campaign
+                receipt = archive_campaign(output)
+                with lock:
+                    state["archive"] = receipt
         except Exception as exc:
             with lock:
                 state["error"] = f"{type(exc).__name__}: {exc}"
@@ -86,24 +96,30 @@ def serve(port=8847):
                 payload = json.loads(self.rfile.read(length))
                 if not isinstance(payload, dict) or payload.get("mode") not in ("local", "subq", "live"):
                     raise ValueError("Mode must be local, subq, or live")
+                generator = payload.get("generator", "openai")
+                test_author = payload.get("test_author") or generator
+                mongo = payload.get("mongo", False)
+                if generator not in GENERATORS or test_author not in GENERATORS or type(mongo) is not bool:
+                    raise ValueError("Invalid provider or storage option")
             except (ValueError, TypeError):
                 self.send(400, {"error": "Invalid run request"})
                 return
             load_env(ROOT / ".env")
             live = payload["mode"] == "live"
-            if live and not (readiness()["openai"] and readiness()["subquadratic"]):
-                self.send(409, {"error": "Configure OPENAI_API_KEY and SUBQ_API_KEY in .env"})
-                return
-            if payload["mode"] == "subq" and not readiness()["subquadratic"]:
-                self.send(409, {"error": "Configure a credited SUBQ_API_KEY in .env"})
+            required = {generator, test_author, "subquadratic"} if live else {"subquadratic"} if payload["mode"] == "subq" else set()
+            if mongo:
+                required.add("mongodb")
+            missing = sorted(provider for provider in required if not readiness()[provider])
+            if missing:
+                self.send(409, {"error": f"Configure credentials for {', '.join(missing)} in .env (see .env.example)"})
                 return
             with lock:
                 if state["busy"]:
                     self.send(409, {"error": "A campaign is already running"})
                     return
-                state.update(busy=True, events=[], error=None)
-            threading.Thread(target=run_job, args=(payload["mode"],), daemon=True).start()
-            self.send(202, {"started": True, "mode": payload["mode"]})
+                state.update(busy=True, events=[], error=None, archive=None)
+            threading.Thread(target=run_job, args=(payload["mode"], generator, test_author, mongo), daemon=True).start()
+            self.send(202, {"started": True, "mode": payload["mode"], "generator": generator, "test_author": test_author, "mongo": mongo})
 
     print(f"CrossExam workspace: http://127.0.0.1:{port}", flush=True)
     ThreadingHTTPServer(("127.0.0.1", port), Handler).serve_forever()

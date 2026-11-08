@@ -1,0 +1,12 @@
+[
+  {
+    "provider": "meta",
+    "purpose": "readiness",
+    "model": "muse-spark-1.3",
+    "request_sha256": "6589f96675c5b9863d454d350051a6b34e035b7c484840b78d332e291ca56386",
+    "status": "failed",
+    "usage": {},
+    "seconds": 1.486,
+    "error": "HTTP 402"
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "provider": "Fetch.ai uAgents",
+  "address": "agent1qwwrfmz2krv2cn00qdztnt8kz3e46p9sw6lhguts2ghtkha2dndfgvz4haj",
+  "endpoint": "http://127.0.0.1:8868/submit",
+  "transport": "local HTTP",
+  "request_schema_digest": "model:80cac8dd0e47e4562cbc052961ae8b0d833b2f669ac1e732a78e1ccd9254d283",
+  "response_schema_digest": "model:5522c11f36cf81b30df0d9b57ef1a1c1bccd20f795272408a0356290a76f96f5",
+  "agentverse_registered": false
+}

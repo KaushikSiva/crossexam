@@ -6,13 +6,18 @@
       "handle": "kaushik07"
     }
   ],
-  "project_description": "Your coding agent says the patch is ready. Every test is green. What did the tests miss?\n\nCrossExam tries to answer that before the code ships. In our demo, OpenAI writes an inventory optimization that passes all four existing tests. But reserving two units for one customer also reduces another customer's stock. CrossExam proves the bug with just two requests.\n\nIt then asks a fresh model session to write better tests without showing it the faulty code. Every proposed suite is saved before evaluation. It only earns promotion if it catches more faulty implementations, preserves previous detections, and keeps correct code passing. A separate executable contract model decides whether the behavior is right.\n\nIn one 25-second live run, the suite grew from 4 to 29 test scenarios. Validation detection improved from 1/8 to 7/8 faulty implementations. A separate final audit improved from 1/8 to 6/8, while all four correct implementations passed. Two bugs were still missed, and we publish them. This is a small, public synthetic benchmark; the audit implementations stay out of model prompts.\n\nSubquadratic helps choose where to look. OpenAI generates the faulty patch and new tests. OpenUI lets you inspect the results, and candidate code runs in an OS sandbox. The repo includes the improvement curves, every model call, frozen test suites, and runnable counterexamples.\n\nCrossExam improves the evaluation itself, so passing tests come with evidence you can inspect. Built for Trust but Verify, with versioned evaluation improvements also addressing The System That Gets Better.",
+  "project_description": "Your coding agent says the patch is ready. Every test is green. What did those tests miss?\n\nCrossExam challenges the evaluation itself. Its architecture centers on Meta's Muse Spark as the primary code-generation integration, with Subquadratic prioritizing risks and Google DeepMind's Gemini independently writing stronger tests. The test author never sees the candidate implementation. An independent specification oracle and OS sandbox determine whether a failure is real.\n\nCrossExam turns demonstrated failures into short, reproducible counterexamples. Proposed tests earn promotion only when they catch additional faulty implementations, preserve existing coverage, and accept every correct control. After learning stops, a separate final audit measures the accepted suite.\n\nOn our expanded public synthetic benchmark, Gemini grows the suite from 4 to 34 scenarios. Validation improves from 1/30 to 23/30; the separate final audit improves from 5/30 to 24/30, with all four correct implementations accepted. Every result, including six audit misses, is inspectable. This recorded run uses Fetch.ai's ASI:One for code generation while Muse API credit access is pending.\n\nFetch.ai also makes the evaluation callable by other coding agents. A Fetch uAgents verifier retrieves the frozen suite from MongoDB, executes a submitted patch, and returns a cryptographically signed verdict bound to the exact code and tests. The recorded exchange blocks faulty code and accepts correct code. MongoDB preserves 40 campaign artifacts with verified hashes; OpenUI makes the evidence inspectable. The database and agent exchange run locally.\n\nBuilt for Trust but Verify. CrossExam makes passing tests earn your trust.",
   "public_github_repository": "https://github.com/KaushikSiva/crossexam",
   "demo_video": "https://kaushiksiva.github.io/crossexam/demo.html",
   "direct_video": "https://kaushiksiva.github.io/crossexam/assets/crossexam-demo.mp4",
   "partner_products": [
-    "Subquadratic"
+    "Meta / Muse Spark (primary adapter; live access pending)",
+    "Google DeepMind / Gemini",
+    "Fetch.ai / ASI:One and uAgents",
+    "MongoDB",
+    "Subquadratic",
+    "OpenUI"
   ],
   "cerebral_valley_feedback": "A single page with deadlines, judging criteria, and credit setup would make the event easier to navigate.",
-  "partner_feedback": "SubQ’s typed risk decisions were easy to use. Clearer credit activation and billing errors would help teams get started faster."
+  "partner_feedback": "Typed risk decisions and structured outputs made evidence collection straightforward. Clearer prepaid-credit and database-connection setup would help teams get started faster."
 }

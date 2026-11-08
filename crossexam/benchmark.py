@@ -86,6 +86,9 @@ def corpus():
         'if op == "release":\n            record = self.cache.get(tenant, key)',
         'if op == "release":\n            record = self.cache.get(tenant, key)\n            if record is None:\n                record = next((v for k, v in self.cache.entries.items() if k[1] == key), None)')
 
+    from .benchmark_v2 import extend
+    extend(add)
+
     variants.append(Variant("C01", "Reference implementation", "control", "control", dict(base), True))
     add("C02", "Equivalent response copy refactor", "control", "control", "service.py",
         'return record["response"].copy()', 'return dict(record["response"])', True)

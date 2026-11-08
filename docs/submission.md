@@ -4,28 +4,34 @@
 
 **Team member:** Kaushik Sivakumar (`kaushik07`)
 
-**Project description** (1584/3,000 characters)
+**Project description** (1,706/3,000 characters)
 
-Your coding agent says the patch is ready. Every test is green. What did the tests miss?
+Your coding agent says the patch is ready. Every test is green. What did those tests miss?
 
-CrossExam tries to answer that before the code ships. In our demo, OpenAI writes an inventory optimization that passes all four existing tests. But reserving two units for one customer also reduces another customer's stock. CrossExam proves the bug with just two requests.
+CrossExam challenges the evaluation itself. Its architecture centers on Meta's Muse Spark as the primary code-generation integration, with Subquadratic prioritizing risks and Google DeepMind's Gemini independently writing stronger tests. The test author never sees the candidate implementation. An independent specification oracle and OS sandbox determine whether a failure is real.
 
-It then asks a fresh model session to write better tests without showing it the faulty code. Every proposed suite is saved before evaluation. It only earns promotion if it catches more faulty implementations, preserves previous detections, and keeps correct code passing. A separate executable contract model decides whether the behavior is right.
+CrossExam turns demonstrated failures into short, reproducible counterexamples. Proposed tests earn promotion only when they catch additional faulty implementations, preserve existing coverage, and accept every correct control. After learning stops, a separate final audit measures the accepted suite.
 
-In one 25-second live run, the suite grew from 4 to 29 test scenarios. Validation detection improved from 1/8 to 7/8 faulty implementations. A separate final audit improved from 1/8 to 6/8, while all four correct implementations passed. Two bugs were still missed, and we publish them. This is a small, public synthetic benchmark; the audit implementations stay out of model prompts.
+On our expanded public synthetic benchmark, Gemini grows the suite from 4 to 34 scenarios. Validation improves from 1/30 to 23/30; the separate final audit improves from 5/30 to 24/30, with all four correct implementations accepted. Every result, including six audit misses, is inspectable. This recorded run uses Fetch.ai's ASI:One for code generation while Muse API credit access is pending.
 
-Subquadratic helps choose where to look. OpenAI generates the faulty patch and new tests. OpenUI lets you inspect the results, and candidate code runs in an OS sandbox. The repo includes the improvement curves, every model call, frozen test suites, and runnable counterexamples.
+Fetch.ai also makes the evaluation callable by other coding agents. A Fetch uAgents verifier retrieves the frozen suite from MongoDB, executes a submitted patch, and returns a cryptographically signed verdict bound to the exact code and tests. The recorded exchange blocks faulty code and accepts correct code. MongoDB preserves 40 campaign artifacts with verified hashes; OpenUI makes the evidence inspectable. The database and agent exchange run locally.
 
-CrossExam improves the evaluation itself, so passing tests come with evidence you can inspect. Built for Trust but Verify, with versioned evaluation improvements also addressing The System That Gets Better.
+Built for Trust but Verify. CrossExam makes passing tests earn your trust.
 
 **Public GitHub repository:** https://github.com/KaushikSiva/crossexam
 
 **One-minute demo video:** https://kaushiksiva.github.io/crossexam/demo.html
 
-**Direct MP4 (52.1 seconds):** https://kaushiksiva.github.io/crossexam/assets/crossexam-demo.mp4
+**Direct MP4:** https://kaushiksiva.github.io/crossexam/assets/crossexam-demo.mp4
 
-**Partner products:** Select Subquadratic. If OpenAI or OpenUI are offered as additional options, both are used. Meta was not used successfully in the published run.
+**Partner products:** Meta Muse Spark (primary code-generation integration; adapter implemented, API currently returns HTTP 402), Google DeepMind / Gemini, Fetch.ai / ASI:One and uAgents, MongoDB, Subquadratic, and OpenUI. The measured campaign uses ASI:One as the code generator. OpenAI was used in earlier recorded campaigns.
+
+**Primary track:** Trust but Verify. The versioned evaluation improvements also address The System That Gets Better.
+
+**Proof to show judges:** 5/30 → 24/30 final-audit detections; 1/30 → 23/30 validation detections; 0/4 correct controls rejected; four measured promotions; 34 active scenarios; signed Fetch agent BLOCKED/PASS receipts; 40 MongoDB artifact hashes verified; 45 passing tests; all previous campaigns preserved.
+
+**Scope:** Synthetic sequential reservation API. Local MongoDB Community and local Fetch uAgents transport. No general production accuracy or autonomous deployment claims.
 
 **Feedback for Cerebral Valley:** A single page with deadlines, judging criteria, and credit setup would make the event easier to navigate.
 
-**Feedback for partner products:** SubQ’s typed risk decisions were easy to use. Clearer credit activation and billing errors would help teams get started faster.
+**Feedback for partner products:** Typed risk decisions and structured model outputs made evidence collection straightforward. Clearer prepaid-credit and database-connection setup would help teams get started faster.

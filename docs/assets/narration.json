@@ -1,12 +1,13 @@
 {
-  "mode": "live OpenAI + Subquadratic",
+  "mode": "live Fetch.ai / ASI:One attacker + Google DeepMind / Gemini test author + Subquadratic",
   "segments": [
-    "Every test passed. So the code is ready, right? CrossExam asks a harder question: what did those tests miss?",
-    "OpenAI wrote this optimization. It passes all four tests. But one customer reserves two units, and another customer's stock drops too. Two requests prove it.",
-    "Then it writes stronger tests in a separate context. Detection jumps from one to four, then climbs to seven. Every promotion has to pass the same gate.",
-    "Now freeze the tests and open the final audit. 6 of 8 bugs caught. 2 missed. All four correct implementations still pass.",
-    "Subquadratic chooses where to look. OpenAI makes the proposals. OpenUI shows the evidence. One real run, on a small synthetic benchmark.",
-    "CrossExam. Passing tests should mean something."
+    "Every test passed. Would you ship it? CrossExam challenges the tests behind that confidence.",
+    "This generated patch passes all four tests. 2 requests expose a real contract violation.",
+    "Muse Spark is our primary code-generation integration. Gemini writes independent tests. Subquadratic prioritizes risks. This run uses ASI One while Muse awaits credits.",
+    "Gemini raises validation detection from 1 to 23 out of 30. Only measured improvements are promoted.",
+    "Freeze the suite. The separate audit catches 24 of 30 faulty implementations. All 4 correct implementations pass. This is a public synthetic benchmark.",
+    "Fetch agents load the frozen suite from MongoDB. Broken patch blocked. Correct code accepted. Both verdicts cryptographically signed.",
+    "CrossExam. Make passing tests earn your trust."
   ],
-  "words": 120
+  "words": 115
 }

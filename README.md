@@ -30,40 +30,58 @@ In this labeled seeded example, two customers use the same request ID. **Beacon 
 
 ## Measured improvement
 
-The first completed **live OpenAI + Subquadratic campaign** produced the following, without hand-authored test proposals:
+The latest **30-case-per-split campaign** catches **24/30 final-audit faults, up from 5/30**, with **0/4 correct controls rejected**. Validation improves from **1/30 to 23/30**. The final audit opens only after all four proposal rounds finish.
 
-![Measured improvement: faulty implementations detected rise from 1 to 7 out of 8 while input scenarios grow from 4 to 29](docs/assets/improvement-curve.png)
-
-Each dot is an observed version. The left curve counts faulty implementations caught; the right curve counts input scenarios.
+![Measured validation rises from 1 to 23 of 30; the active suite grows from 4 to 34 scenarios](docs/assets/improvement-curve.png)
 
 | Measure | Original evaluation | Promoted evaluation |
 | --- | ---: | ---: |
-| Input scenarios per implementation | 4 | **29** |
-| Faulty final-audit implementations caught | 1 / 8 | **6 / 8** |
+| Input scenarios per implementation | 4 | **34** |
+| Faulty final-audit implementations caught | 5 / 30 | **24 / 30** |
 | Correct controls rejected | 0 / 4 | **0 / 4** |
-| Faulty validation implementations caught | 1 / 8 | **7 / 8** |
+| Faulty validation implementations caught | 1 / 30 | **23 / 30** |
 
-**29 input scenarios, 8 faulty implementations.** A scenario is a sequence of API requests. Each implementation runs the scenario suite; the detection denominator counts faulty implementations. The final audit uses a separate set of 8 faulty implementations and 4 correct controls.
+**Meta Muse Spark is the primary code-generation integration in the architecture.** Its adapter is implemented, but the latest access probe returned HTTP 402. This measured campaign explicitly uses **Fetch.ai ASI:One** for the attack and **Google DeepMind Gemini 3.8 Flash** for independent tests. The generated patch removes tenant identity from cache keys and passes all four baseline scenarios; two requests expose the customer-data leak.
 
-| Evaluation version | Input scenarios | Faulty validation implementations caught | Correct controls rejected | Decision |
+| Evaluation version | Proposed scenarios | Validation detections | Correct controls rejected | Decision |
 | --- | ---: | ---: | ---: | --- |
-| v0 | 4 | 1 / 8 | 0 / 4 | Baseline |
-| v1 | 10 | 4 / 8 | 0 / 4 | Promoted |
-| v2 | 17 | 5 / 8 | 0 / 4 | Promoted |
-| v3 | 23 | 6 / 8 | 0 / 4 | Promoted |
-| v4 | 29 | 7 / 8 | 0 / 4 | Promoted |
+| v0 | 4 | 1 / 30 | 0 / 4 | Baseline |
+| v1 | 11 | 12 / 30 | 0 / 4 | Promoted |
+| v2 | 19 | 18 / 30 | 0 / 4 | Promoted |
+| v3 | 27 | 22 / 30 | 0 / 4 | Promoted |
+| v4 | 34 | 23 / 30 | 0 / 4 | Promoted |
 
-OpenAI generated a faulty inventory optimization that passed all four original scenarios. Reserving stock for one tenant silently reduced another tenant’s balance; two requests prove it. The run also reproduced five labeled seeded defects. Four real model proposals were promoted: **1 → 4 → 5 → 6 → 7 / 8** validation detections. The graph shows discrete measurements, not a continuous learning rate. There was no rejected proposal and no injected rollback in this run.
+The campaign took **156.654 seconds**: one Subquadratic call, one ASI:One call, and four Gemini calls. **40 evidence artifacts** were archived to local MongoDB Community and read back with SHA-256 verification. [Complete campaign evidence →](docs/evidence/expanded30-live-005/) · [MongoDB readback →](docs/mongodb-verification.json)
 
-The final audit caught **6/8**: tenant-prefix aliasing and empty-tenant acceptance remained undetected. This is lower than the older fixture run’s 7/8; we publish the actual outcome, not the better-looking fixture score. [Full requests, responses, suites, and event journal →](docs/evidence/openai-live-001/)
+The expanded corpus retains the original eight faults in each split and adds 22 distinct faulty implementations to each: **30 validation faults, 30 audit faults, and four correct controls**. Every added fault has an executable contract witness in `tests/test_benchmark.py`. All 44 witnesses also pass on every correct control. They are qualification checks, never model prompts or injected live test proposals.
 
-The campaign took **25.46 seconds**, with five OpenAI calls and one Subquadratic call. OpenAI reported 22,213 input tokens (2,176 cached) and 4,264 output tokens. At the [published GPT‑5.4 mini rates](https://developers.openai.com/api/docs/models/gpt-5.4-mini), that is approximately **$0.0344 for OpenAI generation**, excluding Subquadratic and narration. This is a rate-based estimate, not a billing receipt.
+Six audit faults remain missed: A01, A02, A10, A14, A17, and A28. All are visible in the report. The previous campaign's **8/8** belongs to the smaller benchmark; it is preserved unchanged and is not a direct comparison with **24/30**. Earlier weaker and incomplete attempts remain available. [Development history →](docs/campaigns.json)
 
-**Small synthetic benchmark—not a production accuracy estimate.** Audit implementations are withheld from model prompts within a campaign, but this public corpus was already observed by project authors and shares defect families with discovery. The evaluation suite improves; model weights do not change. [Scope and limitations →](docs/methodology.md)
+**Small public synthetic benchmark, not a production accuracy estimate.** Audit implementations are withheld from model prompts within each campaign, but the corpus was already observed during development. The suite improves; model weights do not. [Scope and limitations →](docs/methodology.md)
 
 | Final audit | Coverage across versions |
 | --- | --- |
 | ![Final audit results](docs/assets/final-audit.png) | ![Defect coverage matrix](docs/assets/coverage-matrix.png) |
+
+## A verification agent other agents can call
+
+Fetch.ai also powers a real **uAgents verification service**. A coding agent sends a signed candidate-code request. CrossExam loads the promoted suite from MongoDB, checks its content hash, runs the candidate in the OS sandbox, and returns a cryptographically signed verdict bound to that exact request, candidate, and suite. The proof is stored in MongoDB's `verifications` collection.
+
+The recorded exchange blocks the model-generated faulty patch and accepts the correct implementation. The requesting client verifies both signatures. This is local HTTP transport between agent identities; no Agentverse registration or token payment is claimed.
+
+```bash
+pip install -r requirements-fetch-agent.txt
+# Configure MONGODB_URI, then archive a completed campaign.
+python3 -m crossexam archive runs/YOUR_RUN
+python3 -m crossexam agent --port 8868
+
+# In another terminal, use the IDs from mongodb-receipt.json and agent-info.json:
+python3 -m crossexam agent-verify fixtures/relayqueue \
+  --campaign CAMPAIGN_ID --address AGENT_ADDRESS \
+  --out runs/correct-verification.json
+```
+
+`agent-verify` exits 0 for PASS, 1 for BLOCKED, and 2 for setup or verification errors. The service uses the documented reservation API; it does not infer arbitrary interfaces. [Signed faulty-patch receipt →](docs/evidence/fetch-agent-30/broken-receipt.json) · [Signed correct-patch receipt →](docs/evidence/fetch-agent-30/correct-receipt.json)
 
 ## Quick start
 
@@ -105,31 +123,67 @@ python3 -m crossexam run --subq-only
 # Live routing + OpenAI-generated attack and four adaptive test proposals:
 python3 -m crossexam run --live
 
-# Optional Meta adapter, if MODEL_API_KEY has usable credits:
-python3 -m crossexam run --live --generator meta
+# Primary architecture: Muse code generation + independent Gemini tests.
+# Requires credited MODEL_API_KEY, GEMINI_API_KEY and SUBQ_API_KEY.
+python3 -m crossexam run --live --generator meta --test-author gemini
+
+# Google DeepMind / Gemini generates the attack; Fetch.ai / ASI:One authors tests:
+# Set GEMINI_API_KEY, ASI_ONE_API_KEY, and SUBQ_API_KEY in .env.
+python3 -m crossexam run --live --generator gemini --test-author fetchai
+
+# Either provider can also handle both roles, always in separate contexts:
+python3 -m crossexam run --live --generator gemini
+python3 -m crossexam run --live --generator fetchai
 ```
 
 | Integration | Role | Verified status |
 | --- | --- | --- |
 | **Subquadratic / SubQ Snap 1.1** | Rank contract risks from repository, specification, and existing tests | Live routing succeeded; 1,898 input tokens in 1.016 s in the published OpenAI campaign |
 | **OpenAI / GPT‑5.4 mini** | Generate a faulty patch and four independently authored test proposals | Five successful live generation calls; all artifacts published |
-| **Meta Model API / Muse Spark** | Generate an adversarial implementation; independently generate tests without its source | Adapter implemented. Current live request returned HTTP 402; a successful Meta campaign is pending credited access |
+| **Meta Model API / Muse Spark** | Primary code-generation integration: propose adversarial implementations | Adapter implemented. Current live request returned HTTP 402; a successful Meta campaign is pending credited access |
+| **Google DeepMind / Gemini 3.8 Flash** | Independently author stronger tests | Four successful live calls; four promotions reach 23/30 validation and 24/30 final-audit detections |
+| **Fetch.ai / ASI:One + uAgents** | Generate attacks; expose CrossExam as a callable verification agent | Live ASI:One attack reproduced; real uAgents requests block faulty code and accept correct code with verified signed receipts |
+| **MongoDB** | Archive evidence, retrieve frozen evaluations, and store signed verification receipts | 40 campaign artifacts archived and read back from local MongoDB Community 8.0.13; two agent proof records stored |
 | **OpenUI** | Compose interactive briefs from components bound to actual report data | Implemented and browser-tested |
 
 No paid API runs in CI. Missing keys and provider failures are visible errors; live mode never silently substitutes fixtures. Requests, responses, usage, latency, and hashes are saved without authorization headers or keys.
+
+`--generator` selects the attacker. `--test-author` optionally selects a different provider for all four proposals; otherwise it uses the attacker’s provider in fresh contexts. Both roles share the eight-call campaign budget. Test authors receive the contract, input scenarios, reproduced observations, and aggregate validation feedback; they never receive candidate code or audit variants. The local workspace exposes the same choices in **New campaign**.
+
+Gemini defaults to `gemini-3.8-flash` (`GEMINI_MODEL`); ASI:One defaults to `asi1-mini` (`ASI_ONE_MODEL`). `GOOGLE_API_KEY` / `GEMINI_APLKEY` and `ASI1_API_KEY` / `FETCHAI_KEY` are accepted key aliases. Fetch.ai supports ASI:One model calls and the optional uAgents verification service. The demonstrated agent uses local transport; it is not registered on Agentverse. API references: [Gemini structured output](https://ai.google.dev/gemini-api/docs/generate-content/structured-output), [Gemini models](https://ai.google.dev/gemini-api/docs/models), [ASI:One structured data](https://docs.asi1.ai/documentation/build-with-asi-one/structured-data).
+
+### MongoDB evidence archive
+
+The core engine still needs no Python packages. Install the optional [PyMongo driver](https://www.mongodb.com/docs/languages/python/pymongo-driver/current/) only when archiving:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements-mongodb.txt
+# Set MONGODB_URI in .env; MONGODB_DATABASE defaults to crossexam.
+
+python3 -m crossexam run --live --generator gemini --test-author fetchai --mongo
+# Or archive existing evidence without repeating model calls:
+python3 -m crossexam archive runs/YOUR_RUN
+python3 -m crossexam verify-archive runs/YOUR_RUN
+```
+
+Archiving is opt-in via `--mongo`, the archive command, or the workspace checkbox. `campaigns` stores audit summaries and artifact references; `artifacts` stores the exact UTF-8 evidence files by SHA-256, including reports, suites, counterexamples, provider receipts, and the event journal. Artifact content stays JSON/text so invalid API inputs retain their exact types and field names. Artifacts upload first, then the campaign record. Repeated uploads are idempotent; a failed archive keeps local evidence and can be retried. Each artifact is limited to 15 MB. A successful upload writes a local `mongodb-receipt.json` with the campaign ID. Credentials and unrelated files are excluded.
+
+`python3 -m crossexam doctor` reports whether credentials are configured; it does not claim provider access or database connectivity has been verified. Live results and failed attempts are recorded separately; configured credentials alone do not count as a successful integration. MongoDB was verified locally; an Atlas API key alone cannot authenticate database reads and writes.
 
 ## How it stays independent
 
 ![Architecture and information boundaries](docs/assets/architecture.svg)
 
 1. **Risk router:** Subquadratic prioritizes contract boundaries to investigate.
-2. **Attacker:** OpenAI sees the implementation and baseline scenarios. A proposed patch must pass the old evaluation to count as a blind spot.
+2. **Attacker:** Muse Spark is the primary integration; this recorded run uses ASI:One while Muse access is pending. The attacker sees the implementation and baseline scenarios. A proposed patch must pass the old evaluation to count as a blind spot.
 3. **Executor:** The sandboxed candidate sees inputs, never expected outputs. A separate event-ledger oracle computes contract outcomes.
-4. **Test author:** A fresh OpenAI context sees the specification and observed failures, without implementation or attacker reasoning. It returns JSON scenarios, not executable assertions.
+4. **Test author:** A fresh Gemini context sees the specification and observed failures, without implementation or attacker reasoning. It returns JSON scenarios, not executable assertions.
 5. **Promotion:** Frozen tests must catch additional validation defects, preserve previous detections, and reject no correct control.
 6. **Final audit:** Different implementations are evaluated after proposals finish. Audit results never return to the model during the campaign.
 
-Separate contexts do not eliminate shared-model blind spots. The specification, oracle, operating system, and host orchestrator remain trusted assumptions.
+Separate contexts and different providers do not eliminate correlated model blind spots. The specification, oracle, operating system, and host orchestrator remain trusted assumptions.
 
 ## A UI that shows the receipts
 

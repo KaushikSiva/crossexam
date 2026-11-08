@@ -26,14 +26,14 @@ def promotion_decision(previous, proposed):
 
 
 class Campaign:
-    def __init__(self, output, live=False, emit=None, subq_only=False, generator="openai"):
+    def __init__(self, output, live=False, emit=None, subq_only=False, generator="openai", test_author=None):
         self.output = Path(output)
         self.output.mkdir(parents=True, exist_ok=False)
         self.live = live
         self.use_subq = live or subq_only
         self.callback = emit or (lambda e: None)
         self.events = []
-        self.partner = Partners(self.output / "provider-calls", generator=generator) if self.use_subq else None
+        self.partner = Partners(self.output / "provider-calls", generator=generator, test_author=test_author) if self.use_subq else None
         self.backend = runtime()
         self.cache = {}
         self.versions = []
@@ -84,8 +84,12 @@ class Campaign:
         base = baseline()
         current = base
         commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
-        manifest = {"schema": 2, "mode": f"live {self.partner.label} + Subquadratic" if self.live else "live Subquadratic + local proposals" if self.use_subq else "local fixtures",
+        generation_label = self.partner.label if self.partner else "fixtures"
+        if self.live and self.partner.test_author != self.partner.generator:
+            generation_label += f" attacker + {self.partner.test_author_label} test author"
+        manifest = {"schema": 2, "mode": f"live {generation_label} + Subquadratic" if self.live else "live Subquadratic + local proposals" if self.use_subq else "local fixtures",
                     "created_at": datetime.now(timezone.utc).isoformat(), "commit": commit,
+                    "benchmark_revision": "relay-reservations-v2-30-per-split",
                     "python_version": sys.version, "platform": platform.platform(),
                     "runtime": self.backend, "contract_sha256": digest((FIXTURE / "contract.txt").read_text()),
                     "oracle_sha256": digest((ROOT / "crossexam" / "oracle.py").read_text()),
@@ -93,6 +97,7 @@ class Campaign:
                     "corpus_sha256": digest([asdict(v) for v in variants]),
                     "audit_input_sha256": digest(audit_scenarios()),
                     "proposal_protocol": {"rounds": 4 if self.live else 3, "generator": self.partner.generator if self.live else "fixtures",
+                        "test_author": self.partner.test_author if self.live else "fixtures",
                         "feedback": "aggregate validation counts and decisions only" if self.live else "none",
                         "discovery_probes": "hand-authored contract probes", "injected_rollback": not self.live,
                         "audit_scope": "Public synthetic corpus; withheld from model prompts, previously observed by project authors"},
@@ -149,9 +154,9 @@ class Campaign:
                 # Adapt priorities to executable discovery results; no validation/audit source enters context.
                 unresolved = {v.family for v in discovery if check(v.files, current, self.backend)["passed"]}
                 group = sorted(order, key=lambda family: family not in unresolved)
-                self.event("proposal", f"{self.partner.label} is independently generating test proposal {n}", families=group)
+                self.event("proposal", f"{self.partner.test_author_label} is independently generating test proposal {n}", families=group)
                 added, rationale = self.partner.propose(current, visible, group, n, feedback=feedback)
-                origin = f"live {self.partner.label}; fresh context, implementation withheld"
+                origin = f"live {self.partner.test_author_label}; fresh context, implementation withheld"
             else:
                 added = [c for c in strengthened()[len(base):] if c["family"] in group]
                 rationale = "Exercise " + ", ".join(f.replace("_", " ") for f in group)
@@ -201,7 +206,7 @@ class Campaign:
                                   "Repeated aggregate validation feedback can overfit this small validation set.",
                                   "Discovery combines seeded defects and, in live mode, one generated patch; discovery probes remain hand-authored.",
                                   "Held-out variants exercise familiar defect families, not wholly new classes of bugs.",
-                                  "Same model family can retain correlated blind spots despite separate contexts.",
+                                  "Separate contexts and different model providers can still share correlated blind spots.",
                                   "The specification and independent oracle remain trusted assumptions.",
                                   "This prototype verifies a fixed sequential reservation API; it is not a universal repository verifier."]}
         self.event("complete", "Final audit complete. Evidence and suite versions saved.", audit_detected=audit_after["detected"],

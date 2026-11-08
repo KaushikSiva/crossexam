@@ -1,0 +1,3 @@
+# Optional Fetch.ai verification service and its MongoDB evidence store.
+uagents==0.26.1
+-r requirements-mongodb.txt

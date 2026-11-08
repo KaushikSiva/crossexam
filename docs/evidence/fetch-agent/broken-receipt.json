@@ -1,0 +1,2359 @@
+{
+  "evidence_id": "3c7e5d89f8a4603e471362cea8259390f082c77d3d6d4b14fef52ed389f62c31",
+  "signature_verified": true,
+  "response": {
+    "receipt_json": "{\"campaign_id\": \"ee305e3bff26117b30d553e86fc8491f35002f37102acc11ad367101a0870c1f\", \"candidate_sha256\": \"a172c38e226f9a209b006e93646a045af77ad70b79462d47cad3cfb603f150f4\", \"checked_at\": \"2026-11-07T23:49:52.036353+00:00\", \"event_root_sha256\": \"5ab31465d099516c2ee79ab9505cdfba2f7c98d653bddf60aface2834115159e\", \"request_id\": \"59cd4948b13f47eea15856a0fd0cb1bd\", \"requester\": \"agent1qtg49c2sgdw4cue6xu3fwktcq8cue65lrrcv43glxxmzpx7q4v24y73c3d0\", \"result\": {\"checks\": [{\"actions\": [{\"key\": \"order-1\", \"op\": \"reserve\", \"qty\": 2, \"sku\": \"widget\", \"tenant\": \"atlas\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"atlas\"}], \"actual\": [{\"key\": \"order-1\", \"qty\": 2, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"atlas\"}, {\"available\": 8}], \"expected\": [{\"key\": \"order-1\", \"qty\": 2, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"atlas\"}, {\"available\": 8}], \"family\": \"inventory\", \"name\": \"new reservation\", \"passed\": true}, {\"actions\": [{\"key\": \"order-1\", \"op\": \"reserve\", \"qty\": 2, \"sku\": \"widget\", \"tenant\": \"atlas\"}, {\"key\": \"order-1\", \"op\": \"release\", \"tenant\": \"atlas\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"atlas\"}], \"actual\": [{\"key\": \"order-1\", \"qty\": 2, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"atlas\"}, {\"key\": \"order-1\", \"status\": \"released\", \"tenant\": \"atlas\"}, {\"available\": 10}], \"expected\": [{\"key\": \"order-1\", \"qty\": 2, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"atlas\"}, {\"key\": \"order-1\", \"status\": \"released\", \"tenant\": \"atlas\"}, {\"available\": 10}], \"family\": \"inventory\", \"name\": \"release reservation\", \"passed\": true}, {\"actions\": [{\"key\": \"order-1\", \"op\": \"reserve\", \"qty\": 6, \"sku\": \"widget\", \"tenant\": \"atlas\"}, {\"key\": \"order-2\", \"op\": \"reserve\", \"qty\": 5, \"sku\": \"widget\", \"tenant\": \"atlas\"}], \"actual\": [{\"key\": \"order-1\", \"qty\": 6, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"atlas\"}, {\"error\": \"insufficient\"}], \"expected\": [{\"key\": \"order-1\", \"qty\": 6, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"atlas\"}, {\"error\": \"insufficient\"}], \"family\": \"inventory\", \"name\": \"insufficient inventory\", \"passed\": true}, {\"actions\": [{\"key\": \"order-1\", \"op\": \"reserve\", \"qty\": 2, \"sku\": \"widget\", \"tenant\": \"atlas\"}, {\"key\": \"other\", \"op\": \"reserve\", \"qty\": 2, \"sku\": \"sensor\", \"tenant\": \"atlas\"}, {\"op\": \"stock\", \"sku\": \"sensor\", \"tenant\": \"atlas\"}], \"actual\": [{\"key\": \"order-1\", \"qty\": 2, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"atlas\"}, {\"key\": \"other\", \"qty\": 2, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"atlas\"}, {\"available\": 8}], \"expected\": [{\"key\": \"order-1\", \"qty\": 2, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"atlas\"}, {\"key\": \"other\", \"qty\": 2, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"atlas\"}, {\"available\": 8}], \"family\": \"inventory\", \"name\": \"independent products\", \"passed\": true}, {\"actions\": [{\"key\": \"k1\", \"op\": \"reserve\", \"qty\": 4, \"sku\": \"widget\", \"tenant\": \"corp\"}, {\"key\": \"k1\", \"op\": \"release\", \"tenant\": \"corp\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"corp\"}, {\"key\": \"k1\", \"op\": \"reserve\", \"qty\": 4, \"sku\": \"widget\", \"tenant\": \"corp\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"corp\"}], \"actual\": [{\"key\": \"k1\", \"qty\": 4, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"corp\"}, {\"key\": \"k1\", \"status\": \"released\", \"tenant\": \"corp\"}, {\"available\": 10}, {\"key\": \"k1\", \"qty\": 4, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"corp\"}, {\"available\": 10}], \"expected\": [{\"key\": \"k1\", \"qty\": 4, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"corp\"}, {\"key\": \"k1\", \"status\": \"released\", \"tenant\": \"corp\"}, {\"available\": 10}, {\"key\": \"k1\", \"qty\": 4, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"corp\"}, {\"available\": 10}], \"family\": \"idempotency\", \"name\": \"reserve replay after release preserves original response and inventory\", \"passed\": true}, {\"actions\": [{\"key\": \"k-hold\", \"op\": \"reserve\", \"qty\": 7, \"sku\": \"sensor\", \"tenant\": \"acme\"}, {\"key\": \"k-retry\", \"op\": \"reserve\", \"qty\": 5, \"sku\": \"sensor\", \"tenant\": \"acme\"}, {\"key\": \"k-hold\", \"op\": \"release\", \"tenant\": \"acme\"}, {\"key\": \"k-retry\", \"op\": \"reserve\", \"qty\": 5, \"sku\": \"sensor\", \"tenant\": \"acme\"}, {\"op\": \"stock\", \"sku\": \"sensor\", \"tenant\": \"acme\"}], \"actual\": [{\"key\": \"k-hold\", \"qty\": 7, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"acme\"}, {\"error\": \"insufficient\"}, {\"key\": \"k-hold\", \"status\": \"released\", \"tenant\": \"acme\"}, {\"key\": \"k-retry\", \"qty\": 5, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"acme\"}, {\"available\": 5}], \"expected\": [{\"key\": \"k-hold\", \"qty\": 7, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"acme\"}, {\"error\": \"insufficient\"}, {\"key\": \"k-hold\", \"status\": \"released\", \"tenant\": \"acme\"}, {\"key\": \"k-retry\", \"qty\": 5, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"acme\"}, {\"available\": 5}], \"family\": \"inventory\", \"name\": \"insufficient stock failure does not occupy key for subsequent retry\", \"passed\": true}, {\"actions\": [{\"key\": \"res-99\", \"op\": \"reserve\", \"qty\": 3, \"sku\": \"widget\", \"tenant\": \"tenant-A\"}, {\"key\": \"res-99\", \"op\": \"release\", \"tenant\": \"tenant-B\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"tenant-A\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"tenant-B\"}], \"actual\": [{\"key\": \"res-99\", \"qty\": 3, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"tenant-A\"}, {\"error\": \"not_found\"}, {\"available\": 7}, {\"available\": 10}], \"expected\": [{\"key\": \"res-99\", \"qty\": 3, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"tenant-A\"}, {\"error\": \"not_found\"}, {\"available\": 7}, {\"available\": 10}], \"family\": \"tenant_isolation\", \"name\": \"foreign tenant release returns not found and preserves state\", \"passed\": true}, {\"actions\": [{\"key\": \"shared-key\", \"op\": \"reserve\", \"qty\": 2, \"sku\": \"widget\", \"tenant\": \"t1\"}, {\"key\": \"shared-key\", \"op\": \"reserve\", \"qty\": 2, \"sku\": \"sensor\", \"tenant\": \"t1\"}, {\"op\": \"stock\", \"sku\": \"sensor\", \"tenant\": \"t1\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"t1\"}], \"actual\": [{\"key\": \"shared-key\", \"qty\": 2, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"t1\"}, {\"error\": \"conflict\"}, {\"available\": 10}, {\"available\": 8}], \"expected\": [{\"key\": \"shared-key\", \"qty\": 2, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"t1\"}, {\"error\": \"conflict\"}, {\"available\": 10}, {\"available\": 8}], \"family\": \"payload_binding\", \"name\": \"sku mutation under existing key triggers conflict error\", \"passed\": true}, {\"actions\": [{\"key\": \"order\", \"op\": \"reserve\", \"qty\": 3, \"sku\": \"widget\", \"tenant\": \"Alpha\"}, {\"key\": \"order\", \"op\": \"reserve\", \"qty\": 4, \"sku\": \"widget\", \"tenant\": \"alpha\"}, {\"key\": \"ORDER\", \"op\": \"reserve\", \"qty\": 5, \"sku\": \"widget\", \"tenant\": \"Alpha\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"Alpha\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"alpha\"}], \"actual\": [{\"key\": \"order\", \"qty\": 3, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"Alpha\"}, {\"key\": \"order\", \"qty\": 4, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"alpha\"}, {\"key\": \"ORDER\", \"qty\": 5, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"Alpha\"}, {\"available\": 2}, {\"available\": 6}], \"expected\": [{\"key\": \"order\", \"qty\": 3, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"Alpha\"}, {\"key\": \"order\", \"qty\": 4, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"alpha\"}, {\"key\": \"ORDER\", \"qty\": 5, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"Alpha\"}, {\"available\": 2}, {\"available\": 6}], \"family\": \"tenant_isolation\", \"name\": \"case sensitivity isolates tenant and key namespaces without folding\", \"passed\": true}, {\"actions\": [{\"key\": \"k1\", \"op\": \"reserve\", \"qty\": true, \"sku\": \"widget\", \"tenant\": \"t1\"}, {\"key\": \"k1\", \"op\": \"reserve\", \"qty\": 0, \"sku\": \"widget\", \"tenant\": \"t1\"}, {\"key\": \"k1\", \"op\": \"reserve\", \"qty\": 11, \"sku\": \"widget\", \"tenant\": \"t1\"}, {\"key\": \"k1\", \"op\": \"reserve\", \"qty\": 1, \"sku\": \"widget\", \"tenant\": \"\"}, {\"key\": \"\", \"op\": \"reserve\", \"qty\": 1, \"sku\": \"widget\", \"tenant\": \"t1\"}, {\"key\": \"k1\", \"op\": \"reserve\", \"qty\": 1, \"sku\": \"gadget\", \"tenant\": \"t1\"}, {\"op\": \"stock\", \"sku\": \"gadget\", \"tenant\": \"t1\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"t1\"}], \"actual\": [{\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"available\": 10}], \"expected\": [{\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"available\": 10}], \"family\": \"validation\", \"name\": \"comprehensive type and boundary validation does not alter inventory\", \"passed\": true}, {\"actions\": [{\"key\": \"k-valid\", \"meta\": \"tag\", \"op\": \"reserve\", \"qty\": 2, \"sku\": \"sensor\", \"tenant\": \"beta\"}, {\"key\": \"k-valid\", \"op\": \"reserve\", \"qty\": \"2\", \"sku\": \"sensor\", \"tenant\": \"beta\"}, {\"key\": \"k-valid\", \"note\": \"audit\", \"op\": \"release\", \"tenant\": \"beta\"}, {\"key\": \"none\", \"op\": \"release\", \"tenant\": \"nonexistent\"}], \"actual\": [{\"key\": \"k-valid\", \"qty\": 2, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"beta\"}, {\"error\": \"invalid\"}, {\"key\": \"k-valid\", \"status\": \"released\", \"tenant\": \"beta\"}, {\"error\": \"not_found\"}], \"expected\": [{\"key\": \"k-valid\", \"qty\": 2, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"beta\"}, {\"error\": \"invalid\"}, {\"key\": \"k-valid\", \"status\": \"released\", \"tenant\": \"beta\"}, {\"error\": \"not_found\"}], \"family\": \"validation\", \"name\": \"validate fields prior to idempotency check while ignoring extra keys\", \"passed\": true}, {\"actions\": [{\"key\": \"2\", \"op\": \"reserve\", \"qty\": 3, \"sku\": \"widget\", \"tenant\": \"alpha_1\"}, {\"key\": \"1_2\", \"op\": \"reserve\", \"qty\": 4, \"sku\": \"widget\", \"tenant\": \"alpha\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"alpha_1\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"alpha\"}], \"actual\": [{\"key\": \"2\", \"qty\": 3, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"alpha_1\"}, {\"key\": \"1_2\", \"qty\": 4, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"alpha\"}, {\"available\": 7}, {\"available\": 6}], \"expected\": [{\"key\": \"2\", \"qty\": 3, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"alpha_1\"}, {\"key\": \"1_2\", \"qty\": 4, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"alpha\"}, {\"available\": 7}, {\"available\": 6}], \"family\": \"tenant_isolation\", \"name\": \"ambiguous delimiter collision in tenant and key\", \"passed\": true}, {\"actions\": [{\"key\": \"k1\", \"op\": \"reserve\", \"qty\": 1.0, \"sku\": \"widget\", \"tenant\": \"val_t\"}, {\"key\": \"k1\", \"op\": \"reserve\", \"sku\": \"widget\", \"tenant\": \"val_t\"}, {\"op\": \"release\", \"tenant\": \"val_t\"}, {\"op\": \"stock\", \"tenant\": \"val_t\"}, {\"key\": \"k1\", \"op\": \"cancel\", \"tenant\": \"val_t\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"val_t\"}], \"actual\": [{\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"available\": 10}], \"expected\": [{\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"available\": 10}], \"family\": \"validation\", \"name\": \"float quantity, missing fields, and unknown ops rejected without mutation\", \"passed\": true}, {\"actions\": [{\"key\": \"k_all\", \"op\": \"reserve\", \"qty\": 10, \"sku\": \"widget\", \"tenant\": \"max_t\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"max_t\"}, {\"key\": \"k_next\", \"op\": \"reserve\", \"qty\": 1, \"sku\": \"widget\", \"tenant\": \"max_t\"}, {\"key\": \"k_all\", \"op\": \"release\", \"tenant\": \"max_t\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"max_t\"}], \"actual\": [{\"key\": \"k_all\", \"qty\": 10, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"max_t\"}, {\"available\": 0}, {\"error\": \"insufficient\"}, {\"key\": \"k_all\", \"status\": \"released\", \"tenant\": \"max_t\"}, {\"available\": 10}], \"expected\": [{\"key\": \"k_all\", \"qty\": 10, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"max_t\"}, {\"available\": 0}, {\"error\": \"insufficient\"}, {\"key\": \"k_all\", \"status\": \"released\", \"tenant\": \"max_t\"}, {\"available\": 10}], \"family\": \"inventory\", \"name\": \"boundary quantity 10 full exhaustion and restoration\", \"passed\": true}, {\"actions\": [{\"key\": \"k_hist\", \"op\": \"reserve\", \"qty\": 3, \"sku\": \"widget\", \"tenant\": \"conf_t\"}, {\"key\": \"k_hist\", \"op\": \"release\", \"tenant\": \"conf_t\"}, {\"key\": \"k_hist\", \"op\": \"reserve\", \"qty\": 5, \"sku\": \"widget\", \"tenant\": \"conf_t\"}, {\"key\": \"k_hist\", \"op\": \"reserve\", \"qty\": 3, \"sku\": \"sensor\", \"tenant\": \"conf_t\"}, {\"key\": \"k_hist\", \"op\": \"reserve\", \"qty\": 3, \"sku\": \"widget\", \"tenant\": \"conf_t\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"conf_t\"}], \"actual\": [{\"key\": \"k_hist\", \"qty\": 3, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"conf_t\"}, {\"key\": \"k_hist\", \"status\": \"released\", \"tenant\": \"conf_t\"}, {\"error\": \"conflict\"}, {\"error\": \"conflict\"}, {\"key\": \"k_hist\", \"qty\": 3, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"conf_t\"}, {\"available\": 10}], \"expected\": [{\"key\": \"k_hist\", \"qty\": 3, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"conf_t\"}, {\"key\": \"k_hist\", \"status\": \"released\", \"tenant\": \"conf_t\"}, {\"error\": \"conflict\"}, {\"error\": \"conflict\"}, {\"key\": \"k_hist\", \"qty\": 3, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"conf_t\"}, {\"available\": 10}], \"family\": \"payload_binding\", \"name\": \"payload conflict persists after key release\", \"passed\": true}, {\"actions\": [{\"key\": \"transient_k\", \"op\": \"reserve\", \"qty\": -4, \"sku\": \"widget\", \"tenant\": \"val_retry\"}, {\"key\": \"transient_k\", \"op\": \"reserve\", \"qty\": 14, \"sku\": \"widget\", \"tenant\": \"val_retry\"}, {\"key\": \"transient_k\", \"op\": \"reserve\", \"qty\": 4, \"sku\": \"widget\", \"tenant\": \"val_retry\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"val_retry\"}], \"actual\": [{\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"key\": \"transient_k\", \"qty\": 4, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"val_retry\"}, {\"available\": 6}], \"expected\": [{\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"key\": \"transient_k\", \"qty\": 4, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"val_retry\"}, {\"available\": 6}], \"family\": \"idempotency\", \"name\": \"failed validation does not occupy reservation key\", \"passed\": true}, {\"actions\": [{\"op\": \"stock\", \"sku\": \"gadget\", \"tenant\": \"fresh_t\"}, {\"op\": \"stock\", \"sku\": \"\", \"tenant\": \"fresh_t\"}, {\"op\": \"stock\", \"sku\": \"sensor\", \"tenant\": \"fresh_t\"}, {\"key\": \"init_k\", \"op\": \"reserve\", \"qty\": 2, \"sku\": \"sensor\", \"tenant\": \"fresh_t\"}, {\"op\": \"stock\", \"sku\": \"sensor\", \"tenant\": \"fresh_t\"}], \"actual\": [{\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"available\": 10}, {\"key\": \"init_k\", \"qty\": 2, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"fresh_t\"}, {\"available\": 8}], \"expected\": [{\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"available\": 10}, {\"key\": \"init_k\", \"qty\": 2, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"fresh_t\"}, {\"available\": 8}], \"family\": \"validation\", \"name\": \"invalid stock sku rejection and default initial allocation\", \"passed\": true}, {\"actions\": [{\"key\": \"key_x\", \"op\": \"reserve\", \"qty\": 5, \"sku\": \"sensor\", \"tenant\": \"t_resilient\"}, {\"key\": \"key_x\", \"op\": \"reserve\", \"qty\": 6, \"sku\": \"sensor\", \"tenant\": \"t_resilient\"}, {\"op\": \"stock\", \"sku\": \"sensor\", \"tenant\": \"t_resilient\"}, {\"key\": \"key_x\", \"op\": \"release\", \"tenant\": \"t_resilient\"}, {\"op\": \"stock\", \"sku\": \"sensor\", \"tenant\": \"t_resilient\"}], \"actual\": [{\"key\": \"key_x\", \"qty\": 5, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"t_resilient\"}, {\"error\": \"conflict\"}, {\"available\": 5}, {\"key\": \"key_x\", \"status\": \"released\", \"tenant\": \"t_resilient\"}, {\"available\": 10}], \"expected\": [{\"key\": \"key_x\", \"qty\": 5, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"t_resilient\"}, {\"error\": \"conflict\"}, {\"available\": 5}, {\"key\": \"key_x\", \"status\": \"released\", \"tenant\": \"t_resilient\"}, {\"available\": 10}], \"family\": \"payload_binding\", \"name\": \"release succeeds after intervening conflict attempt on key\", \"passed\": true}, {\"actions\": [{\"key\": \"k1\", \"op\": \"reserve\", \"qty\": 6, \"sku\": \"widget\", \"tenant\": \"idem_stock\"}, {\"key\": \"k2\", \"op\": \"reserve\", \"qty\": 4, \"sku\": \"widget\", \"tenant\": \"idem_stock\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"idem_stock\"}, {\"key\": \"k1\", \"op\": \"reserve\", \"qty\": 6, \"sku\": \"widget\", \"tenant\": \"idem_stock\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"idem_stock\"}, {\"key\": \"k1\", \"op\": \"release\", \"tenant\": \"idem_stock\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"idem_stock\"}, {\"key\": \"k2\", \"op\": \"release\", \"tenant\": \"idem_stock\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"idem_stock\"}], \"actual\": [{\"key\": \"k1\", \"qty\": 6, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"idem_stock\"}, {\"key\": \"k2\", \"qty\": 4, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"idem_stock\"}, {\"available\": 0}, {\"key\": \"k1\", \"qty\": 6, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"idem_stock\"}, {\"available\": 0}, {\"key\": \"k1\", \"status\": \"released\", \"tenant\": \"idem_stock\"}, {\"available\": 6}, {\"key\": \"k2\", \"status\": \"released\", \"tenant\": \"idem_stock\"}, {\"available\": 10}], \"expected\": [{\"key\": \"k1\", \"qty\": 6, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"idem_stock\"}, {\"key\": \"k2\", \"qty\": 4, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"idem_stock\"}, {\"available\": 0}, {\"key\": \"k1\", \"qty\": 6, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"idem_stock\"}, {\"available\": 0}, {\"key\": \"k1\", \"status\": \"released\", \"tenant\": \"idem_stock\"}, {\"available\": 6}, {\"key\": \"k2\", \"status\": \"released\", \"tenant\": \"idem_stock\"}, {\"available\": 10}], \"family\": \"idempotency\", \"name\": \"replay reservation when available stock is below quantity\", \"passed\": true}, {\"actions\": [{\"key\": \"order-100\", \"op\": \"reserve\", \"qty\": 3, \"sku\": \"widget\", \"tenant\": \"cust-x\"}, {\"key\": \"order-100\", \"op\": \"reserve\", \"qty\": 3, \"sku\": \"widget\", \"tenant\": \"cust-y\"}, {\"key\": \"order-100\", \"op\": \"release\", \"tenant\": \"cust-x\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"cust-x\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"cust-y\"}, {\"key\": \"order-100\", \"op\": \"release\", \"tenant\": \"cust-y\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"cust-y\"}], \"actual\": [{\"key\": \"order-100\", \"qty\": 3, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"cust-x\"}, {\"key\": \"order-100\", \"qty\": 3, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"cust-y\"}, {\"key\": \"order-100\", \"status\": \"released\", \"tenant\": \"cust-x\"}, {\"available\": 10}, {\"available\": 7}, {\"key\": \"order-100\", \"status\": \"released\", \"tenant\": \"cust-y\"}, {\"available\": 10}], \"expected\": [{\"key\": \"order-100\", \"qty\": 3, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"cust-x\"}, {\"key\": \"order-100\", \"qty\": 3, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"cust-y\"}, {\"key\": \"order-100\", \"status\": \"released\", \"tenant\": \"cust-x\"}, {\"available\": 10}, {\"available\": 7}, {\"key\": \"order-100\", \"status\": \"released\", \"tenant\": \"cust-y\"}, {\"available\": 10}], \"family\": \"tenant_isolation\", \"name\": \"distinct tenants with identical key and payload maintain independent lifecycles\", \"passed\": true}, {\"actions\": [{\"key\": \"k1\", \"op\": \"reserve\", \"qty\": 2, \"sku\": \"Widget\", \"tenant\": \"t_case\"}, {\"key\": \"k1\", \"op\": \"reserve\", \"qty\": 2, \"sku\": \"SENSOR\", \"tenant\": \"t_case\"}, {\"key\": \"k_clean\", \"op\": \"reserve\", \"qty\": 2, \"sku\": \"widget\", \"tenant\": \"t_space\"}, {\"key\": \"k_clean\", \"op\": \"reserve\", \"qty\": 2, \"sku\": \"widget\", \"tenant\": \" t_space \"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"t_space\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \" t_space \"}], \"actual\": [{\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"key\": \"k_clean\", \"qty\": 2, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"t_space\"}, {\"key\": \"k_clean\", \"qty\": 2, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \" t_space \"}, {\"available\": 8}, {\"available\": 8}], \"expected\": [{\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"key\": \"k_clean\", \"qty\": 2, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"t_space\"}, {\"key\": \"k_clean\", \"qty\": 2, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \" t_space \"}, {\"available\": 8}, {\"available\": 8}], \"family\": \"validation\", \"name\": \"sku case sensitivity and whitespace preservation\", \"passed\": true}, {\"actions\": [{\"key\": \"k1\", \"op\": \"release\", \"tenant\": \"\"}, {\"key\": \"\", \"op\": \"release\", \"tenant\": \"val_args\"}, {\"key\": \"k1\", \"op\": \"release\", \"tenant\": 100}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": true}, {\"key\": \"k1\", \"op\": \"reserve\", \"qty\": false, \"sku\": \"widget\", \"tenant\": \"val_args\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"val_args\"}], \"actual\": [{\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"available\": 10}], \"expected\": [{\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"available\": 10}], \"family\": \"validation\", \"name\": \"release and stock validation for non-string, empty, and boolean arguments\", \"passed\": true}, {\"actions\": [{\"key\": \"k_bad\", \"op\": \"reserve\", \"qty\": 11, \"sku\": \"widget\", \"tenant\": \"t_notfound\"}, {\"key\": \"k_bad\", \"op\": \"release\", \"tenant\": \"t_notfound\"}, {\"key\": \"k_fill\", \"op\": \"reserve\", \"qty\": 10, \"sku\": \"widget\", \"tenant\": \"t_notfound\"}, {\"key\": \"k_insuf\", \"op\": \"reserve\", \"qty\": 1, \"sku\": \"widget\", \"tenant\": \"t_notfound\"}, {\"key\": \"k_insuf\", \"op\": \"release\", \"tenant\": \"t_notfound\"}, {\"key\": \"k_fill\", \"op\": \"release\", \"tenant\": \"t_notfound\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"t_notfound\"}], \"actual\": [{\"error\": \"invalid\"}, {\"error\": \"not_found\"}, {\"key\": \"k_fill\", \"qty\": 10, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"t_notfound\"}, {\"error\": \"insufficient\"}, {\"error\": \"not_found\"}, {\"key\": \"k_fill\", \"status\": \"released\", \"tenant\": \"t_notfound\"}, {\"available\": 10}], \"expected\": [{\"error\": \"invalid\"}, {\"error\": \"not_found\"}, {\"key\": \"k_fill\", \"qty\": 10, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"t_notfound\"}, {\"error\": \"insufficient\"}, {\"error\": \"not_found\"}, {\"key\": \"k_fill\", \"status\": \"released\", \"tenant\": \"t_notfound\"}, {\"available\": 10}], \"family\": \"idempotency\", \"name\": \"release on unreserved or failed key returns not found\", \"passed\": true}, {\"actions\": [{\"key\": \"key_b\", \"op\": \"reserve\", \"qty\": 4, \"sku\": \"sensor\", \"tenant\": \"bind_t\"}, {\"key\": \"key_b\", \"op\": \"reserve\", \"qty\": 4, \"sku\": \"invalid_sku\", \"tenant\": \"bind_t\"}, {\"key\": \"key_b\", \"op\": \"reserve\", \"qty\": 0, \"sku\": \"sensor\", \"tenant\": \"bind_t\"}, {\"key\": \"key_b\", \"op\": \"reserve\", \"qty\": 12, \"sku\": \"sensor\", \"tenant\": \"bind_t\"}, {\"key\": \"key_b\", \"op\": \"reserve\", \"qty\": 5, \"sku\": \"widget\", \"tenant\": \"bind_t\"}, {\"key\": \"key_b\", \"op\": \"reserve\", \"qty\": 4, \"sku\": \"sensor\", \"tenant\": \"bind_t\"}, {\"op\": \"stock\", \"sku\": \"sensor\", \"tenant\": \"bind_t\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"bind_t\"}], \"actual\": [{\"key\": \"key_b\", \"qty\": 4, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"bind_t\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"conflict\"}, {\"key\": \"key_b\", \"qty\": 4, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"bind_t\"}, {\"available\": 6}, {\"available\": 10}], \"expected\": [{\"key\": \"key_b\", \"qty\": 4, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"bind_t\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"conflict\"}, {\"key\": \"key_b\", \"qty\": 4, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"bind_t\"}, {\"available\": 6}, {\"available\": 10}], \"family\": \"payload_binding\", \"name\": \"invalid payload on existing key returns invalid rather than conflict\", \"passed\": true}, {\"actions\": [{\"key\": \"item\", \"op\": \"reserve\", \"qty\": 2, \"sku\": \"widget\", \"tenant\": \"org/dept\"}, {\"key\": \"dept/item\", \"op\": \"reserve\", \"qty\": 3, \"sku\": \"widget\", \"tenant\": \"org\"}, {\"key\": \"w\", \"op\": \"reserve\", \"qty\": 4, \"sku\": \"sensor\", \"tenant\": \"u:v\"}, {\"key\": \"v:w\", \"op\": \"reserve\", \"qty\": 5, \"sku\": \"sensor\", \"tenant\": \"u\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"org/dept\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"org\"}, {\"op\": \"stock\", \"sku\": \"sensor\", \"tenant\": \"u:v\"}, {\"op\": \"stock\", \"sku\": \"sensor\", \"tenant\": \"u\"}], \"actual\": [{\"key\": \"item\", \"qty\": 2, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"org/dept\"}, {\"key\": \"dept/item\", \"qty\": 3, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"org\"}, {\"key\": \"w\", \"qty\": 4, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"u:v\"}, {\"error\": \"conflict\"}, {\"available\": 8}, {\"available\": 7}, {\"available\": 6}, {\"available\": 10}], \"expected\": [{\"key\": \"item\", \"qty\": 2, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"org/dept\"}, {\"key\": \"dept/item\", \"qty\": 3, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"org\"}, {\"key\": \"w\", \"qty\": 4, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"u:v\"}, {\"key\": \"v:w\", \"qty\": 5, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"u\"}, {\"available\": 8}, {\"available\": 7}, {\"available\": 6}, {\"available\": 5}], \"family\": \"tenant_isolation\", \"name\": \"delimiter collision resistance with colons and slashes across tenant and key\", \"passed\": false}], \"error\": null, \"failure\": {\"actions\": [{\"key\": \"item\", \"op\": \"reserve\", \"qty\": 2, \"sku\": \"widget\", \"tenant\": \"org/dept\"}, {\"key\": \"dept/item\", \"op\": \"reserve\", \"qty\": 3, \"sku\": \"widget\", \"tenant\": \"org\"}, {\"key\": \"w\", \"op\": \"reserve\", \"qty\": 4, \"sku\": \"sensor\", \"tenant\": \"u:v\"}, {\"key\": \"v:w\", \"op\": \"reserve\", \"qty\": 5, \"sku\": \"sensor\", \"tenant\": \"u\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"org/dept\"}, {\"op\": \"stock\", \"sku\": \"widget\", \"tenant\": \"org\"}, {\"op\": \"stock\", \"sku\": \"sensor\", \"tenant\": \"u:v\"}, {\"op\": \"stock\", \"sku\": \"sensor\", \"tenant\": \"u\"}], \"actual\": [{\"key\": \"item\", \"qty\": 2, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"org/dept\"}, {\"key\": \"dept/item\", \"qty\": 3, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"org\"}, {\"key\": \"w\", \"qty\": 4, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"u:v\"}, {\"error\": \"conflict\"}, {\"available\": 8}, {\"available\": 7}, {\"available\": 6}, {\"available\": 10}], \"expected\": [{\"key\": \"item\", \"qty\": 2, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"org/dept\"}, {\"key\": \"dept/item\", \"qty\": 3, \"sku\": \"widget\", \"status\": \"reserved\", \"tenant\": \"org\"}, {\"key\": \"w\", \"qty\": 4, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"u:v\"}, {\"key\": \"v:w\", \"qty\": 5, \"sku\": \"sensor\", \"status\": \"reserved\", \"tenant\": \"u\"}, {\"available\": 8}, {\"available\": 7}, {\"available\": 6}, {\"available\": 5}], \"family\": \"tenant_isolation\", \"name\": \"delimiter collision resistance with colons and slashes across tenant and key\", \"passed\": false}, \"passed\": false, \"seconds\": 0.04158291699991423}, \"scenarios\": 25, \"schema\": 1, \"scope\": \"Synthetic sequential reservation API; a pass is not a general safety guarantee\", \"suite_sha256\": \"170f58db3cb93cae2caae3e4cece8fa00e1312c1aa8d6f6028d5ca3f111ef619\", \"suite_version\": 3, \"verdict\": \"BLOCKED\"}",
+    "signer": "agent1qfael9dfqegc468f75a4qp6s3vs0a9x2pfjanxkwnv7v827ma7dv625lzee",
+    "signature": "sig1f759vtjm9gpfv3fhayc0h5tx5tr76fy5cz8arths3uuhat7svxsmpxu6h2eyf0wwcyrch966fj8c85emxhm5x7uq4v2acxf392y0ergxyk6y4"
+  },
+  "receipt": {
+    "campaign_id": "ee305e3bff26117b30d553e86fc8491f35002f37102acc11ad367101a0870c1f",
+    "candidate_sha256": "a172c38e226f9a209b006e93646a045af77ad70b79462d47cad3cfb603f150f4",
+    "checked_at": "2026-11-07T23:49:52.036353+00:00",
+    "event_root_sha256": "5ab31465d099516c2ee79ab9505cdfba2f7c98d653bddf60aface2834115159e",
+    "request_id": "59cd4948b13f47eea15856a0fd0cb1bd",
+    "requester": "agent1qtg49c2sgdw4cue6xu3fwktcq8cue65lrrcv43glxxmzpx7q4v24y73c3d0",
+    "result": {
+      "checks": [
+        {
+          "actions": [
+            {
+              "key": "order-1",
+              "op": "reserve",
+              "qty": 2,
+              "sku": "widget",
+              "tenant": "atlas"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "atlas"
+            }
+          ],
+          "actual": [
+            {
+              "key": "order-1",
+              "qty": 2,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "atlas"
+            },
+            {
+              "available": 8
+            }
+          ],
+          "expected": [
+            {
+              "key": "order-1",
+              "qty": 2,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "atlas"
+            },
+            {
+              "available": 8
+            }
+          ],
+          "family": "inventory",
+          "name": "new reservation",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "order-1",
+              "op": "reserve",
+              "qty": 2,
+              "sku": "widget",
+              "tenant": "atlas"
+            },
+            {
+              "key": "order-1",
+              "op": "release",
+              "tenant": "atlas"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "atlas"
+            }
+          ],
+          "actual": [
+            {
+              "key": "order-1",
+              "qty": 2,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "atlas"
+            },
+            {
+              "key": "order-1",
+              "status": "released",
+              "tenant": "atlas"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "expected": [
+            {
+              "key": "order-1",
+              "qty": 2,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "atlas"
+            },
+            {
+              "key": "order-1",
+              "status": "released",
+              "tenant": "atlas"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "family": "inventory",
+          "name": "release reservation",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "order-1",
+              "op": "reserve",
+              "qty": 6,
+              "sku": "widget",
+              "tenant": "atlas"
+            },
+            {
+              "key": "order-2",
+              "op": "reserve",
+              "qty": 5,
+              "sku": "widget",
+              "tenant": "atlas"
+            }
+          ],
+          "actual": [
+            {
+              "key": "order-1",
+              "qty": 6,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "atlas"
+            },
+            {
+              "error": "insufficient"
+            }
+          ],
+          "expected": [
+            {
+              "key": "order-1",
+              "qty": 6,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "atlas"
+            },
+            {
+              "error": "insufficient"
+            }
+          ],
+          "family": "inventory",
+          "name": "insufficient inventory",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "order-1",
+              "op": "reserve",
+              "qty": 2,
+              "sku": "widget",
+              "tenant": "atlas"
+            },
+            {
+              "key": "other",
+              "op": "reserve",
+              "qty": 2,
+              "sku": "sensor",
+              "tenant": "atlas"
+            },
+            {
+              "op": "stock",
+              "sku": "sensor",
+              "tenant": "atlas"
+            }
+          ],
+          "actual": [
+            {
+              "key": "order-1",
+              "qty": 2,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "atlas"
+            },
+            {
+              "key": "other",
+              "qty": 2,
+              "sku": "sensor",
+              "status": "reserved",
+              "tenant": "atlas"
+            },
+            {
+              "available": 8
+            }
+          ],
+          "expected": [
+            {
+              "key": "order-1",
+              "qty": 2,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "atlas"
+            },
+            {
+              "key": "other",
+              "qty": 2,
+              "sku": "sensor",
+              "status": "reserved",
+              "tenant": "atlas"
+            },
+            {
+              "available": 8
+            }
+          ],
+          "family": "inventory",
+          "name": "independent products",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "k1",
+              "op": "reserve",
+              "qty": 4,
+              "sku": "widget",
+              "tenant": "corp"
+            },
+            {
+              "key": "k1",
+              "op": "release",
+              "tenant": "corp"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "corp"
+            },
+            {
+              "key": "k1",
+              "op": "reserve",
+              "qty": 4,
+              "sku": "widget",
+              "tenant": "corp"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "corp"
+            }
+          ],
+          "actual": [
+            {
+              "key": "k1",
+              "qty": 4,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "corp"
+            },
+            {
+              "key": "k1",
+              "status": "released",
+              "tenant": "corp"
+            },
+            {
+              "available": 10
+            },
+            {
+              "key": "k1",
+              "qty": 4,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "corp"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "expected": [
+            {
+              "key": "k1",
+              "qty": 4,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "corp"
+            },
+            {
+              "key": "k1",
+              "status": "released",
+              "tenant": "corp"
+            },
+            {
+              "available": 10
+            },
+            {
+              "key": "k1",
+              "qty": 4,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "corp"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "family": "idempotency",
+          "name": "reserve replay after release preserves original response and inventory",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "k-hold",
+              "op": "reserve",
+              "qty": 7,
+              "sku": "sensor",
+              "tenant": "acme"
+            },
+            {
+              "key": "k-retry",
+              "op": "reserve",
+              "qty": 5,
+              "sku": "sensor",
+              "tenant": "acme"
+            },
+            {
+              "key": "k-hold",
+              "op": "release",
+              "tenant": "acme"
+            },
+            {
+              "key": "k-retry",
+              "op": "reserve",
+              "qty": 5,
+              "sku": "sensor",
+              "tenant": "acme"
+            },
+            {
+              "op": "stock",
+              "sku": "sensor",
+              "tenant": "acme"
+            }
+          ],
+          "actual": [
+            {
+              "key": "k-hold",
+              "qty": 7,
+              "sku": "sensor",
+              "status": "reserved",
+              "tenant": "acme"
+            },
+            {
+              "error": "insufficient"
+            },
+            {
+              "key": "k-hold",
+              "status": "released",
+              "tenant": "acme"
+            },
+            {
+              "key": "k-retry",
+              "qty": 5,
+              "sku": "sensor",
+              "status": "reserved",
+              "tenant": "acme"
+            },
+            {
+              "available": 5
+            }
+          ],
+          "expected": [
+            {
+              "key": "k-hold",
+              "qty": 7,
+              "sku": "sensor",
+              "status": "reserved",
+              "tenant": "acme"
+            },
+            {
+              "error": "insufficient"
+            },
+            {
+              "key": "k-hold",
+              "status": "released",
+              "tenant": "acme"
+            },
+            {
+              "key": "k-retry",
+              "qty": 5,
+              "sku": "sensor",
+              "status": "reserved",
+              "tenant": "acme"
+            },
+            {
+              "available": 5
+            }
+          ],
+          "family": "inventory",
+          "name": "insufficient stock failure does not occupy key for subsequent retry",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "res-99",
+              "op": "reserve",
+              "qty": 3,
+              "sku": "widget",
+              "tenant": "tenant-A"
+            },
+            {
+              "key": "res-99",
+              "op": "release",
+              "tenant": "tenant-B"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "tenant-A"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "tenant-B"
+            }
+          ],
+          "actual": [
+            {
+              "key": "res-99",
+              "qty": 3,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "tenant-A"
+            },
+            {
+              "error": "not_found"
+            },
+            {
+              "available": 7
+            },
+            {
+              "available": 10
+            }
+          ],
+          "expected": [
+            {
+              "key": "res-99",
+              "qty": 3,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "tenant-A"
+            },
+            {
+              "error": "not_found"
+            },
+            {
+              "available": 7
+            },
+            {
+              "available": 10
+            }
+          ],
+          "family": "tenant_isolation",
+          "name": "foreign tenant release returns not found and preserves state",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "shared-key",
+              "op": "reserve",
+              "qty": 2,
+              "sku": "widget",
+              "tenant": "t1"
+            },
+            {
+              "key": "shared-key",
+              "op": "reserve",
+              "qty": 2,
+              "sku": "sensor",
+              "tenant": "t1"
+            },
+            {
+              "op": "stock",
+              "sku": "sensor",
+              "tenant": "t1"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "t1"
+            }
+          ],
+          "actual": [
+            {
+              "key": "shared-key",
+              "qty": 2,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "t1"
+            },
+            {
+              "error": "conflict"
+            },
+            {
+              "available": 10
+            },
+            {
+              "available": 8
+            }
+          ],
+          "expected": [
+            {
+              "key": "shared-key",
+              "qty": 2,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "t1"
+            },
+            {
+              "error": "conflict"
+            },
+            {
+              "available": 10
+            },
+            {
+              "available": 8
+            }
+          ],
+          "family": "payload_binding",
+          "name": "sku mutation under existing key triggers conflict error",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "order",
+              "op": "reserve",
+              "qty": 3,
+              "sku": "widget",
+              "tenant": "Alpha"
+            },
+            {
+              "key": "order",
+              "op": "reserve",
+              "qty": 4,
+              "sku": "widget",
+              "tenant": "alpha"
+            },
+            {
+              "key": "ORDER",
+              "op": "reserve",
+              "qty": 5,
+              "sku": "widget",
+              "tenant": "Alpha"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "Alpha"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "alpha"
+            }
+          ],
+          "actual": [
+            {
+              "key": "order",
+              "qty": 3,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "Alpha"
+            },
+            {
+              "key": "order",
+              "qty": 4,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "alpha"
+            },
+            {
+              "key": "ORDER",
+              "qty": 5,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "Alpha"
+            },
+            {
+              "available": 2
+            },
+            {
+              "available": 6
+            }
+          ],
+          "expected": [
+            {
+              "key": "order",
+              "qty": 3,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "Alpha"
+            },
+            {
+              "key": "order",
+              "qty": 4,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "alpha"
+            },
+            {
+              "key": "ORDER",
+              "qty": 5,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "Alpha"
+            },
+            {
+              "available": 2
+            },
+            {
+              "available": 6
+            }
+          ],
+          "family": "tenant_isolation",
+          "name": "case sensitivity isolates tenant and key namespaces without folding",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "k1",
+              "op": "reserve",
+              "qty": true,
+              "sku": "widget",
+              "tenant": "t1"
+            },
+            {
+              "key": "k1",
+              "op": "reserve",
+              "qty": 0,
+              "sku": "widget",
+              "tenant": "t1"
+            },
+            {
+              "key": "k1",
+              "op": "reserve",
+              "qty": 11,
+              "sku": "widget",
+              "tenant": "t1"
+            },
+            {
+              "key": "k1",
+              "op": "reserve",
+              "qty": 1,
+              "sku": "widget",
+              "tenant": ""
+            },
+            {
+              "key": "",
+              "op": "reserve",
+              "qty": 1,
+              "sku": "widget",
+              "tenant": "t1"
+            },
+            {
+              "key": "k1",
+              "op": "reserve",
+              "qty": 1,
+              "sku": "gadget",
+              "tenant": "t1"
+            },
+            {
+              "op": "stock",
+              "sku": "gadget",
+              "tenant": "t1"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "t1"
+            }
+          ],
+          "actual": [
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "expected": [
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "family": "validation",
+          "name": "comprehensive type and boundary validation does not alter inventory",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "k-valid",
+              "meta": "tag",
+              "op": "reserve",
+              "qty": 2,
+              "sku": "sensor",
+              "tenant": "beta"
+            },
+            {
+              "key": "k-valid",
+              "op": "reserve",
+              "qty": "2",
+              "sku": "sensor",
+              "tenant": "beta"
+            },
+            {
+              "key": "k-valid",
+              "note": "audit",
+              "op": "release",
+              "tenant": "beta"
+            },
+            {
+              "key": "none",
+              "op": "release",
+              "tenant": "nonexistent"
+            }
+          ],
+          "actual": [
+            {
+              "key": "k-valid",
+              "qty": 2,
+              "sku": "sensor",
+              "status": "reserved",
+              "tenant": "beta"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "key": "k-valid",
+              "status": "released",
+              "tenant": "beta"
+            },
+            {
+              "error": "not_found"
+            }
+          ],
+          "expected": [
+            {
+              "key": "k-valid",
+              "qty": 2,
+              "sku": "sensor",
+              "status": "reserved",
+              "tenant": "beta"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "key": "k-valid",
+              "status": "released",
+              "tenant": "beta"
+            },
+            {
+              "error": "not_found"
+            }
+          ],
+          "family": "validation",
+          "name": "validate fields prior to idempotency check while ignoring extra keys",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "2",
+              "op": "reserve",
+              "qty": 3,
+              "sku": "widget",
+              "tenant": "alpha_1"
+            },
+            {
+              "key": "1_2",
+              "op": "reserve",
+              "qty": 4,
+              "sku": "widget",
+              "tenant": "alpha"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "alpha_1"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "alpha"
+            }
+          ],
+          "actual": [
+            {
+              "key": "2",
+              "qty": 3,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "alpha_1"
+            },
+            {
+              "key": "1_2",
+              "qty": 4,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "alpha"
+            },
+            {
+              "available": 7
+            },
+            {
+              "available": 6
+            }
+          ],
+          "expected": [
+            {
+              "key": "2",
+              "qty": 3,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "alpha_1"
+            },
+            {
+              "key": "1_2",
+              "qty": 4,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "alpha"
+            },
+            {
+              "available": 7
+            },
+            {
+              "available": 6
+            }
+          ],
+          "family": "tenant_isolation",
+          "name": "ambiguous delimiter collision in tenant and key",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "k1",
+              "op": "reserve",
+              "qty": 1.0,
+              "sku": "widget",
+              "tenant": "val_t"
+            },
+            {
+              "key": "k1",
+              "op": "reserve",
+              "sku": "widget",
+              "tenant": "val_t"
+            },
+            {
+              "op": "release",
+              "tenant": "val_t"
+            },
+            {
+              "op": "stock",
+              "tenant": "val_t"
+            },
+            {
+              "key": "k1",
+              "op": "cancel",
+              "tenant": "val_t"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "val_t"
+            }
+          ],
+          "actual": [
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "expected": [
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "family": "validation",
+          "name": "float quantity, missing fields, and unknown ops rejected without mutation",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "k_all",
+              "op": "reserve",
+              "qty": 10,
+              "sku": "widget",
+              "tenant": "max_t"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "max_t"
+            },
+            {
+              "key": "k_next",
+              "op": "reserve",
+              "qty": 1,
+              "sku": "widget",
+              "tenant": "max_t"
+            },
+            {
+              "key": "k_all",
+              "op": "release",
+              "tenant": "max_t"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "max_t"
+            }
+          ],
+          "actual": [
+            {
+              "key": "k_all",
+              "qty": 10,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "max_t"
+            },
+            {
+              "available": 0
+            },
+            {
+              "error": "insufficient"
+            },
+            {
+              "key": "k_all",
+              "status": "released",
+              "tenant": "max_t"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "expected": [
+            {
+              "key": "k_all",
+              "qty": 10,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "max_t"
+            },
+            {
+              "available": 0
+            },
+            {
+              "error": "insufficient"
+            },
+            {
+              "key": "k_all",
+              "status": "released",
+              "tenant": "max_t"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "family": "inventory",
+          "name": "boundary quantity 10 full exhaustion and restoration",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "k_hist",
+              "op": "reserve",
+              "qty": 3,
+              "sku": "widget",
+              "tenant": "conf_t"
+            },
+            {
+              "key": "k_hist",
+              "op": "release",
+              "tenant": "conf_t"
+            },
+            {
+              "key": "k_hist",
+              "op": "reserve",
+              "qty": 5,
+              "sku": "widget",
+              "tenant": "conf_t"
+            },
+            {
+              "key": "k_hist",
+              "op": "reserve",
+              "qty": 3,
+              "sku": "sensor",
+              "tenant": "conf_t"
+            },
+            {
+              "key": "k_hist",
+              "op": "reserve",
+              "qty": 3,
+              "sku": "widget",
+              "tenant": "conf_t"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "conf_t"
+            }
+          ],
+          "actual": [
+            {
+              "key": "k_hist",
+              "qty": 3,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "conf_t"
+            },
+            {
+              "key": "k_hist",
+              "status": "released",
+              "tenant": "conf_t"
+            },
+            {
+              "error": "conflict"
+            },
+            {
+              "error": "conflict"
+            },
+            {
+              "key": "k_hist",
+              "qty": 3,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "conf_t"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "expected": [
+            {
+              "key": "k_hist",
+              "qty": 3,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "conf_t"
+            },
+            {
+              "key": "k_hist",
+              "status": "released",
+              "tenant": "conf_t"
+            },
+            {
+              "error": "conflict"
+            },
+            {
+              "error": "conflict"
+            },
+            {
+              "key": "k_hist",
+              "qty": 3,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "conf_t"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "family": "payload_binding",
+          "name": "payload conflict persists after key release",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "transient_k",
+              "op": "reserve",
+              "qty": -4,
+              "sku": "widget",
+              "tenant": "val_retry"
+            },
+            {
+              "key": "transient_k",
+              "op": "reserve",
+              "qty": 14,
+              "sku": "widget",
+              "tenant": "val_retry"
+            },
+            {
+              "key": "transient_k",
+              "op": "reserve",
+              "qty": 4,
+              "sku": "widget",
+              "tenant": "val_retry"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "val_retry"
+            }
+          ],
+          "actual": [
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "key": "transient_k",
+              "qty": 4,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "val_retry"
+            },
+            {
+              "available": 6
+            }
+          ],
+          "expected": [
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "key": "transient_k",
+              "qty": 4,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "val_retry"
+            },
+            {
+              "available": 6
+            }
+          ],
+          "family": "idempotency",
+          "name": "failed validation does not occupy reservation key",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "op": "stock",
+              "sku": "gadget",
+              "tenant": "fresh_t"
+            },
+            {
+              "op": "stock",
+              "sku": "",
+              "tenant": "fresh_t"
+            },
+            {
+              "op": "stock",
+              "sku": "sensor",
+              "tenant": "fresh_t"
+            },
+            {
+              "key": "init_k",
+              "op": "reserve",
+              "qty": 2,
+              "sku": "sensor",
+              "tenant": "fresh_t"
+            },
+            {
+              "op": "stock",
+              "sku": "sensor",
+              "tenant": "fresh_t"
+            }
+          ],
+          "actual": [
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "available": 10
+            },
+            {
+              "key": "init_k",
+              "qty": 2,
+              "sku": "sensor",
+              "status": "reserved",
+              "tenant": "fresh_t"
+            },
+            {
+              "available": 8
+            }
+          ],
+          "expected": [
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "available": 10
+            },
+            {
+              "key": "init_k",
+              "qty": 2,
+              "sku": "sensor",
+              "status": "reserved",
+              "tenant": "fresh_t"
+            },
+            {
+              "available": 8
+            }
+          ],
+          "family": "validation",
+          "name": "invalid stock sku rejection and default initial allocation",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "key_x",
+              "op": "reserve",
+              "qty": 5,
+              "sku": "sensor",
+              "tenant": "t_resilient"
+            },
+            {
+              "key": "key_x",
+              "op": "reserve",
+              "qty": 6,
+              "sku": "sensor",
+              "tenant": "t_resilient"
+            },
+            {
+              "op": "stock",
+              "sku": "sensor",
+              "tenant": "t_resilient"
+            },
+            {
+              "key": "key_x",
+              "op": "release",
+              "tenant": "t_resilient"
+            },
+            {
+              "op": "stock",
+              "sku": "sensor",
+              "tenant": "t_resilient"
+            }
+          ],
+          "actual": [
+            {
+              "key": "key_x",
+              "qty": 5,
+              "sku": "sensor",
+              "status": "reserved",
+              "tenant": "t_resilient"
+            },
+            {
+              "error": "conflict"
+            },
+            {
+              "available": 5
+            },
+            {
+              "key": "key_x",
+              "status": "released",
+              "tenant": "t_resilient"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "expected": [
+            {
+              "key": "key_x",
+              "qty": 5,
+              "sku": "sensor",
+              "status": "reserved",
+              "tenant": "t_resilient"
+            },
+            {
+              "error": "conflict"
+            },
+            {
+              "available": 5
+            },
+            {
+              "key": "key_x",
+              "status": "released",
+              "tenant": "t_resilient"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "family": "payload_binding",
+          "name": "release succeeds after intervening conflict attempt on key",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "k1",
+              "op": "reserve",
+              "qty": 6,
+              "sku": "widget",
+              "tenant": "idem_stock"
+            },
+            {
+              "key": "k2",
+              "op": "reserve",
+              "qty": 4,
+              "sku": "widget",
+              "tenant": "idem_stock"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "idem_stock"
+            },
+            {
+              "key": "k1",
+              "op": "reserve",
+              "qty": 6,
+              "sku": "widget",
+              "tenant": "idem_stock"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "idem_stock"
+            },
+            {
+              "key": "k1",
+              "op": "release",
+              "tenant": "idem_stock"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "idem_stock"
+            },
+            {
+              "key": "k2",
+              "op": "release",
+              "tenant": "idem_stock"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "idem_stock"
+            }
+          ],
+          "actual": [
+            {
+              "key": "k1",
+              "qty": 6,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "idem_stock"
+            },
+            {
+              "key": "k2",
+              "qty": 4,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "idem_stock"
+            },
+            {
+              "available": 0
+            },
+            {
+              "key": "k1",
+              "qty": 6,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "idem_stock"
+            },
+            {
+              "available": 0
+            },
+            {
+              "key": "k1",
+              "status": "released",
+              "tenant": "idem_stock"
+            },
+            {
+              "available": 6
+            },
+            {
+              "key": "k2",
+              "status": "released",
+              "tenant": "idem_stock"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "expected": [
+            {
+              "key": "k1",
+              "qty": 6,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "idem_stock"
+            },
+            {
+              "key": "k2",
+              "qty": 4,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "idem_stock"
+            },
+            {
+              "available": 0
+            },
+            {
+              "key": "k1",
+              "qty": 6,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "idem_stock"
+            },
+            {
+              "available": 0
+            },
+            {
+              "key": "k1",
+              "status": "released",
+              "tenant": "idem_stock"
+            },
+            {
+              "available": 6
+            },
+            {
+              "key": "k2",
+              "status": "released",
+              "tenant": "idem_stock"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "family": "idempotency",
+          "name": "replay reservation when available stock is below quantity",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "order-100",
+              "op": "reserve",
+              "qty": 3,
+              "sku": "widget",
+              "tenant": "cust-x"
+            },
+            {
+              "key": "order-100",
+              "op": "reserve",
+              "qty": 3,
+              "sku": "widget",
+              "tenant": "cust-y"
+            },
+            {
+              "key": "order-100",
+              "op": "release",
+              "tenant": "cust-x"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "cust-x"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "cust-y"
+            },
+            {
+              "key": "order-100",
+              "op": "release",
+              "tenant": "cust-y"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "cust-y"
+            }
+          ],
+          "actual": [
+            {
+              "key": "order-100",
+              "qty": 3,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "cust-x"
+            },
+            {
+              "key": "order-100",
+              "qty": 3,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "cust-y"
+            },
+            {
+              "key": "order-100",
+              "status": "released",
+              "tenant": "cust-x"
+            },
+            {
+              "available": 10
+            },
+            {
+              "available": 7
+            },
+            {
+              "key": "order-100",
+              "status": "released",
+              "tenant": "cust-y"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "expected": [
+            {
+              "key": "order-100",
+              "qty": 3,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "cust-x"
+            },
+            {
+              "key": "order-100",
+              "qty": 3,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "cust-y"
+            },
+            {
+              "key": "order-100",
+              "status": "released",
+              "tenant": "cust-x"
+            },
+            {
+              "available": 10
+            },
+            {
+              "available": 7
+            },
+            {
+              "key": "order-100",
+              "status": "released",
+              "tenant": "cust-y"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "family": "tenant_isolation",
+          "name": "distinct tenants with identical key and payload maintain independent lifecycles",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "k1",
+              "op": "reserve",
+              "qty": 2,
+              "sku": "Widget",
+              "tenant": "t_case"
+            },
+            {
+              "key": "k1",
+              "op": "reserve",
+              "qty": 2,
+              "sku": "SENSOR",
+              "tenant": "t_case"
+            },
+            {
+              "key": "k_clean",
+              "op": "reserve",
+              "qty": 2,
+              "sku": "widget",
+              "tenant": "t_space"
+            },
+            {
+              "key": "k_clean",
+              "op": "reserve",
+              "qty": 2,
+              "sku": "widget",
+              "tenant": " t_space "
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "t_space"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": " t_space "
+            }
+          ],
+          "actual": [
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "key": "k_clean",
+              "qty": 2,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "t_space"
+            },
+            {
+              "key": "k_clean",
+              "qty": 2,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": " t_space "
+            },
+            {
+              "available": 8
+            },
+            {
+              "available": 8
+            }
+          ],
+          "expected": [
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "key": "k_clean",
+              "qty": 2,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "t_space"
+            },
+            {
+              "key": "k_clean",
+              "qty": 2,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": " t_space "
+            },
+            {
+              "available": 8
+            },
+            {
+              "available": 8
+            }
+          ],
+          "family": "validation",
+          "name": "sku case sensitivity and whitespace preservation",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "k1",
+              "op": "release",
+              "tenant": ""
+            },
+            {
+              "key": "",
+              "op": "release",
+              "tenant": "val_args"
+            },
+            {
+              "key": "k1",
+              "op": "release",
+              "tenant": 100
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": ""
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": true
+            },
+            {
+              "key": "k1",
+              "op": "reserve",
+              "qty": false,
+              "sku": "widget",
+              "tenant": "val_args"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "val_args"
+            }
+          ],
+          "actual": [
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "expected": [
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "family": "validation",
+          "name": "release and stock validation for non-string, empty, and boolean arguments",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "k_bad",
+              "op": "reserve",
+              "qty": 11,
+              "sku": "widget",
+              "tenant": "t_notfound"
+            },
+            {
+              "key": "k_bad",
+              "op": "release",
+              "tenant": "t_notfound"
+            },
+            {
+              "key": "k_fill",
+              "op": "reserve",
+              "qty": 10,
+              "sku": "widget",
+              "tenant": "t_notfound"
+            },
+            {
+              "key": "k_insuf",
+              "op": "reserve",
+              "qty": 1,
+              "sku": "widget",
+              "tenant": "t_notfound"
+            },
+            {
+              "key": "k_insuf",
+              "op": "release",
+              "tenant": "t_notfound"
+            },
+            {
+              "key": "k_fill",
+              "op": "release",
+              "tenant": "t_notfound"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "t_notfound"
+            }
+          ],
+          "actual": [
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "not_found"
+            },
+            {
+              "key": "k_fill",
+              "qty": 10,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "t_notfound"
+            },
+            {
+              "error": "insufficient"
+            },
+            {
+              "error": "not_found"
+            },
+            {
+              "key": "k_fill",
+              "status": "released",
+              "tenant": "t_notfound"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "expected": [
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "not_found"
+            },
+            {
+              "key": "k_fill",
+              "qty": 10,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "t_notfound"
+            },
+            {
+              "error": "insufficient"
+            },
+            {
+              "error": "not_found"
+            },
+            {
+              "key": "k_fill",
+              "status": "released",
+              "tenant": "t_notfound"
+            },
+            {
+              "available": 10
+            }
+          ],
+          "family": "idempotency",
+          "name": "release on unreserved or failed key returns not found",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "key_b",
+              "op": "reserve",
+              "qty": 4,
+              "sku": "sensor",
+              "tenant": "bind_t"
+            },
+            {
+              "key": "key_b",
+              "op": "reserve",
+              "qty": 4,
+              "sku": "invalid_sku",
+              "tenant": "bind_t"
+            },
+            {
+              "key": "key_b",
+              "op": "reserve",
+              "qty": 0,
+              "sku": "sensor",
+              "tenant": "bind_t"
+            },
+            {
+              "key": "key_b",
+              "op": "reserve",
+              "qty": 12,
+              "sku": "sensor",
+              "tenant": "bind_t"
+            },
+            {
+              "key": "key_b",
+              "op": "reserve",
+              "qty": 5,
+              "sku": "widget",
+              "tenant": "bind_t"
+            },
+            {
+              "key": "key_b",
+              "op": "reserve",
+              "qty": 4,
+              "sku": "sensor",
+              "tenant": "bind_t"
+            },
+            {
+              "op": "stock",
+              "sku": "sensor",
+              "tenant": "bind_t"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "bind_t"
+            }
+          ],
+          "actual": [
+            {
+              "key": "key_b",
+              "qty": 4,
+              "sku": "sensor",
+              "status": "reserved",
+              "tenant": "bind_t"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "conflict"
+            },
+            {
+              "key": "key_b",
+              "qty": 4,
+              "sku": "sensor",
+              "status": "reserved",
+              "tenant": "bind_t"
+            },
+            {
+              "available": 6
+            },
+            {
+              "available": 10
+            }
+          ],
+          "expected": [
+            {
+              "key": "key_b",
+              "qty": 4,
+              "sku": "sensor",
+              "status": "reserved",
+              "tenant": "bind_t"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "invalid"
+            },
+            {
+              "error": "conflict"
+            },
+            {
+              "key": "key_b",
+              "qty": 4,
+              "sku": "sensor",
+              "status": "reserved",
+              "tenant": "bind_t"
+            },
+            {
+              "available": 6
+            },
+            {
+              "available": 10
+            }
+          ],
+          "family": "payload_binding",
+          "name": "invalid payload on existing key returns invalid rather than conflict",
+          "passed": true
+        },
+        {
+          "actions": [
+            {
+              "key": "item",
+              "op": "reserve",
+              "qty": 2,
+              "sku": "widget",
+              "tenant": "org/dept"
+            },
+            {
+              "key": "dept/item",
+              "op": "reserve",
+              "qty": 3,
+              "sku": "widget",
+              "tenant": "org"
+            },
+            {
+              "key": "w",
+              "op": "reserve",
+              "qty": 4,
+              "sku": "sensor",
+              "tenant": "u:v"
+            },
+            {
+              "key": "v:w",
+              "op": "reserve",
+              "qty": 5,
+              "sku": "sensor",
+              "tenant": "u"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "org/dept"
+            },
+            {
+              "op": "stock",
+              "sku": "widget",
+              "tenant": "org"
+            },
+            {
+              "op": "stock",
+              "sku": "sensor",
+              "tenant": "u:v"
+            },
+            {
+              "op": "stock",
+              "sku": "sensor",
+              "tenant": "u"
+            }
+          ],
+          "actual": [
+            {
+              "key": "item",
+              "qty": 2,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "org/dept"
+            },
+            {
+              "key": "dept/item",
+              "qty": 3,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "org"
+            },
+            {
+              "key": "w",
+              "qty": 4,
+              "sku": "sensor",
+              "status": "reserved",
+              "tenant": "u:v"
+            },
+            {
+              "error": "conflict"
+            },
+            {
+              "available": 8
+            },
+            {
+              "available": 7
+            },
+            {
+              "available": 6
+            },
+            {
+              "available": 10
+            }
+          ],
+          "expected": [
+            {
+              "key": "item",
+              "qty": 2,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "org/dept"
+            },
+            {
+              "key": "dept/item",
+              "qty": 3,
+              "sku": "widget",
+              "status": "reserved",
+              "tenant": "org"
+            },
+            {
+              "key": "w",
+              "qty": 4,
+              "sku": "sensor",
+              "status": "reserved",
+              "tenant": "u:v"
+            },
+            {
+              "key": "v:w",
+              "qty": 5,
+              "sku": "sensor",
+              "status": "reserved",
+              "tenant": "u"
+            },
+            {
+              "available": 8
+            },
+            {
+              "available": 7
+            },
+            {
+              "available": 6
+            },
+            {
+              "available": 5
+            }
+          ],
+          "family": "tenant_isolation",
+          "name": "delimiter collision resistance with colons and slashes across tenant and key",
+          "passed": false
+        }
+      ],
+      "error": null,
+      "failure": {
+        "actions": [
+          {
+            "key": "item",
+            "op": "reserve",
+            "qty": 2,
+            "sku": "widget",
+            "tenant": "org/dept"
+          },
+          {
+            "key": "dept/item",
+            "op": "reserve",
+            "qty": 3,
+            "sku": "widget",
+            "tenant": "org"
+          },
+          {
+            "key": "w",
+            "op": "reserve",
+            "qty": 4,
+            "sku": "sensor",
+            "tenant": "u:v"
+          },
+          {
+            "key": "v:w",
+            "op": "reserve",
+            "qty": 5,
+            "sku": "sensor",
+            "tenant": "u"
+          },
+          {
+            "op": "stock",
+            "sku": "widget",
+            "tenant": "org/dept"
+          },
+          {
+            "op": "stock",
+            "sku": "widget",
+            "tenant": "org"
+          },
+          {
+            "op": "stock",
+            "sku": "sensor",
+            "tenant": "u:v"
+          },
+          {
+            "op": "stock",
+            "sku": "sensor",
+            "tenant": "u"
+          }
+        ],
+        "actual": [
+          {
+            "key": "item",
+            "qty": 2,
+            "sku": "widget",
+            "status": "reserved",
+            "tenant": "org/dept"
+          },
+          {
+            "key": "dept/item",
+            "qty": 3,
+            "sku": "widget",
+            "status": "reserved",
+            "tenant": "org"
+          },
+          {
+            "key": "w",
+            "qty": 4,
+            "sku": "sensor",
+            "status": "reserved",
+            "tenant": "u:v"
+          },
+          {
+            "error": "conflict"
+          },
+          {
+            "available": 8
+          },
+          {
+            "available": 7
+          },
+          {
+            "available": 6
+          },
+          {
+            "available": 10
+          }
+        ],
+        "expected": [
+          {
+            "key": "item",
+            "qty": 2,
+            "sku": "widget",
+            "status": "reserved",
+            "tenant": "org/dept"
+          },
+          {
+            "key": "dept/item",
+            "qty": 3,
+            "sku": "widget",
+            "status": "reserved",
+            "tenant": "org"
+          },
+          {
+            "key": "w",
+            "qty": 4,
+            "sku": "sensor",
+            "status": "reserved",
+            "tenant": "u:v"
+          },
+          {
+            "key": "v:w",
+            "qty": 5,
+            "sku": "sensor",
+            "status": "reserved",
+            "tenant": "u"
+          },
+          {
+            "available": 8
+          },
+          {
+            "available": 7
+          },
+          {
+            "available": 6
+          },
+          {
+            "available": 5
+          }
+        ],
+        "family": "tenant_isolation",
+        "name": "delimiter collision resistance with colons and slashes across tenant and key",
+        "passed": false
+      },
+      "passed": false,
+      "seconds": 0.04158291699991423
+    },
+    "scenarios": 25,
+    "schema": 1,
+    "scope": "Synthetic sequential reservation API; a pass is not a general safety guarantee",
+    "suite_sha256": "170f58db3cb93cae2caae3e4cece8fa00e1312c1aa8d6f6028d5ca3f111ef619",
+    "suite_version": 3,
+    "verdict": "BLOCKED"
+  }
+}

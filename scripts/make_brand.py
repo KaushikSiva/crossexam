@@ -28,42 +28,40 @@ banner=f'''<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="800" vie
 <text x="1100" y="725" fill="#acacac" font-family="monospace" font-size="15">github.com/KaushikSiva/crossexam</text>
 </svg>'''
 (out/"banner.svg").write_text(banner)
-architecture='''<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="650" viewBox="0 0 1500 650">
-<rect width="1500" height="650" fill="#f7f7f7"/>
-<text x="65" y="75" font-family="Arial" font-size="34" font-weight="bold" fill="#171717">Separate contexts. Executable judgment.</text>
-<text x="65" y="114" font-family="Arial" font-size="18" fill="#7a7a7a">Models propose. The contract and sandboxed execution decide.</text>
-<defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#929292"/></marker></defs>
-<g fill="none" stroke="#929292" stroke-width="2" marker-end="url(#a)"><path d="M325 260H365"/><path d="M625 260H665"/><path d="M925 260H965"/><path d="M1225 260H1260"/><path d="M795 340V410H495V340"/></g>
-<g font-family="Arial" fill="#171717">
-<rect x="65" y="180" width="260" height="160" fill="#ebebeb"/><text x="85" y="213" font-size="12" fill="#717171">SUBQUADRATIC / RISK ROUTER</text><text x="85" y="254" font-size="25">Where to look</text><text x="85" y="289" font-size="16">Contract + repository + tests</text><text x="85" y="314" font-size="16">Typed risk decisions</text>
-<rect x="365" y="180" width="260" height="160" fill="#ebebeb"/><text x="385" y="213" font-size="12" fill="#717171">OPENAI / ADVERSARIAL CONTEXT</text><text x="385" y="254" font-size="25">Find a blind spot</text><text x="385" y="289" font-size="16">Propose a faulty implementation</text><text x="385" y="314" font-size="16">Must pass the existing tests</text>
-<rect x="665" y="180" width="260" height="160" fill="#111111"/><text x="685" y="213" font-size="12" fill="#f5f5f5">ISOLATED EXECUTION</text><text x="685" y="254" font-size="25" fill="#f7f7f7">Prove the failure</text><text x="685" y="289" font-size="16" fill="#cccccc">Independent event-ledger oracle</text><text x="685" y="314" font-size="16" fill="#cccccc">Minimize the failing sequence</text>
-<rect x="965" y="180" width="260" height="160" fill="#ebebeb"/><text x="985" y="213" font-size="12" fill="#717171">OPENAI / FRESH TEST CONTEXT</text><text x="985" y="254" font-size="25">Strengthen the eval</text><text x="985" y="289" font-size="16">Contract + observed failures</text><text x="985" y="314" font-size="16">Implementation withheld</text>
-<text x="1285" y="241" font-size="21">Freeze</text><text x="1285" y="272" font-size="21">Validate</text><text x="1285" y="303" font-size="21">Promote</text>
-<text x="550" y="445" font-size="14" fill="#7a7a7a">Only demonstrated failures become evidence.</text>
-<path d="M65 490H1435" stroke="#cfcfcf" stroke-dasharray="5 6"/>
-<text x="65" y="535" font-size="13" fill="#7a7a7a">SEPARATE FINAL AUDIT</text><text x="65" y="575" font-size="23">Opened after learning ends. Never sent back to either model.</text>
-<text x="1000" y="535" font-size="13" fill="#7a7a7a">PROMOTION GATE</text><text x="1000" y="575" font-size="18">More defects caught. No lost coverage.</text><text x="1000" y="606" font-size="18">No correct implementation rejected.</text>
+protocol=r['manifest'].get('proposal_protocol',{})
+names={'openai':'OpenAI','meta':'Meta Muse Spark','gemini':'Gemini','fetchai':'Fetch.ai ASI:One','fixtures':'seeded fixtures'}
+attacker=names.get(protocol.get('generator'),'the selected provider')
+architecture=f'''<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="780" viewBox="0 0 1500 780">
+<rect width="1500" height="780" fill="#ededed"/>
+<g font-family="Arial, sans-serif" fill="#171717">
+<text x="65" y="60" font-size="13" letter-spacing="2" fill="#777">CROSSEXAM / ARCHITECTURE</text>
+<text x="65" y="130" font-size="48" font-weight="bold">Muse at the core. Execution as the judge.</text>
+<text x="65" y="175" font-size="21" fill="#777">Models propose. Independent tests and sandboxed execution decide.</text>
+<path d="M65 215H1435M65 595H1435" stroke="#c8c8c8"/>
+<text x="65" y="260" font-size="13" fill="#777">PRIMARY CODE-GENERATION INTEGRATION</text>
+<text x="65" y="320" font-size="31">Meta</text><text x="65" y="385" font-size="65" font-weight="bold">Muse Spark</text>
+<text x="65" y="435" font-size="21">Propose adversarial implementations.</text><text x="65" y="468" font-size="21">Challenge what passing tests really prove.</text>
+<text x="65" y="525" font-size="15" fill="#666">Adapter implemented. API access currently returns HTTP 402.</text>
+<path d="M640 245V555" stroke="#c8c8c8"/>
+<text x="700" y="262" font-size="13" fill="#777">INDEPENDENT TEST AUTHOR</text><text x="700" y="300" font-size="30">Google DeepMind / Gemini</text><text x="700" y="330" font-size="18" fill="#666">Contract + counterexamples. Candidate code withheld.</text>
+<text x="700" y="375" font-size="13" fill="#777">CALLABLE VERIFICATION</text><text x="700" y="413" font-size="30">Fetch.ai / uAgents</text><text x="700" y="443" font-size="18" fill="#666">Execute a patch. Return a cryptographically signed verdict.</text>
+<text x="700" y="488" font-size="13" fill="#777">EVIDENCE AND FROZEN SUITES</text><text x="700" y="526" font-size="30">MongoDB</text><text x="700" y="556" font-size="18" fill="#666">Hash-verified artifacts, suite versions and signed receipts.</text>
+<text x="65" y="640" font-size="18">Subquadratic prioritizes risks</text><text x="515" y="640" font-size="18">OS sandbox + independent oracle</text><text x="1060" y="640" font-size="18">OpenUI exposes the evidence</text>
+<text x="65" y="706" font-size="16" fill="#666">Recorded campaign: {html.escape(attacker)} generated the patch. Muse access awaits credits.</text>
+<text x="65" y="739" font-size="16" fill="#666">Freeze → validate → promote → separate final audit. Every decision retains its evidence.</text>
 </g></svg>'''
 (out/"architecture.svg").write_text(architecture)
-live=r["manifest"]["mode"]=="live partners"
-subq=r["manifest"]["mode"].startswith("live Subquadratic")
+validation=r['validation_after']
+generated=next((c for c in r['counterexamples'] if c['id']=='M01'),r['counterexamples'][0])
+requests=len(generated['witness']['actions'])
 parts=[
- "Your AI says the code is ready. Every test passes. Would you merge it? CrossExam puts the tests on trial.",
- "This cache change passes all four tests. But two customers reuse a request ID, and one gets the other's reservation. CrossExam proves it with just two requests.",
- "Then it strengthens the tests. New versions must catch more bugs while correct code keeps passing. This weaker version? Rejected.",
- f"Finally, a separate audit: {b['detected']} out of {b['total']} bugs caught becomes {a['detected']}. No correct controls rejected. It's a small synthetic benchmark, and we show the miss, too.",
- ("Meta creates the attacks and writes new tests in a separate context. Subquadratic helps decide where to look. OpenUI shows the evidence." if live else "Subquadratic helps decide where to look. This run uses seeded bugs and test proposals. OpenUI lets you inspect every result." if subq else "This run uses seeded bugs and test proposals. OpenUI lets you inspect every result and see exactly what changed."),
- "CrossExam. Don't just trust the score. Make it prove something."
+    "Every test passed. Would you ship it? CrossExam challenges the tests behind that confidence.",
+    f"This {'generated' if generated['id']=='M01' else 'seeded'} patch passes all four tests. {requests} requests expose a real contract violation.",
+    "Muse Spark is our primary code-generation integration. Gemini writes independent tests. Subquadratic prioritizes risks. This run uses ASI One while Muse awaits credits.",
+    f"Gemini raises validation detection from {r['validation_before']['detected']} to {validation['detected']} out of {validation['total']}. Only measured improvements are promoted.",
+    f"Freeze the suite. The separate audit catches {a['detected']} of {a['total']} faulty implementations. All {a['controls']} correct implementations pass. This is a public synthetic benchmark.",
+    "Fetch agents load the frozen suite from MongoDB. Broken patch blocked. Correct code accepted. Both verdicts cryptographically signed.",
+    "CrossExam. Make passing tests earn your trust."
 ]
-if r["manifest"]["mode"].startswith("live OpenAI"):
-    parts=[
-        "Every test passed. So the code is ready, right? CrossExam asks a harder question: what did those tests miss?",
-        "OpenAI wrote this optimization. It passes all four tests. But one customer reserves two units, and another customer's stock drops too. Two requests prove it.",
-        "Then it writes stronger tests in a separate context. Detection jumps from one to four, then climbs to seven. Every promotion has to pass the same gate.",
-        f"Now freeze the tests and open the final audit. {a['detected']} of {a['total']} bugs caught. {a['total']-a['detected']} missed. All four correct implementations still pass.",
-        "Subquadratic chooses where to look. OpenAI makes the proposals. OpenUI shows the evidence. One real run, on a small synthetic benchmark.",
-        "CrossExam. Passing tests should mean something."
-    ]
 (out/"narration.json").write_text(json.dumps({"mode":r["manifest"]["mode"],"segments":parts,"words":sum(len(p.split()) for p in parts)},indent=2))
 print('Artwork and narration prepared:',sum(len(p.split()) for p in parts),'words')

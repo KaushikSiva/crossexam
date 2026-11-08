@@ -191,7 +191,7 @@ function good(row){return row.correct?!row.detected:row.detected}
 function renderAudit(){
   const b=report.audit_before,a=report.audit_after;
   const row=(name,score,cls)=>{const defects=score.rows.filter(r=>!r.correct),controls=score.rows.filter(r=>r.correct);
-    return `<div class="exam-row ${cls}"><span class="mono">${name}</span><div class="cells">${defects.map(r=>`<i class="cell ${r.detected?'hit':'miss'}" title="${esc(r.id)} · ${esc(r.title)} · ${r.detected?'caught':'missed'}"></i>`).join('')}<b class="sep"></b>${controls.map(r=>`<i class="cell ctrl ${r.detected?'miss':'hit'}" title="${esc(r.id)} · ${esc(r.title)} · ${verdict(r).toLowerCase()}"></i>`).join('')}</div><div class="num"><span data-count="${score.detected}">${score.detected}</span><small>/${score.total}</small></div></div>`};
+    return `<div class="exam-row ${cls} ${defects.length>12?'expanded':''}"><span class="mono">${name}</span><div class="cells"><span class="defect-cells">${defects.map(r=>`<i class="cell ${r.detected?'hit':'miss'}" title="${esc(r.id)} · ${esc(r.title)} · ${r.detected?'caught':'missed'}"></i>`).join('')}</span><b class="sep"></b><span class="control-cells">${controls.map(r=>`<i class="cell ctrl ${r.detected?'miss':'hit'}" title="${esc(r.id)} · ${esc(r.title)} · ${verdict(r).toLowerCase()}"></i>`).join('')}</span></div><div class="num"><span data-count="${score.detected}">${score.detected}</span><small>/${score.total}</small></div></div>`};
   $('#audit-visual').innerHTML=`<div class="exam-legend mono"><span><i class="cell hit"></i>caught</span><span><i class="cell miss"></i>missed</span><span><i class="cell ctrl hit"></i>control accepted</span></div>${row('ORIGINAL',b,'before')}${row('PROMOTED',a,'after')}`;
   $('#audit-table').innerHTML=`<div class="table-scroll"><table class="data-table"><thead><tr><th>Variant</th><th>Behavior</th><th>Original</th><th>Promoted</th></tr></thead><tbody>${a.rows.map(r=>{const old=b.rows.find(x=>x.id===r.id);return `<tr><td class="mono" title="${r.correct?'Correct implementation control':esc(label(r.family))}">${esc(r.id)}</td><td>${esc(r.title)}</td><td><span class="status ${good(old)?'accepted':'rejected'}">${verdict(old)}</span></td><td><span class="status ${good(r)?'accepted':'rejected'}">${verdict(r)}</span></td></tr>`}).join('')}</tbody></table></div>`;
   $('#limitations').innerHTML=report.limitations.map(l=>`<p>${esc(l)}</p>`).join('');
@@ -200,14 +200,16 @@ function renderEvidence(){
   const m=report.manifest;
   const entries=[['MODE',m.mode],['RUNTIME',m.runtime],['STARTED',m.created_at],['COMMIT',m.commit],['CONTRACT SHA-256',m.contract_sha256],['BENCHMARK SHA-256',m.corpus_sha256],['EVENT ROOT',report.event_root_sha256]];
   $('#provenance').innerHTML=entries.map(([k,v])=>`<dt>${k}</dt><dd class="${/SHA|ROOT|COMMIT/.test(k)?'hash':''}">${esc(v)}</dd>`).join('');
-  $('#partner-calls').innerHTML=report.provider_calls.length?report.provider_calls.map(c=>`<div class="partner-row">${esc(({meta:'Meta',openai:'OpenAI',subquadratic:'Subquadratic'})[c.provider]||c.provider)} · ${esc(c.purpose)}<div class="mono">${esc(c.model)} · ${esc(c.status)} · ${c.seconds}s · ${c.usage.input_tokens??c.usage.prompt_tokens??'—'} in</div></div>`).join(''):'<p class="empty">None — local fixture run.</p>';
+  $('#partner-calls').innerHTML=report.provider_calls.length?report.provider_calls.map(c=>`<div class="partner-row">${esc(({meta:'Meta',openai:'OpenAI',gemini:'Google DeepMind / Gemini',fetchai:'Fetch.ai / ASI:One',subquadratic:'Subquadratic'})[c.provider]||c.provider)} · ${esc(c.purpose)}<div class="mono">${esc(c.model)} · ${esc(c.status)} · ${c.seconds}s · ${c.usage.input_tokens??c.usage.prompt_tokens??'—'} in</div></div>`).join(''):'<p class="empty">None — local fixture run.</p>';
   $('#event-count').textContent=`${report.events.length} EVENTS`;
   $('#journal').innerHTML=report.events.map(e=>`<div class="event"><span>${String(e.sequence).padStart(2,'0')}</span><div><strong>${esc(label(e.kind))}</strong><p>${esc(e.message)}</p></div></div>`).join('');
 }
 function render(){
   if(!report)return;
   const mode=report.manifest.mode;
-  const modeLabel=mode==='live partners'?'Live partners':mode.startsWith('live OpenAI')?'OpenAI + SubQ':mode.startsWith('live Meta')?'Meta + SubQ':mode.startsWith('live Subquadratic')?'SubQ + fixtures':'Local fixtures';
+  const protocol=report.manifest.proposal_protocol||{},names={openai:'OpenAI',meta:'Meta',gemini:'Gemini',fetchai:'Fetch.ai'};
+  const attacker=names[protocol.generator],author=names[protocol.test_author];
+  const modeLabel=attacker?`${attacker}${author&&author!==attacker?' + '+author:''} + SubQ`:mode.startsWith('live ')?mode.slice(5):'Local fixtures';
   $('#mode').textContent=`${local?'Saved':'Recorded'} · ${modeLabel}`;
   $('#footer-mode').textContent=`${modeLabel} · ${report.elapsed_seconds}s · synthetic benchmark`;
   renderStats();renderCases();renderLearning();renderAudit();renderEvidence();
@@ -224,22 +226,32 @@ async function poll(){
     $('#run').disabled=busy;$('#replay').disabled=busy;
     if(busy){const e=state.events.at(-1);$('#progress-text').textContent=e?.message||'Probing sandbox isolation…';$('#progress-count').textContent=`${state.events.length} EVENTS`;$('#mode').textContent='Running';}
     if(state.report&&(!report||state.report.event_root_sha256!==report.event_root_sha256)){report=state.report;statsShown=false;render();}
-    if(wasBusy&&!busy){if(state.error){$('#notice').hidden=false;$('#notice').textContent=state.error;}else{render();toast('Campaign complete.');}}
+    if(wasBusy&&!busy){if(state.error){$('#notice').hidden=false;$('#notice').textContent=state.error;}else{render();toast(state.archive?'Campaign complete. Evidence archived to MongoDB.':'Campaign complete.');}}
     if(!report&&!busy){$('#notice').hidden=false;$('#notice').textContent='Start a campaign to populate the workspace.';}
   }catch(error){
     if(!report){try{const response=await fetch('report.json');if(!response.ok)throw Error('No report');report=await response.json();render();}catch{$('#notice').hidden=false;$('#notice').textContent='No saved report. Run python3 -m crossexam run, then start the server.';}}
   }
 }
-$('#run').onclick=()=>{
-  $('#key-status').textContent=`OPENAI ${providers.openai?'✓':'MISSING'} · SUBQUADRATIC ${providers.subquadratic?'✓':'MISSING'}`;
-  $('#start-live').disabled=!providers.openai||!providers.subquadratic;
+function updateProviderOptions(){
+  const generator=$('#generator').value,author=$('#test-author').value||generator;
+  $('#key-status').textContent=Object.entries({openai:'OPENAI',meta:'META',gemini:'GEMINI',fetchai:'FETCH.AI',subquadratic:'SUBQUADRATIC',mongodb:'MONGODB'}).map(([key,name])=>`${name} ${providers[key]?'✓':'MISSING'}`).join(' · ');
+  $('#start-live').disabled=!providers[generator]||!providers[author]||!providers.subquadratic;
   $('#start-subq').disabled=!providers.subquadratic;
+  $('#archive-mongo').disabled=!providers.mongodb;
+  if(!providers.mongodb)$('#archive-mongo').checked=false;
+}
+$('#generator').onchange=updateProviderOptions;
+$('#test-author').onchange=updateProviderOptions;
+$('#run').onclick=()=>{
+  updateProviderOptions();
   $('#run-dialog').showModal();
   stagger($$('#run-dialog .run-option'), {delay:80, step:70});
 };
 async function start(mode){
   $('#run-dialog').close();$('#notice').hidden=true;
-  try{const r=await fetch('api/run',{method:'POST',headers:{'Content-Type':'application/json','X-CrossExam':'local-workspace'},body:JSON.stringify({mode})});const result=await r.json();if(!r.ok)throw Error(result.error);busy=true;$('#progress').hidden=false;$('#progress-text').textContent='Probing sandbox isolation…';await poll();}catch(e){toast(e.message);}
+  const options={mode,mongo:$('#archive-mongo').checked};
+  if(mode==='live'){options.generator=$('#generator').value;options.test_author=$('#test-author').value||options.generator;}
+  try{const r=await fetch('api/run',{method:'POST',headers:{'Content-Type':'application/json','X-CrossExam':'local-workspace'},body:JSON.stringify(options)});const result=await r.json();if(!r.ok)throw Error(result.error);busy=true;$('#progress').hidden=false;$('#progress-text').textContent='Probing sandbox isolation…';await poll();}catch(e){toast(e.message);}
 }
 $('#start-local').onclick=()=>start('local');$('#start-subq').onclick=()=>start('subq');$('#start-live').onclick=()=>start('live');
 $('#replay').onclick=async()=>{

@@ -1,0 +1,141 @@
+[
+  {
+    "provider": "subquadratic",
+    "purpose": "risk-routing",
+    "model": "subq-snap-1.1",
+    "request_sha256": "11eddd2a9d758a995423eab459febd603e9641940388898b35ba92a2d13520d7",
+    "status": "complete",
+    "usage": {
+      "input_tokens": 1898,
+      "output_tokens": 0
+    },
+    "seconds": 0.74,
+    "response_sha256": "ed537364b5d29e0b8d8b4d1f60c3d976f390cd21f0244dd9e09a4e62167c24a8"
+  },
+  {
+    "provider": "fetchai",
+    "purpose": "adversarial-patch",
+    "model": "asi1",
+    "request_sha256": "54bbaea98cd864cabdcc9b46b3a71c13f9c34a06dec85899186b30edb3f87242",
+    "status": "complete",
+    "usage": {
+      "completion_tokens": 15932,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 15161,
+        "rejected_prediction_tokens": null
+      },
+      "prompt_tokens": 1885,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cached_tokens": 640,
+        "created_cache_tokens": 0,
+        "multimodal_tokens": null
+      },
+      "total_tokens": 17817
+    },
+    "seconds": 81.75,
+    "response_sha256": "76f071b1cb2ff4c094f725595f1af9a2d0aefe8478236c26540f8daaba3f4baf"
+  },
+  {
+    "provider": "gemini",
+    "purpose": "test-proposal-1",
+    "model": "gemini-3.8-flash",
+    "request_sha256": "fe7790158d1e464b7ac43ea872e4e017d6efd14797e81b24ffea06e0f9964224",
+    "status": "complete",
+    "usage": {
+      "promptTokenCount": 2640,
+      "candidatesTokenCount": 1464,
+      "totalTokenCount": 6427,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 2640
+        }
+      ],
+      "thoughtsTokenCount": 2323,
+      "serviceTier": "standard",
+      "input_tokens": 2640,
+      "output_tokens": 1464,
+      "reasoning_tokens": 2323
+    },
+    "seconds": 27.888,
+    "response_sha256": "af7e882b84bc9e37ecb6278fc8d0f74f394adeb5cc8adb97d4514f93be18eb8e"
+  },
+  {
+    "provider": "gemini",
+    "purpose": "test-proposal-2",
+    "model": "gemini-3.8-flash",
+    "request_sha256": "749ae98b46739598496528725c1c6a0f14a6f348fff7cbd218317d9d04ee3777",
+    "status": "complete",
+    "usage": {
+      "promptTokenCount": 4906,
+      "candidatesTokenCount": 1449,
+      "totalTokenCount": 9647,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 4906
+        }
+      ],
+      "thoughtsTokenCount": 3292,
+      "serviceTier": "standard",
+      "input_tokens": 4906,
+      "output_tokens": 1449,
+      "reasoning_tokens": 3292
+    },
+    "seconds": 34.838,
+    "response_sha256": "0df03f19c536deb43e23623a66a80d37df84541cdcf282db1dabb72ad7e4fdbf"
+  },
+  {
+    "provider": "gemini",
+    "purpose": "test-proposal-3",
+    "model": "gemini-3.8-flash",
+    "request_sha256": "2fda60ff9e5cbeb350004196a87dda04b1b0f73604133690f056e5cb8248c7d8",
+    "status": "complete",
+    "usage": {
+      "promptTokenCount": 7139,
+      "candidatesTokenCount": 1558,
+      "totalTokenCount": 18427,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 7139
+        }
+      ],
+      "thoughtsTokenCount": 9730,
+      "serviceTier": "standard",
+      "input_tokens": 7139,
+      "output_tokens": 1558,
+      "reasoning_tokens": 9730
+    },
+    "seconds": 80.83,
+    "response_sha256": "c9d844b6fbc05669a75c23e278838e5155793b719ff7cd3f099d126dc31400b0"
+  },
+  {
+    "provider": "gemini",
+    "purpose": "test-proposal-4",
+    "model": "gemini-3.8-flash",
+    "request_sha256": "b09dbaf46b46795e2b4b1289c2ca8d5c950e63c089b8b173f9dfef6cb8f1d8a6",
+    "status": "complete",
+    "usage": {
+      "promptTokenCount": 10306,
+      "candidatesTokenCount": 1309,
+      "totalTokenCount": 13987,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 10306
+        }
+      ],
+      "thoughtsTokenCount": 2372,
+      "serviceTier": "standard",
+      "input_tokens": 10306,
+      "output_tokens": 1309,
+      "reasoning_tokens": 2372
+    },
+    "seconds": 27.772,
+    "response_sha256": "f76a1956b9c4a8c39f410815850d743f6078148078cf395d05a24f210927219d"
+  }
+]

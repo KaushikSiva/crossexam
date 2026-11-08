@@ -1,0 +1,141 @@
+[
+  {
+    "provider": "subquadratic",
+    "purpose": "risk-routing",
+    "model": "subq-snap-1.1",
+    "request_sha256": "11eddd2a9d758a995423eab459febd603e9641940388898b35ba92a2d13520d7",
+    "status": "complete",
+    "usage": {
+      "input_tokens": 1898,
+      "output_tokens": 0
+    },
+    "seconds": 0.889,
+    "response_sha256": "ed537364b5d29e0b8d8b4d1f60c3d976f390cd21f0244dd9e09a4e62167c24a8"
+  },
+  {
+    "provider": "fetchai",
+    "purpose": "adversarial-patch",
+    "model": "asi1",
+    "request_sha256": "54bbaea98cd864cabdcc9b46b3a71c13f9c34a06dec85899186b30edb3f87242",
+    "status": "complete",
+    "usage": {
+      "completion_tokens": 5851,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 5079,
+        "rejected_prediction_tokens": null
+      },
+      "prompt_tokens": 1885,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cached_tokens": 640,
+        "created_cache_tokens": 0,
+        "multimodal_tokens": null
+      },
+      "total_tokens": 7736
+    },
+    "seconds": 21.283,
+    "response_sha256": "35e1fb8af46fdab5229abc45e187790baf0ea19778a40c9947e54aaf63ed68d7"
+  },
+  {
+    "provider": "gemini",
+    "purpose": "test-proposal-1",
+    "model": "gemini-3.8-flash",
+    "request_sha256": "46e4595a11112f8019f68cd32e752d63b025f6df9aeddff785b8feb40eb9abac",
+    "status": "complete",
+    "usage": {
+      "promptTokenCount": 2641,
+      "candidatesTokenCount": 965,
+      "totalTokenCount": 5884,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 2641
+        }
+      ],
+      "thoughtsTokenCount": 2278,
+      "serviceTier": "standard",
+      "input_tokens": 2641,
+      "output_tokens": 965,
+      "reasoning_tokens": 2278
+    },
+    "seconds": 21.453,
+    "response_sha256": "eabdc96ec517a7b4bda2efe735420c51af173acf1a2d96ea97559b19862fd423"
+  },
+  {
+    "provider": "gemini",
+    "purpose": "test-proposal-2",
+    "model": "gemini-3.8-flash",
+    "request_sha256": "94d223436d0b58480b94cd9f579a28d3ceb35910706c4ce5ed3c98b17f5c1d50",
+    "status": "complete",
+    "usage": {
+      "promptTokenCount": 4365,
+      "candidatesTokenCount": 1474,
+      "totalTokenCount": 8764,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 4365
+        }
+      ],
+      "thoughtsTokenCount": 2925,
+      "serviceTier": "standard",
+      "input_tokens": 4365,
+      "output_tokens": 1474,
+      "reasoning_tokens": 2925
+    },
+    "seconds": 31.846,
+    "response_sha256": "4df6b9e4344d787ff9848b41e816457155310e7cf92790c7415c2c698ddc0d93"
+  },
+  {
+    "provider": "gemini",
+    "purpose": "test-proposal-3",
+    "model": "gemini-3.8-flash",
+    "request_sha256": "1592411f8295bf6611495f23c452c2be2b5a565ff37c41eda797bf28bbf6fcee",
+    "status": "complete",
+    "usage": {
+      "promptTokenCount": 6682,
+      "candidatesTokenCount": 1893,
+      "totalTokenCount": 11293,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 6682
+        }
+      ],
+      "thoughtsTokenCount": 2718,
+      "serviceTier": "standard",
+      "input_tokens": 6682,
+      "output_tokens": 1893,
+      "reasoning_tokens": 2718
+    },
+    "seconds": 31.276,
+    "response_sha256": "7dac9b5a245de0f93f7761134c75b0631f41df7e6af8891597bdff7f1c118d6a"
+  },
+  {
+    "provider": "gemini",
+    "purpose": "test-proposal-4",
+    "model": "gemini-3.8-flash",
+    "request_sha256": "1dec24fdace052168fe24a7e4dea1a6a19a9261825fd018771b0eb8f02939476",
+    "status": "complete",
+    "usage": {
+      "promptTokenCount": 9735,
+      "candidatesTokenCount": 1699,
+      "totalTokenCount": 16090,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 9735
+        }
+      ],
+      "thoughtsTokenCount": 4656,
+      "serviceTier": "standard",
+      "input_tokens": 9735,
+      "output_tokens": 1699,
+      "reasoning_tokens": 4656
+    },
+    "seconds": 43.773,
+    "response_sha256": "919208af22381dd417b4e4b4b52081d9bdb602f76f94a58987433fb32eaaea2f"
+  }
+]

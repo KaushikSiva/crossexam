@@ -1,0 +1,49 @@
+{
+  "name": "quantity cannot change under a key",
+  "family": "payload_binding",
+  "passed": false,
+  "actions": [
+    {
+      "op": "reserve",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 2
+    },
+    {
+      "op": "reserve",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 3
+    }
+  ],
+  "expected": [
+    {
+      "status": "reserved",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 2
+    },
+    {
+      "error": "conflict"
+    }
+  ],
+  "actual": [
+    {
+      "status": "reserved",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 2
+    },
+    {
+      "status": "reserved",
+      "tenant": "atlas",
+      "key": "order-1",
+      "sku": "widget",
+      "qty": 2
+    }
+  ]
+}

@@ -77,7 +77,7 @@ finish(fig,"final-audit","Small synthetic benchmark. Held-out implementations sh
 
 rows=[row for row in r["validation_after"]["rows"] if not row["correct"]]
 matrix=np.array([[int(next(vr for vr in v["validation"]["rows"] if vr["id"]==row["id"])["detected"]) for v in versions] for row in rows])
-fig,ax=plt.subplots(figsize=(11,5.8));fig.subplots_adjust(left=.38,right=.94,top=.82,bottom=.16)
+fig,ax=plt.subplots(figsize=(13,max(5.8,len(rows)*.36+2)));fig.subplots_adjust(left=.46,right=.96,top=.91,bottom=.08)
 fig.suptitle("Which blind spots disappear?",x=.07,ha="left",fontsize=20,fontweight="bold")
 ax.imshow(matrix,cmap=ListedColormap(["#e6e6e6",GREEN]),vmin=0,vmax=1,aspect="auto")
 ax.set_xticks(range(len(versions)),[f"v{v['version']}"+ (" · rejected" if not v["accepted"] else "") for v in versions],fontsize=9)

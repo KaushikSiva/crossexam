@@ -1,0 +1,43 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\n  \"cases\": [\n    {\n      \"actions_json\": \"[{\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"alpha\\\", \\\"key\\\": \\\"k1\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 5}, {\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"beta\\\", \\\"key\\\": \\\"k1\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 5}]\",\n      \"family\": \"tenant_isolation\",\n      \"name\": \"same key different tenants stock isolation\"\n    },\n    {\n      \"actions_json\": \"[{\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"gamma\\\", \\\"key\\\": \\\"k2\\\", \\\"sku\\\": \\\"sensor\\\", \\\"qty\\\": 3}, {\\\"op\\\": \\\"stock\\\", \\\"tenant\\\": \\\"gamma\\\", \\\"sku\\\": \\\"widget\\\"}, {\\\"op\\\": \\\"stock\\\", \\\"tenant\\\": \\\"gamma\\\", \\\"sku\\\": \\\"sensor\\\"}]\",\n      \"family\": \"tenant_isolation\",\n      \"name\": \"cross sku stock visibility\"\n    },\n    {\n      \"actions_json\": \"[{\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"delta\\\", \\\"key\\\": \\\"k3\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 10}, {\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"delta\\\", \\\"key\\\": \\\"k3\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 10}, {\\\"op\\\": \\\"release\\\", \\\"tenant\\\": \\\"delta\\\", \\\"key\\\": \\\"k3\\\"}, {\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"delta\\\", \\\"key\\\": \\\"k3\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 10}]\",\n      \"family\": \"idempotency\",\n      \"name\": \"post-release idempotent retry\"\n    },\n    {\n      \"actions_json\": \"[{\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"epsilon\\\", \\\"key\\\": \\\"k4\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 1}, {\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"epsilon\\\", \\\"key\\\": \\\"k4\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 1}, {\\\"op\\\": \\\"release\\\", \\\"tenant\\\": \\\"epsilon\\\", \\\"key\\\": \\\"k4\\\"}, {\\\"op\\\": \\\"release\\\", \\\"tenant\\\": \\\"epsilon\\\", \\\"key\\\": \\\"k4\\\"}]\",\n      \"family\": \"idempotency\",\n      \"name\": \"double release no double restore\"\n    },\n    {\n      \"actions_json\": \"[{\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"zeta\\\", \\\"key\\\": \\\"k5\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 2}, {\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"zeta\\\", \\\"key\\\": \\\"k5\\\", \\\"sku\\\": \\\"sensor\\\", \\\"qty\\\": 2}]\",\n      \"family\": \"payload_binding\",\n      \"name\": \"key reuse with different sku conflict\"\n    },\n    {\n      \"actions_json\": \"[{\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"eta\\\", \\\"key\\\": \\\"k6\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 2}, {\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"eta\\\", \\\"key\\\": \\\"k6\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 3}]\",\n      \"family\": \"payload_binding\",\n      \"name\": \"key reuse with different qty conflict\"\n    },\n    {\n      \"actions_json\": \"[{\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"theta\\\", \\\"key\\\": \\\"k7\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 0}]\",\n      \"family\": \"validation\",\n      \"name\": \"zero quantity invalid\"\n    },\n    {\n      \"actions_json\": \"[{\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"iota\\\", \\\"key\\\": \\\"k8\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 1.5}]\",\n      \"family\": \"validation\",\n      \"name\": \"float quantity invalid\"\n    },\n    {\n      \"actions_json\": \"[{\\\"op\\\": \\\"reserve\\\", \\\"tenant\\\": \\\"kappa\\\", \\\"key\\\": \\\"k9\\\", \\\"sku\\\": \\\"widget\\\", \\\"qty\\\": 11}]\",\n      \"family\": \"validation\",\n      \"name\": \"quantity over max invalid\"\n    },\n    {\n      \"actions_json\": \"[{\\\"op\\\": \\\"release\\\", \\\"tenant\\\": \\\"lambda\\\", \\\"key\\\": \\\"k10\\\"}]\",\n      \"family\": \"inventory\",\n      \"name\": \"release without reservation not found\"\n    }\n  ]\n,\n  \"rationale\": \"The observed counterexamples reveal critical failures in tenant isolation (stock leakage across tenants), idempotency (retries consuming stock), payload binding (conflicts ignored), and validation (negative/invalid types accepted). The new test suite addresses these by: 1) Verifying strict tenant isolation for stock counts and reservation keys; 2) Testing idempotency after releases to ensure no double-restoration or double-consumption; 3) Enforcing payload binding conflicts when SKU or Qty changes under the same key; 4) Validating boundary conditions for quantity (0, float, >10); 5) Ensuring release errors on non-existent reservations do not affect state.\"\n}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning_content": null
+      }
+    }
+  ],
+  "created": 1794094574,
+  "id": "chatcmpl-a5e1a8cc-6281-48e7-80ea-e5e7f354dec9",
+  "model": "asi1-mini",
+  "moderation": null,
+  "object": "chat.completion",
+  "service_tier": null,
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 1115,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens": 2695,
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": 0,
+      "created_cache_tokens": 1072,
+      "multimodal_tokens": null
+    },
+    "total_tokens": 3810
+  }
+}

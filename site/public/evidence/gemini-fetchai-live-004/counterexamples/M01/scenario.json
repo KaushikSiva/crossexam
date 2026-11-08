@@ -1,0 +1,53 @@
+{
+  "name": "tuple namespaces cannot collide",
+  "family": "tenant_isolation",
+  "passed": false,
+  "actions": [
+    {
+      "op": "reserve",
+      "tenant": "a:b",
+      "key": "c",
+      "sku": "widget",
+      "qty": 2
+    },
+    {
+      "op": "reserve",
+      "tenant": "a",
+      "key": "b:c",
+      "sku": "widget",
+      "qty": 2
+    }
+  ],
+  "expected": [
+    {
+      "status": "reserved",
+      "tenant": "a:b",
+      "key": "c",
+      "sku": "widget",
+      "qty": 2
+    },
+    {
+      "status": "reserved",
+      "tenant": "a",
+      "key": "b:c",
+      "sku": "widget",
+      "qty": 2
+    }
+  ],
+  "actual": [
+    {
+      "status": "reserved",
+      "tenant": "a:b",
+      "key": "c",
+      "sku": "widget",
+      "qty": 2
+    },
+    {
+      "status": "reserved",
+      "tenant": "a:b",
+      "key": "c",
+      "sku": "widget",
+      "qty": 2
+    }
+  ]
+}
