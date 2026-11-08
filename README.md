@@ -41,7 +41,7 @@ The latest **30-case-per-split campaign** catches **24/30 final-audit faults, up
 | Correct controls rejected | 0 / 4 | **0 / 4** |
 | Faulty validation implementations caught | 1 / 30 | **23 / 30** |
 
-**Meta Muse Spark is the primary code-generation integration in the architecture.** Its adapter is implemented, but the latest access probe returned HTTP 402. This measured campaign explicitly uses **Fetch.ai ASI:One** for the attack and **Google DeepMind Gemini 3.8 Flash** for independent tests. The generated patch removes tenant identity from cache keys and passes all four baseline scenarios; two requests expose the customer-data leak.
+**Meta Muse Spark is the primary code-generation integration in the architecture.**. This measured campaign explicitly uses **Fetch.ai ASI:One** for the attack and **Google DeepMind Gemini 3.8 Flash** for independent tests. The generated patch removes tenant identity from cache keys and passes all four baseline scenarios; two requests expose the customer-data leak.
 
 | Evaluation version | Proposed scenarios | Validation detections | Correct controls rejected | Decision |
 | --- | ---: | ---: | ---: | --- |
